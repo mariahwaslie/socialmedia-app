@@ -1,0 +1,375 @@
+{%  extends 'profile.html' %}
+{% block posts %}
+        <style>
+     .post-box {
+        {#box-shadow: 4px 7px 9px 2px #cfcbcb82;#} border-radius: 10px;
+            max-height: 400px;
+            overflow: hidden;
+            {#padding: 10px;#}
+            margin: 10px 0;
+        }
+
+     .posts {
+            padding: 10px;
+            max-height: 270px;
+            overflow: hidden;
+        }
+
+        .card-text:last-child {
+            margin-bottom: 0;
+            box-shadow: -2px -1px 14px 0px #c4c4c47d;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: black;
+        }
+
+        {#.card-text {#}
+        {#    background-color: #ffffff;#}
+        {##}
+        {#    padding: 10px;#}
+        {#    border-radius: 10px;#}
+        {#    margin-top: 5px;#}
+        {#    max-width: 280px;#}
+        {#    min-width: 200px;#}
+        {#    max-height: 300px;#}
+        {#    overflow: hidden;#}
+        {#    font-weight: 400;#}
+        {##}
+        {##}
+
+        .content {
+            columns: 15rem;
+            width: 98%;
+            margin-top: 10px;
+        {#display: table;#}
+        }
+
+        .timeline-content {
+            display: block;
+            flex-wrap: wrap;
+        }
+    </style>
+
+        <style>
+        .card-text:last-child {
+            margin-bottom: 0;
+            box-shadow: -2px -1px 14px 0px #c4c4c47d;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: black;
+        }
+
+        .card-text {
+            background-color: #ffffff;
+
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 5px;
+            max-width: 280px;
+            min-width: 200px;
+            max-height: 300px;
+            overflow: hidden;
+            font-weight: 400;
+
+        }
+
+        .content {
+            columns: 15rem;
+            width: 98%;
+            margin-top: 10px;
+        {#display: table;#}
+        }
+
+        .timeline-content {
+            display: block;
+            flex-wrap: wrap;
+        }
+
+        .video {
+        {#min-height: 250px;#} max-height: 500px;
+            border-radius: 10px 10px;
+            border-color: #FFFFFF;
+            max-width: 100%;
+            display: block;
+            background-color: black;
+            margin: 10px;
+        }
+
+        .posts {
+            display: inline-flex;
+        }
+
+        .video-container {
+            padding: 0;
+            margin: auto;
+            display: inline-block;
+            border-radius: 15px;
+
+        }
+
+        body {
+            display: block
+        }
+
+        li {
+            list-style: none;
+        }
+
+        li a, .nav-link {
+            text-decoration: none;
+            color: black;
+        }
+
+        p {
+            font-weight: 500;
+            margin-left: 10px;
+
+
+        }
+
+        div .container {
+            display: flex;
+            margin: 0 0 0 0;
+            padding:25px 20px;
+        }
+
+        button {
+            margin-left: 25px;
+            text-align: center;
+            width: 100px;
+            height: 25px;
+            border-radius: 3px;
+            border-style: none;
+            font-weight: 400;
+            font-size: 13px;
+            margin: 0 0 0 10px;
+        {#background-color: #93a7da;#}
+
+        }
+
+        button a {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .name {
+            font-weight: normal;
+            font-size: 16px;
+            text-transform: capitalize;
+
+
+        }
+
+        .username {
+            font-weight: normal;
+            font-size: 21px;
+            margin: 0 0 0 10px;
+        {#padding-left: 20%;#} padding-bottom: 10px;
+        {#text-transform: capitalize;#}
+
+
+        }
+
+        div .follow {
+            display: flex;
+        {#padding-top: 38px;#}{#margin-right: 20px;#}{#padding: 1rem;#} margin: 0;
+            padding: 16px 0 0 10px;
+        }
+
+        div .follow p {
+            margin-right: 20px;
+            font-size: 13px;
+
+        }
+
+        .profile_pic_img {
+            border-radius: 50%;
+            width: 100px;
+            height: 95px;
+            object-fit: cover;
+            {#margin-right: 10px;#}
+            margin-top: 20px;
+        }
+
+        .text {
+            display: block
+        }
+
+        .bio {
+            display: flex;
+            font-size: 14px;
+            padding: 0 0 0 30px;
+            margin: -10px 0 10px 0;
+
+        }
+
+
+
+        .nav-item:hover {
+            background-color: #eeeeee;
+            color: black;
+            border-radius: 5px;
+
+        }
+
+        .nav-link:hover {
+            color: black;
+            background-color: #eeeeee;
+            border-radius: 10px;
+        }
+        {##}
+        {#.nav-link:focus {#}
+        {#    color: white;#}
+        {#    background-color: black;#}
+        {#    border-radius: 10px;#}
+        {##}
+        {##}
+
+        .nav-link {
+            font-weight: 500;
+
+        }
+
+        div.container.c {
+            margin: 0;
+            padding-bottom: 5px;
+        }
+
+
+        .card-title {
+            max-width: 250px;
+            overflow: hidden;
+        {#padding :0 10px;#} margin-left: 15px;
+            text-transform: capitalize;
+
+        }
+
+        .card-title p {
+            font-size: 10px;
+        }
+
+        .card-text strong, .title strong {
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .nav-link a:active {
+            color: white;
+            background-color: black;
+            border-radius: 10px;
+            text-decoration: underline;
+        }
+
+        .video {
+            display: block;
+            max-width: 240px;
+        }
+
+        .posts {
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .img img {
+            object-fit: cover;
+            max-width: 260px;
+            border-radius: 10px;
+            display: inline-flex;
+            flex-wrap: wrap;
+            margin: 5px;
+        }
+
+        h6.title {
+            text-transform: capitalize;
+            font-weight: normal;
+            font-size: 13px;
+            margin-left: 10px;
+            margin-top: 10px;
+
+
+        }
+    </style>
+
+    <div style="align-items:center;display:flex;flex-direction: column;">
+        <div class="content all" id="all" data-tab>
+            {% for item in history_sorted %}
+                <div class=" item" style="display:block">
+                    {% if item in videos %}
+                        <a href="{% url 'person:viewvideo' item.user item.id ' '%}">
+                            <video class="video">
+                                <source src="/media/{{ item.video_file }}" type="video/mp4">
+                            </video>
+
+                        </a>
+                        <h6 class="title"><strong>{{ item.title }}</strong></h6>
+                        <p>{{ profile.video.created_at }}
+                        </p>
+                    {% elif item in posts %}
+                        <div>
+                            <div class="posts">
+                                <div class="timeline-content ">
+
+                                    <a href="{% url 'person:viewpost' item.user item.id ' ' %}">
+                                        <p class="card-text">{{ item.content|safe }}</p>
+                                        <div class="card-title">
+                                            <p><strong>{{ item.title }}</strong><br> {{ item.created_at.date }} </p>
+                                    </a>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        </div>
+                    {% elif item in images %}
+
+
+                            <div class="img">
+                                <a href="{% url 'person:viewimage' item.user item.id ' '%}">
+                                    <img src="/media/{{ item.image }}" class="timeline-content">
+                                </a>
+                                <div>
+                                    <h6 class="title">
+                                        <strong>{{ item.title }}</strong>
+                                        <br>{{ item.created_at.date }}
+                                    </h6>
+
+                                </div>
+
+                            </div>
+                {%  else %}
+                        <div>
+                    <div class="posts">
+                        <div class="timeline-content ">
+                            <a href="{% url 'person:viewblogpost' item.id  ' '%}">
+
+                                <p class="card-text">{{ item.content|safe }}</p>
+                            </a>
+                            <div class="card-title">
+                                <p><strong>{{ item.title }}</strong><br> {{ item.created_at.date }} </p>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                    {% endif %}
+                </div>
+            {% endfor %}
+    </div>
+
+{% endblock %}

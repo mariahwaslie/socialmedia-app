@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% block head_block %}
+    {% load static %}
+{% endblock %}
+{% block basic_block %}
+    <style>
+    .nav {
+            margin: 0 auto;
+            width: fit-content;
+        }
+     .nav-link a:active {
+            color: white;
+            background-color: black;
+            border-radius: 10px;
+            text-decoration: underline;
+        }
+     .nav-item:hover {
+            background-color: #eeeeee;
+            color: black;
+            border-radius: 5px;
+
+        }
+     .nav-item{
+         border-radius: 5px;
+     }
+
+        .nav-link:hover {
+            color: black;
+            background-color: #eeeeee;
+            border-radius: 10px;
+        }
+        div {
+            flex-direction: row;
+
+        }
+
+        div .container {
+            margin: auto 0 auto 10px;
+            padding: 45px 20px;
+            /*background-color: #b397d9;*/
+            display: flex;
+
+
+        }
+
+        {#.profile_pic{#}
+        {# margin:30px 10px 0 0;#}
+        {# padding:30px;#}
+        {# width:20%;#}
+
+
+        .cap {
+            text-transform: capitalize;
+            font-size: 14px;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .active, .nav-link, .nav .nav-underline {
+            color: black;
+            /*font-weight: bold;*/
+        }
+
+        footer a {
+            font-weight: lighter;
+            font-size: 10px;
+            color: black;
+            text-decoration: none;
+            margin: 20% 10px;
+
+        }
+
+        {#img{#}
+
+        {##}
+        .bio {
+            display: block;
+        }
+
+        .text {
+            display: block;
+            margin: 25px 25px;
+        }
+
+        .username {
+            font-weight: normal;
+            text-decoration: none;
+            color: black;
+            font-size: 12px;
+        }
+
+        .content {
+            margin: 0 5% 0 0;
+            width: 50%;
+            /*display: inline-block;*/
+        }
+
+        .nav {
+            margin: 0 32px;
+        }
+
+        a.nav-link.active:hover, .nav .nav-item .nav-link.active:focus{
+            border-radius: 15px;
+            padding: 5px 20px;
+        }
+         a.nav-link.active,li.nav-item{
+            border-style: none;
+                         font-weight: 500;
+
+
+        }
+    </style>
+
+
+
+    <meta charset="UTF-8">
+    <div class="container">
+        {% if user.is_active %}
+            <img src="/media/{{ user.profile.profile_picture }}" alt="Profile Picture"
+                 style="    width:100px;
+    height:100px;
+    border-radius: 50%;
+    object-fit: cover;"/>
+        {% endif %}
+        <div class="text">
+            <h2 class="cap">
+                <a class="username"
+                   href="{% url 'person:follow_unfollow_user' user.username ' ' %}">@{{ user.username }}</a>
+
+                {{ user.first_name }} {{ user.last_name }}
+
+            </h2>
+            <p>
+
+                {{ user_about.bio }}
+                {#             <div class="follow">#}
+                {#        <h6>Follows </h6>#}
+                {#        {% for f in profile.followers.all %}#}
+                {#            <a >@{{ f }}</a>#}
+                {#        {% endfor %}#}
+                {##}
+                {##}
+                {#        <h6>Followed by</h6>#}
+
+                {#    </div>#}
+
+            </p>
+
+        </div>
+        {# <button class="btn btn-dark" href="{% url 'person:post'%}">Post</button>#}
+        {#  <button class="btn btn-dark" href="{% url 'person:index' %}" >Upload Videos</button>#}
+
+    </div>
+
+    <ul class="nav nav-underline ">
+{#        <li class="nav-item">#}
+{#            <a class="nav-link active" aria-current="page" href="#">Home</a>#}
+{#        </li>#}
+        {#        <li class="nav-item">#}
+        {#            <a class="nav-link" href="#">Playlist</a>#}
+        {#        </li>#}
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'person:postsview' %}">
+                Post</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'person:myvids' %}">
+                Uploads</a>
+        </li>
+        {#        <li class="nav-item">#}
+        {#            <a class="nav-link active" aria-current="page" href="{% url 'person:podcast' %}">#}
+        {#                Podcasts</a>#}
+        {#        </li>#}
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'person:imagesview' %}">
+                Images</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'person:history' %}">
+                History</a>
+        </li>
+    <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'person:profile_blogs' %}">Blogs</a>
+        </li>
+    </ul>
+    <div class="content">
+
+        {% block posts %}
+        {% endblock %}
+    </div>
+
+    <footer><a href="{% url 'user:updateprofile' %}">profile settings</a>
+        <a href="{% url 'user:updateuser' user.pk %}">update profile</a>
+
+    </footer>
+{% endblock %}
+

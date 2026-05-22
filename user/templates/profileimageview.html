@@ -1,0 +1,39 @@
+{%  extends 'profile.html' %}
+{% block posts %}
+    <style>
+    .img-view{
+        border-radius: 10px;
+        width: 280px;
+        height: fit-content;
+
+    }
+    .content {
+            columns: 16rem;
+            width: 95%;
+        margin: 10px 15px;
+        {#display: table;#}
+        }
+
+    </style>
+      <div class="content img" id="image" >
+        {% for item in images_sorted %}
+                <div style="display: inline-block">
+                    <div class="img-view">
+                        <a href="{% url 'person:viewimage' user.id item.id ' ' %}">
+
+                            <img src="/media/{{ item.image }}" class="img-view">
+                        </a>
+                        <div>
+                            <h6 class="title">
+                                <strong>{{ item.title }}</strong>
+                                | {{ item.created_at.date }}
+                            </h6>
+
+                        </div>
+
+                    </div>
+                </div>
+
+        {% endfor %}
+    </div>
+{%  endblock %}

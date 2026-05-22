@@ -1,0 +1,107 @@
+{% extends 'profile.html' %}
+{% block posts %}
+    <style>
+    {# img{#}
+    {#        object-fit: scale-down !important;#}
+    {##}
+
+        .post-box {
+            box-shadow: 4px 7px 9px 2px #cfcbcb82;
+            border-radius: 10px;
+            max-height: 400px;
+            overflow: hidden;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .posts {
+            padding: 10px;
+            max-height: 270px;
+            overflow: hidden;
+        }
+
+        .card-text:last-child {
+            margin-bottom: 0;
+            box-shadow: -2px -1px 14px 0px #c4c4c47d;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: black;
+        }
+
+        .card-text {
+            background-color: #ffffff;
+
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 5px;
+            max-width: 280px;
+            min-width: 200px;
+            max-height: 300px;
+            overflow: hidden;
+            font-weight: 400;
+
+
+        {#.content {#}
+        {#    columns: 15rem;#}
+        {#    width: 98%;#}
+        {#    margin-top: 10px;#}
+        {#    display: table;#}
+        {##}
+        {##}
+
+        {#.timeline-content {#}
+        {#    display: block;#}
+        {#    flex-wrap: wrap;#}
+        {##}
+    </style>
+
+    {% for item in blogs %}
+
+        <div class="post-box">
+            {#            {{ item.content|safe }}#}
+
+
+            {#                        <div class=""#}
+            {#                             style="margin-bottom: 5px;box-shadow: 4px 7px 9px 2px #cfcbcb82;border-radius: 15px;padding: 10px;">#}
+            <div class="posts">
+                <div class="timeline-content ">
+                    <a href="{% url 'person:viewblogpost' item.id  ' ' %}">
+
+
+                        <strong style="text-transform: capitalize">{{ item.title }}</strong>
+                        <p> {{ item.content | safe }}</p>
+
+
+                    </a>
+
+                    <div class="card-title">
+
+                    </div>
+
+                </div>
+                {% if item.created_by.profile.profile_picture %}
+                    <img src="/media/{{ item.created_by.profile.profile_picture }}"
+                         style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                {% else %}
+                    <img src="/media/base/profile_pic_blank.png"
+                         style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                {% endif %}
+
+                <a href="#"
+                   style="font-weight: 500">
+                    {{ item.created_by.username }}</a>
+                <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+
+            </div>
+
+        </div>
+    {% endfor %}
+
+{% endblock %}

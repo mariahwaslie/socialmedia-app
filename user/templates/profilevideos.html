@@ -1,0 +1,121 @@
+{% extends 'profile.html' %}
+{% block posts %}
+{#    {% load static %}#}
+    <style>
+        .video {
+            {#min-height: 250px;#}
+            max-height: 500px;
+            max-width: 300px;
+            border-radius: 10px 10px;
+        }
+        .video-container{
+            width: fit-content;
+        }
+
+            h6 {
+                margin: 0 20px;
+                text-transform: capitalize;
+                display: flex;
+            }
+
+            .title {
+                margin: 0 10px;
+                display: flex;
+                text-transform: capitalize;
+                font-size: 12px;
+
+            }
+
+            .name {
+                font-size: 10px;
+                display: inline-block;
+                margin: 0 14px;
+                text-transform: capitalize;
+                text-decoration: none;
+                color: black;
+
+            }
+
+            p {
+                font-size: 10px;
+                display: flex;
+                margin: 0 16px;
+                padding: 0;
+            }
+
+            img {
+                width: 100px;
+                height: 100px;
+            }
+
+
+            .box {
+                columns: 17rem;
+
+            }
+            .content{
+                width: 100%;
+                margin: 10px 20px 0 25px;
+            }
+
+    </style>
+
+    <div class="box">
+        {% for video in videos %}
+
+            <div style="width: fit-content">
+            <div class="video-container">
+                <a href="{% url 'person:viewvideo' user.id video.id ' ' %}">
+                    <video class="video">
+                        <source src="/media/{{ video.video_file }}" type="video/mp4">
+                    </video>
+                </a>
+
+
+            </div>
+            <div>
+                <h5 class="title">{{ video.title }}</h5>
+                <p>
+                    {{ user.first_name }} {{ user.last_name }}
+                    | @{{ user.username }}
+                    | {{ video.created_at }}
+                </p>
+            </div>
+            </div>
+
+
+
+
+
+        {% endfor %}
+
+    </div>
+    <script>
+        const videos = document.querySelectorAll('.video');
+        videos.forEach(function (video) {
+            video.addEventListener('mouseenter', function () {
+
+                video.setAttribute('controls', true);
+                video.play();
+                video.muted = true;
+            });
+
+        });
+        videos.forEach(function (video) {
+
+
+            video.addEventListener('mouseleave', function () {
+                // Remove controls when the mouse leaves the video
+                video.removeAttribute('controls');
+                video.pause()
+            });
+        });
+
+        {#  const progressBar = document.querySelectorAll('.progress-bar');#}
+        {#video.addEventListener('timeupdate',function (){#}
+        {#    var percentage = (video.currentTime/ video.duration)*100;#}
+        {#    progressBar.style.width = percentage + '%';#}
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'profile.html' %}
+{% block posts %}
+    {% load static %}
+{#    <link rel="stylesheet" href="{%  static 'person/userpost.css' %}">#}
+    <style>
+    div .content{
+         margin: auto;
+        width: 94%
+    }
+    .timeline{
+
+         column-count: 4;
+        display: flex;
+ column-gap: 15px;
+    }
+    .timeline-content{
+        width: 100%;
+    }
+h3{
+    margin: 3px 15px;
+    text-transform: capitalize;
+    font-size: 12px;
+    text-overflow: clip;
+
+}
+h6{
+    font-weight:normal;
+    font-size: 12px;
+    display: none;
+}
+.date{
+    font-size:10px;
+    padding:0;
+    margin:0;
+    display: flex;
+}
+.timeline-item{
+    border-color: black;
+    border-width: thin;
+    max-width: 300px;
+    min-width: 200px;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 12px;
+    background-color: rgba(0, 0, 0, 0.05);
+    display:block;
+    width: 100%;
+}
+.post-pic{
+    height:15px;
+    width: 15px;
+}
+h3 a{
+    font-weight: normal;
+    text-transform: capitalize;
+}
+.card-text{
+    font-family: "Lora", serif;
+    font-weight: 400;
+}
+
+    </style>
+<div  class="timeline">
+    {% for item  in timeline_items  %}
+        <div>
+         <a href="{% url 'person:viewpost' user.id item.id ' ' %}" style="color: black;text-decoration: none">
+        <div class="timeline-item" >
+        <div class="timeline-content ">
+            <h6>{{ user.first_name }} {{ user.last_name }} <p>@{{ user.username }} {{ item.created_at}}</p></h6>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ item.description }}</h6>
+
+                 <p class="card-text">{{ item.content |safe}}</p>
+
+
+
+        </div>
+
+      </div>
+              </a>
+        <h3 class="card-title">
+
+{#                <img class="post-pic" src="/media/{{ user_about.profile_picture }}">#}
+            <a>{{ user.username }}</a>
+<br>
+          {{ item.title }}
+        </h3>
+        </div>
+{#        <p class="date">{{ item.created_at }}</p>#}
+
+
+
+    {% endfor %}
+</div>
+{% endblock %}

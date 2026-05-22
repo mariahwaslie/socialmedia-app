@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block basic_block %}
+	 {% load static  %}
+    <link rel="stylesheet" href="{% static 'person/update_profile.css' %}">
+	<form method="post" class="form-control" enctype="multipart/form-data">
+        {% csrf_token %}
+      {{ form.as_p }}
+    <button class='btn btn-dark' type="submit" >Update User</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,9 @@
+{{% extends 'base.html' %}
+
+{% block basic_block %}
+    <!-- templates/registration/logged_out.html -->
+
+    <h1>{{ message }}</h1>
+    <p><a href="{% url 'person:login' %}" >Log in again</a></p>
+
+{% endblock %}

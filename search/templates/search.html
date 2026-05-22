@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+{% block basic_block %}
+    {% load static %}
+    <style>
+        .content {
+            display: inline-block;
+        {#background-color: #80808054;#} border-radius: 10px;
+            padding: 10px;
+            max-width: 500px;
+        }
+
+        .title {
+            text-transform: capitalize;
+        }
+
+        h5 {
+            margin-left: 10px;
+        }
+
+        .content {
+            display: block;
+            padding: 10px;
+            overflow: hidden;
+
+        }
+
+        div.content, .content p {
+
+            max-height: 248px;
+
+        }
+
+        a {
+            margin: 2.5px;
+        }
+
+        .board {
+            width: 99%;
+            margin: auto;
+            columns: 17rem auto;
+        }
+
+        img {
+            max-width: 280px;
+            height: fit-content;
+            border-radius: 10px;
+        }
+
+        video {
+            max-width: 280px;
+            height: fit-content;
+        }
+
+    </style>
+    {% if query %}
+
+    {% endif %}
+    <div style="display:flex;margin: 0 10px;flex-wrap: wrap">
+        {% for category in categories %}
+            <form action="{% url 'person:search' %}" method="get" style="float:right">
+                <input type="text" class="form-control" id="search" name="search" value="{{ category }}"
+                       style="width: 0px;height: 0" hidden>
+                <button class="btn  btn-sm" type="submit"
+                        style="margin: 5px;border-radius:15px;padding:7px;background-color: #e0e0e2ad ">{{ category.name }}</button>
+            </form>
+        {% endfor %}
+    </div>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle btn-light" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                style="border-radius: 50px;margin: 10px">
+            <img src="/media/base/filter.png">
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><label class="dropdown-item" >Posts<input class="form-check-input mt-0" type="checkbox" value="Boards" data-tab-value="posts"
+                                                         aria-label="Boards" name="Boards" ></label>
+            </li>
+            <li><label class="dropdown-item" >Videos<input class="form-check-input mt-0" type="checkbox" value="Boards"
+                                                          aria-label="Boards" name="Boards" data-tab-value="videos"></label>
+            </li>
+            <li><label class="dropdown-item" >Images<input class="form-check-input mt-0" type="checkbox" value="Boards"
+                                                          aria-label="Boards" name="Boards" data-tab-value="images"></label>
+            </li>
+            <li><label class="dropdown-item" >Accounts<input class="form-check-input mt-0" type="checkbox" value="Boards"
+                                                            aria-label="Boards" name="Boards" data-tab-value="accounts"></label>
+            </li>
+            <li><label class="dropdown-item" >Boards<input class="form-check-input mt-0" type="checkbox" value="Boards"
+                                                          aria-label="Boards" name="Boards" data-tab-value="boards"></label>
+            </li>
+
+
+        </ul>
+    </div>
+
+
+    <div class="board">
+        {% block searches %}
+
+        {% endblock %}
+        {% if results %}
+
+
+            {% for result in results %}
+
+                {% if result.content %}
+                    {% if results.user%}
+                        <a href="{% url 'person:viewpost' result.user.id result.id ' ' %}"
+                       style="text-decoration: none;color: black ">
+
+                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px" class="posts">
+                            <div class="content">
+                                <strong class="title">{{ result.title }}</strong>
+                                <p>{{ result.content|safe }}</p>
+                            </div>
+                        </div>
+                    </a>
+                        {%  elif result.created_by %}
+                        <a href="{% url 'person:viewblogpost' result.id ' ' %}"
+                       style="text-decoration: none;color: black ">
+
+                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px" class="posts">
+                            <div class="content">
+                                <strong class="title">{{ result.title }}</strong>
+                                <p>{{ result.content|safe }}</p>
+                            </div>
+                        </div>
+                    </a>
+
+
+
+                    {% endif %}
+
+                {% elif result.video_file %}
+                    <div class="contents videos">
+                        <div class="inner">
+
+                            <a href="{% url 'person:viewvideo' result.user.id result.id ' ' %}">
+
+                                <video controls style="max-width: 320px;border-radius: 10px;">
+                                    <source src="/media/{{ result.video_file }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+
+                            </a>
+
+                        </div>
+                    </div>
+
+                {% elif result.image %}
+                    {% if result.privacy == 'public' %}
+                        <div style="display: inline-block" class="images">
+                            <div class="img">
+                                <a href="{% url 'person:viewimage' result.user.id result.id ' ' %}">
+
+
+                                    <img src="/media/{{ result.image }}">
+                                </a>
+                                <div>
+                                    <h6 class="title">
+                                        <strong>{{ result.title }}</strong>
+                                        | {{ result.created_at.date }}
+                                    </h6>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endif %}
+
+
+            {% endfor %}
+
+            {% for user in users %}
+                {% if user.profile %}
+                    <div>
+                        <div style="display:
+                                flex;
+                                margin: 30px 10px;
+                                {#box-shadow: -8px -5px 11px 0px #dadada;#}
+                                border-radius: 10px;
+                                padding:5px;">
+                            <a href="{% url 'person:follow_unfollow_user'  user.username ' ' %}"
+
+
+                               style="color: black;text-decoration: none">
+                                {% if user.profile.profile_picture %}
+                                    <img src="/media/{{ user.profile.profile_picture }}"
+                                         style="width:50px;height: 50px;object-fit: cover">
+
+
+                                {% endif %}
+                            </a>
+                            <div>
+                                <a href="{% url 'person:follow_unfollow_user'  user.username ' ' %}"
+                                   style="color: black;text-decoration: none;padding:0;margin: 0;">
+
+                                    <h5>{{ user.username }}</h5>
+                                </a>
+
+
+                                <p style="margin: 0 0 8px 10px">{{ user.first_name }} {{ user.last_name }}
+                                    {% if user.profile.followers %}
+                                        <strong>{{ user.profile.followers.count }}</strong> followers
+
+                                    {% endif %}
+                                </p>
+
+
+                            </div>
+                            {#                    {% if user.profile.bio %}#}
+                            {#                        <p>{{ profile.bio }}</p>#}
+                            {#                    {% endif %}#}
+                        </div>
+                    </div>
+
+
+                {% endif %}
+
+            {% endfor %}
+
+            </div>
+
+        {% endif %}
+    <script>
+        const tabs = document.querySelectorAll('[data-tab-value]');
+
+
+        tabs.forEach(function (tab) {
+
+            {#for (const t  in  tabslink) {#}
+            {#    const classes = t.getAttribute('data-tab-value');#}
+            {#    console.log(classes);#}
+
+            tab.addEventListener('change', () => {
+
+                const classname = tab.getAttribute('data-tab-value');
+                const show = document.getElementById(classname);
+
+                for (var i = 0; i < tabs.length; i++) {
+                    const item = tabs[i].getAttribute('data-tab-value');
+                    const a = document.getElementsByClassName(item);
+                    if (a !== show) {
+                        a.hidden = true;
+                        console.log(a)
+                    } else {
+                        a.hidden = false;
+                    }
+                }
+
+
+            })
+        })
+    </script>
+
+{% endblock %}
