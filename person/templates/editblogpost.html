@@ -1,10 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+    {% if request.user == blog.created_by %}
+
+
+        <h1>Edit Post</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <a class="btn btn-secondary">Cancel</a>
+        </form>
+    <a href="{% url 'person:deleteblogpost'  blog.id %}"> Delete Post</a>
+
+
+    {% endif %}
+
+     <script>
+  tinymce.init({
+      selector: 'textarea',
+      height:500,
+      width:700,
+      plugins: [
+     'preview',
+    'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+    'insertdatetime', 'wordcount'
+        ] ,
+    toolbar: 'undo redo | blocks | ' +
+      'bold italic backcolor | alignleft aligncenter | bullist numlist ',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      file_picker_types: 'image media',
+      image_advtab: true,
+      {#ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),#}
+      content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }"
+  });
+
+</script>
+{#    <script src="{% static 'js/uploader.js' %}"></script>#}
+{% endblock %}

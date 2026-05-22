@@ -1,9 +1,15 @@
-{{% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block basic_block %}
     <!-- templates/registration/logged_out.html -->
+    <div style="margin: 40px">
+    
+     <h1>{{ message }}</h1>
+    <p><a href="{% url 'user:login' %}" >Log in again</a></p>
+    
+    
+    </div>
 
-    <h1>{{ message }}</h1>
-    <p><a href="{% url 'person:login' %}" >Log in again</a></p>
+   
 
 {% endblock %}

@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+    <!-- bible/templates/bible/verse.html -->
+    <!-- bible/templates/bible/bibles.html -->
+    {#    <h1 style="margin: 10px;"> books</h1>#}
+
+    {#{{ book_chapters }}#}
+    <a href="{% url 'bibleconnect:list_bibles' %}" style="
+            color: #5c5c5c;
+            text-decoration: none;
+            font-family: fangsong;
+            padding: 20px;
+        ">< versions</a>
+ <div class="accordion" id="{{ book.name }}">
+    {% for book in list_books %}
+
+
+            <div class="accordion-item" >
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse"
+                            data-bs-target="#{{ book.name }}"
+                            aria-expanded="false" aria-controls="{{ book.name }}"
+                            style="background-color: white; color: black;">
+                        {{ book.name }}
+                    </button>
+                </h2>
+                <div id="{{ book.name }}" class="accordion-collapse collapse " data-bs-parent="#{{ book.name }}">
+                    <div class="accordion-body">
+                        {% for chapter in book.chapter_book.all %}
+                            <a href="{% url 'bibleconnect:read_chapter' book.bibleversion.versionid  chapter.book.name chapter.number %}"
+                               class="btn btn-light" style="margin: 5px;padding:15px">
+                                {{ chapter.number }}</a>
+                              {% endfor %}
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+  </div>
+
+
+    {#        <h5>{{ bible.name }} ({{ bible.abbreviation }}) </h5>#}
+    {#        <h3>{{ bibles.name }}</h3>#}
+
+
+{% endblock %}

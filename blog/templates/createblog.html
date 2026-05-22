@@ -1,10 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{%  extends 'base.html' %}
+{%  block basic_block %}
+{% load static %}
+    {% block head_block %}
+{#        <script src="[ link to jquery.js goes here ]"></script>#}
+        {%  endblock %}
+<style>
+div{
+    margin: 15px 2%;
+}
+label[for='id_content']{
+    display: none;
+}
+label{
+    margin: 0 2%;
+    font-weight: bold;
+    font-size: large;
+}
+</style>
+     <h1>Create Blog Post</h1><br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-dark">Save</button>
+
+    </form>
+
+<!-- Include TinyMCE -->
+{#    <script src="{% static "js/tiny_mce/tiny_mce.js" %}"></script>#}
+{#    <input id="file-input" type="file" style="display: none;" onchange="uploadFile(this)" />#}
+{#<input id="media-input" type="file" style="display: none;" onchange="uploadMedia(this)" />#}
+<script>
+  {#tinymce.init({#}
+  {#      selector: 'textarea',  // Adjust this selector according to your HTML#}
+  {#      plugins: 'image media link',#}
+  {#      toolbar: 'undo redo | link image media | code',#}
+  {#      automatic_uploads: true,#}
+  {#      images_upload_url: '/upload/',  // URL for handling image uploads#}
+  {#      file_picker_types: 'image media',#}
+  {#      file_picker_callback: function (callback, value, meta) {#}
+  {#          if (meta.filetype === 'image') {#}
+  {#              document.getElementById('file-input').click();#}
+  {#          } else if (meta.filetype === 'media') {#}
+  {#              document.getElementById('media-input').click();#}
+  {#          }#}
+  {#      }#}
+  {#  });#}
+
+</script>
+
+    <script>
+  tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist anchor autolink charmap codesample emoticons image link lists image media preview searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown visualblocks code fullscreen insertdatetime media table paste code',
+      toolbar: 'undo redo | formatselect | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | paste',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      {#images_upload_url: '/media/upload/',#}
+      file_picker_types: 'image media',
+       image_title: true,
+      image_caption: true,
+      automatic_uploads: true,
+      image_advtab: true,
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+      file_picker_callback: function (cb, value, meta) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "file");
+        if (meta.filetype == "image") {
+            input.setAttribute("accept", "image/*");}
+        if (meta.filetype == "media") {
+        input.setAttribute("accept", "video/*");}
+
+        input.onchange = function () {
+            var file = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function () {
+                var id = "blobid" + (new Date()).getTime();
+                var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                var base64 = reader.result.split(",")[1];
+                var blobInfo = blobCache.create(id, file, base64);
+                blobCache.add(blobInfo);
+               cb(blobInfo.blobUri(), { title: file.name });
+             };
+             reader.readAsDataURL(file);
+         };
+         input.click();
+      },
+      content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }"
+  });
+   {#function uploadFile(input) {#}
+   {#     var file = input.files[0];#}
+   {#     var formData = new FormData();#}
+   {#     formData.append('file', file);#}
+   {##}
+   {#     fetch('/upload/', {#}
+   {#         method: 'POST',#}
+   {#         body: formData,#}
+   {#         headers: {#}
+   {#             'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is included#}
+   {#         }#}
+   {#     }).then(response => response.json()).then(data => {#}
+   {#         tinymce.activeEditor.insertContent('<img src="' + data.location + '" />');#}
+   {#     });#}
+   {# }#}
+   {##}
+   {# function uploadMedia(input) {#}
+   {#     var file = input.files[0];#}
+   {#     var formData = new FormData();#}
+   {#     formData.append('file', file);#}
+   {##}
+   {#     fetch('/upload/', {#}
+   {#         method: 'POST',#}
+   {#         body: formData,#}
+   {#         headers: {#}
+   {#             'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is included#}
+   {#         }#}
+   {#     }).then(response => response.json()).then(data => {#}
+   {#         tinymce.activeEditor.insertContent('<video controls><source src="' + data.location + '" type="video/mp4"></video>');#}
+   {#     });#}
+   {# }#}
+
+</script>
+    <script src="{% static 'js/uploader.js' %}"></script>
+{#    <script>#}
+{#    tinymce.init({#}
+{#        selector: 'textarea',#}
+{#        plugins: 'image media link lists',#}
+{#        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | image media',#}
+{#        automatic_uploads: true,#}
+{#        images_upload_url: '/media/upload/',#}
+{#        file_picker_types: 'image media',#}
+{#        file_picker_callback: function(callback, value, meta) {#}
+{#            var input = document.createElement('input');#}
+{#            input.setAttribute('type', 'file');#}
+{#            input.setAttribute('accept', meta.filetype === 'image' ? 'image/*' : 'video/*,audio/*');#}
+{#            input.addEventListener('change', function() {#}
+{#                var file = this.files[0];#}
+{#                var formData = new FormData();#}
+{#                formData.append('file', file);#}
+{##}
+{#                var xhr = new XMLHttpRequest();#}
+{#                xhr.open('POST', '/media/upload/', true);#}
+{#                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');#}
+{#                xhr.onload = function() {#}
+{#                    if (xhr.status === 200) {#}
+{#                        var json = JSON.parse(xhr.responseText);#}
+{#                        if (json.url) {#}
+{#                            callback(json.url);  // Provide the URL to the file#}
+{#                        } else {#}
+{#                            console.error('Invalid JSON response:', xhr.responseText);#}
+{#                        }#}
+{#                    } else {#}
+{#                        console.error('File upload failed with status:', xhr.status);#}
+{#                    }#}
+{#                };#}
+{#                xhr.send(formData);#}
+{#            });#}
+{#            input.click();#}
+{#        }#}
+{#    });#}
+{#</script>#}
+
+
+
+{%  endblock %}
+

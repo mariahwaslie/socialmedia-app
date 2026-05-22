@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+<style>
+    div.church {
+        margin: 60px !important;
+    }
+
+</style>
+{% block basic_block %}
+    <h2>Review Group Creation Requests</h2>
+    <ul>
+        {% for request in pending_requests %}
+            <li>
+                {{ request.group_name }} by {{ request.user.username }} on {{ request.created_at }}
+                <a href="{% url 'faith:approve_group_request' request.id %}">Approve</a>
+                <a href="{% url 'faith:deny_group_request' request.id %}">Deny</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="church" style="margin: 20px">
+        <h2>Review Church Creation Request</h2>
+
+        {% for request in pending_church_request %}
+
+            <p><strong>Church:</strong> {{ request.group_name }}</p>
+            <p><strong>User: </strong>{{ request.user }}</p>
+            <h5><strong>Information about the church:</strong></h5>
+            <p>{{ request.description }}</p>
+            <a href="#">
+                Approve
+            </a>
+            <a href="#">Deny</a>
+        {% endfor %}
+    </div>
+
+{% endblock %}

@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{%  extends 'base.html' %}
+{% block head_block %}
+    {% load static %}
+{#	<link rel="stylesheet" href="{% static 'person/login.css' %}">#}
+    <title>login</title>
+{% endblock %}
+{% block basic_block %}
+    <style>
+    .login-page{
+        margin: 8% auto;
+        width: fit-content;
+        height: fit-content;
+    }
+    .login-form{
+        padding: 30px 40px;
+    }
+    </style>
+    
+	<div class="login-page">
+      <!-- Display messages -->
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+ 
+    <form class="login-form form-control" method="post" action="{% url 'user:login' %}" enctype="multipart/form-data">
+                 {% csrf_token %}
+{#                {% form.as_p %}#}
 
-</body>
-</html>
+      <input type="text" name="username" placeholder="username"/>
+      <input type="password" name="password"  placeholder="password"/>
+      <button type="submit" value="login" class="btn btn-dark">login</button>
+      <p class="message">Not registered? <a href="{% url 'user:signup' %}">Create an account</a></p>
+    </form>
+  </div>
+</div>
+    <script>
+        $('.message a').click(function(){
+   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+});
+    </script>
+{% endblock %}

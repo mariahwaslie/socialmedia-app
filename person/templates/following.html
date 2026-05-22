@@ -1,10 +1,1101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+    <style>
+        div#all {
+            display: flow;
+        }
+
+        ul.nav li {
+            list-style: none;
+        }
+
+        .nav li a, .nav-link {
+            text-decoration: none;
+            color: black;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover, a:focus {
+            text-decoration: none;
+            color: black;
+        }
+
+        a {
+            text-decoration: none;
+        {#color: black;#}
+        }
+
+        a:hover, li a:hover, li.nav-item:active, ul li.nav-item a.nav-link:hover, ul li.nav-item a.nav-link:focus, ul li.nav-item a.nav-link:focus-visible {
+            text-decoration: none;
+            border-style: none;
+        }
+
+        nav-link:focus {
+            color: white;
+            background-color: black;
+            border-radius: 10px;
+        }
+
+        .nav {
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        {#.nav-link:hover {#}
+        {#    color: black;#}
+        {#    background-color: #eeeeee;#}
+        {#    border-radius: 10px;#}
+        {##}
+        {##}
+
+        /* Inline #14 | http://127.0.0.1:8000/profile/following/# */
+
+        .nav-link:hover, .nav-link:focus, .nav-link:active {
+            /* background-color: #eeeeee; */
+            background-color: #000;
+            color: white !important;
+            font-family: 'Poppins', 'sans-serif';
+        }
+
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 0;
+            list-style: none;
+            margin: 0 10px;
+        }
+
+        .nav li a, .nav-link {
+            text-decoration: none;
+            color: black;
+            border-radius: 10px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-family: 'Poppins', 'sans-serif';
+            margin: 2px;
+        }
+
+        div#all {
+            margin: 10px auto;
+        {#max-width: 900px;#}
+
+
+        }
+
+        video.video {
+            background-color: black;
+            max-height: 800px;
+            max-width: 340px;
+            border-radius: 22px;
+
+
+        }
+
+        .content {
+        {#display: flex;#}{#width: 50%;#}{#margin: auto;#}{#flex-direction: column;#}
+        }
+
+        div.content {
+            width: 97%;
+            columns: 22rem;
+        {#margin: auto;#} height: fit-content;
+
+        }
+
+        .video-container, .post-container {
+
+            height: fit-content;
+        {#box-shadow: -3px 3px 4px 3px #95929296;#} border-radius: 10px;
+
+            flex-wrap: wrap;
+            margin: 2% auto;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: normal;
+            max-width: fit-content;
+        }
+
+
+        div a .card-text, div a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .post-container {
+            margin: 3%;
+            max-width: 97%;
+        }
+
+        .posts {
+            padding: 10px;
+            max-height: 400px;
+            overflow: hidden;
+        }
+
+        h6 .comment-title {
+            margin: auto;
+        }
+
+        .vid-comments {
+            padding: 5px 10px;
+            width: 250px;
+
+        }
+
+        .item {
+            width: fit-content;
+            margin: 5px 10px;
+        }
+
+        .vid-comments input {
+            border-radius: 10px;
+            border-width: 1px;
+            border-color: rgba(231, 231, 231, 0.44);
+            width: 100%;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        div img {
+            object-fit: scale-down;
+            max-height: fit-content;
+            width: 350px;
+            border-radius: 15px;
+            margin: 10px 0;
+
+        }
+
+        a:hover {
+            color: black;
+        }
+
+
+        {#div {#}
+        {#    width: 500px;#}
+        {#    max-height: fit-content;#}
+        {#    margin: 0;#}
+        {##}
+
+        .post-box {
+        {#box-shadow: 4px 7px 9px 2px #cfcbcb82;#} border-radius: 10px;
+            max-height: 400px;
+            overflow: hidden;
+        {#padding: 10px;#} margin: 10px 0;
+
+        }
+
+        .vid-box {
+        {#box-shadow: 4px 7px 9px 2px #cfcbcb82; border-radius: 10px;#}{##}{#    overflow: hidden;#}{#    padding: 10px 0 0 0;#}{#    margin: 10px;#}
+        }
+
+        .image-box {
+            border-radius: 22px;
+            max-height: 650px;
+            overflow: hidden;
+            padding: 0 0 10px 0;
+            margin: 10px;
+        }
+
+        img:hover {
+            border-radius: 0;
+        }
+
+        #vids {
+            margin: 10px 0;
+        }
+
+        .nav a.nav-link {
+            border: none;
+            color: black;
+            padding: 10px;
+        }
+
+        li.nav-item {
+            padding: 10px 0;
+            border-style: none;
+        }
+
+        .item {
+            display: none;
+        }
+
+        .item.visible {
+            display: initial;
+        }
+
+        @media (min-width: 1576px ) {
+            div.content {
+                width: 97%;
+                columns: 20rem;
+                height: fit-content;
+            }
+
+        }
+
+        @media (min-width: 1516px ) {
+            div.content {
+                width: 97%;
+                columns: 15rem;
+                height: fit-content;
+            }
+
+            .item {
+                max-width: 262px;
+                margin: auto;
+            }
+
+            div img {
+                max-width: 238px;
+                width: auto;
+            }
+
+            video.video {
+                background-color: black;
+                max-height: 800px;
+                max-width: 100%;
+                border-radius: 22px;
+            }
+        }
+
+        {#@media (max-width: 1528px ) {#}
+        {#    div.content {#}
+        {#        width: 97%;#}
+        {#        columns: 13rem;#}
+        {#        height: fit-content;#}
+        {#    }#}
+        {##}
+        {##}
+        {##}
+        {##}
+        @media (width <= 1640) and (width > 1498) {
+
+            div.content {
+                width: 97%;
+                columns: 19rem;
+                height: fit-content;
+            }
+
+            .item {
+                max-width: 355px;
+                margin: auto;
+            }
+
+            div img {
+                max-width: 323px;
+            }
+
+            video.video {
+                background-color: black;
+                max-height: 800px;
+                max-width: 100%;
+                border-radius: 22px;
+            }
+        }
+
+        @media (min-width: 1498px ) {
+
+            div.content {
+                width: 97%;
+                columns: 19rem;
+                height: fit-content;
+            }
+
+            .item {
+                max-width: 355px;
+                margin: auto;
+            }
+
+            div img {
+                width: auto;
+                max-width: 309px;
+            }
+
+
+            video.video {
+                background-color: black;
+                max-height: 800px;
+                max-width: 100%;
+                border-radius: 22px;
+            }
+
+        }
+
+        @media (min-width: 1167px ) and (max-width: 1498px ) {
+
+            div.content {
+                width: 97%;
+                columns: 16rem;
+                height: fit-content;
+            }
+
+            .item {
+                max-width: 321px;
+                margin: auto;
+            }
+
+            div img {
+                width: auto;
+                max-width: 243px;
+            }
+
+
+            video.video {
+                background-color: black;
+                max-height: 800px;
+                max-width: 100%;
+                border-radius: 22px;
+            }
+
+            .image-box {
+
+            }
+        }
+
+        @media (max-width: 1167px ) and (min-width: 900px ) {
+
+            div.content {
+                width: 98%;
+                columns: 16rem;
+                height: fit-content;
+            }
+
+            .item {
+                max-width: 321px;
+                margin: auto;
+            }
+
+            div img {
+                width: auto;
+                max-width: 232px;
+            }
+
+
+            video.video {
+                background-color: black;
+                max-height: 800px;
+                max-width: 100%;
+                border-radius: 22px;
+            }
+
+            .image-box {
+                margin: auto 16px;
+
+            }
+        }
+
+        .item.post.visible {
+            display: flow;
+        }
+
+        @media (min-width: 700px ) and (max-width: 900px) {
+
+            div.content {
+                width: 98%;
+                columns: 16rem;
+                height: fit-content;
+            }
+
+            .item {
+                max-width: 321px;
+                margin: auto;
+            }
+
+            div img {
+                width: auto;
+                max-width: 100%;
+            }
+
+
+            video.video {
+                background-color: black;
+                max-height: 800px;
+                max-width: 100%;
+                border-radius: 22px;
+            }
+
+            .image-box {
+                margin: auto 16px;
+                max-width: 256px;
+            }
+        }
+
+        .vid-box {
+            display: grid;
+        }
+
+        @media (max-width: 700px ) {
+
+            div.content {
+                width: 98%;
+                columns: 15rem;
+                height: fit-content;
+            }
+
+            .item {
+                max-width: 471px;
+                margin: auto;
+            }
+
+            div img {
+                width: auto;
+                max-width: 100%;
+                object-fit: scale-down;
+            }
+
+
+            video.video {
+                background-color: black;
+                max-height: 800px;
+                max-width: 100%;
+                border-radius: 22px;
+            }
+
+            .image-box {
+                margin: auto 16px;
+                max-width: 381px;
+            }
+        }
+
+
+    </style>
+
+
+    <ul class="nav nav-underline">
+        <li class="nav-item" data-tab-value="all">
+            <a class="nav-link" aria-current="page" href="#">All</a>
+        </li>
+        {% if posts %}
+            <li class="nav-item" data-tab-value="post">
+                <a class="nav-link" href="#">Prayers</a>
+            </li>
+        {% endif %}
+        {% if videos %}
+            <li class="nav-item" data-tab-value="vids">
+                <a class="nav-link " href="#">Videos</a>
+            </li>
+        {% endif %}
+
+        {% if images %}
+            <li class="nav-item" data-tab-value="image">
+                <a class="nav-link" href="#">
+                    Images
+                </a>
+            </li>
+        {% endif %}
+        {% if blog_posts %}
+            <li class="nav-item" data-tab-value="blog">
+                <a class="nav-link" href="#">
+                    Blogs
+                </a>
+            </li>
+        {% endif %}
+
+    </ul>
+    {#    tab content #}
+    <div style="align-items:center;display:flex;flex-direction: row;" class="content">
+        <div class="content all" id="all" data-tab>
+            {% for item in all|dictsortreversed:"created_at" %}
+                {% if item.privacy %}
+                    {% if item.privacy == 'public' or item.user == request.user or item.created_by == request.user %}
+                        {% if item in videos %}
+                            <div class="item vids">
+                                <div class="vid-box">
+
+                                    <div class="video-container">
+
+                                        <a href="{% url 'person:viewvideo' item.user.id item.id ' ' %}">
+                                            <video controls class="video">
+                                                <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                            </video>
+                                        </a>
+
+
+                                        {#                                <div class="vid-comments">#}
+                                        {#                                    <h6 class="comment-title">Comments</h6>#}
+                                        {#                                    {% for i in video_comments %}#}
+                                        {#                                        {% if item.id == i.video.id %}#}
+                                        {##}
+                                        {#                                            <p><a><img src="/media/{{ i.user.profile.profile_picture }}"#}
+                                        {#                                                       style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover"></a>#}
+                                        {#                                                <a>{{ i.user.username }}</a> {{ i.body }}</p>#}
+                                        {##}
+                                        {#                                        {% endif %}#}
+                                        {##}
+                                        {#                                    {% endfor %}#}
+                                        {#                                    <input placeholder="enter comment ">#}
+                                        {##}
+                                        {##}
+                                        {#                                </div>#}
+
+                                    </div>
+                                    <div>
+                                        {% if item.user.profile.profile_picture %}
+                                            <img src="/media/{{ item.user.profile.profile_picture }}"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                        {% else %}
+                                            <img src="/media/base/profile_pic_blank.png"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                        {% endif %}
+
+                                        <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                           style="font-weight: 500">
+                                            {{ item.user.username }}</a>
+                                        <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+                                        {#                            <h5 style="text-transform: capitalize;margin-left: 10px">{{ item.title }}</h5>#}
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        {% elif item in posts %}
+                            <div class="item post">
+                                {#                        <div class="post-box">#}
+                                <div class="posts post-box" style=" box-shadow: 4px 7px 9px 2px #cfcbcb82;">
+                                    <div class="posts"
+                                         style="margin-bottom: 5px;padding: 5px;">
+                                        {#                                <div class="posts">#}
+                                        <div class="timeline-content ">
+                                            {#                                        <a href="{% url 'person:viewpost' item.user.id item.id ' '%}" ">#}
+
+
+                                            <strong style="text-transform: capitalize">{{ item.title }}</strong>
+                                            <p> {{ item.content |safe }}</p>
+
+
+                                            {#                                        </a>#}
+
+                                            <div class="card-title">
+
+                                            </div>
+
+                                        </div>
+                                        {#                                </div>#}
+                                    </div>
+
+                                </div>
+                                {% if item.user.profile.profile_picture %}
+                                    <img src="/media/{{ item.user.profile.profile_picture }}"
+                                         style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                {% else %}
+                                    <img src="/media/base/profile_pic_blank.png"
+                                         style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                {% endif %}
+                                <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                   style="font-weight: 500">
+                                    {{ item.user.username }}</a>
+                                <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+
+                            </div>
+                        {% elif item in images %}
+                            <div class=" item image">
+
+                                <div class="image-box">
+
+
+                                    <a href="{% url 'person:viewimage' item.user.id item.id ' ' %}">
+
+
+                                        <img src="/media/{{ item.image }}">
+                                    </a>
+                                    <div>
+                                        {% if item.user.profile.profile_picture %}
+                                            <img src="/media/{{ item.user.profile.profile_picture }}"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                        {% else %}
+                                            <img src="/media/base/profile_pic_blank.png"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                        {% endif %}
+                                        <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                           style="font-weight: 500">
+                                            {{ item.user.username }}</a>
+                                        <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        {% else %}
+                            <div class=" item blog">
+                                <div class="post-box">
+
+                                    <div class=""
+                                         style="margin-bottom: 5px;box-shadow: 4px 7px 9px 2px #cfcbcb82;border-radius: 15px;padding: 10px;">
+                                        <div class="posts">
+                                            <div class="timeline-content ">
+                                                <a href="{% url 'person:viewblogpost' item.pk  ' ' %}">
+
+
+                                                    {#                                            <strong style="text-transform: capitalize">{{ item.title }}</strong>#}
+                                                    <p> {{ item.content | safe }}</p>
+
+
+                                                </a>
+
+
+                                            </div>
+
+                                        </div>
+                                        <div class="card-title">
+
+                                        </div>
+
+                                    </div>
+                                    {% if item.created_by.profile.profile_picture %}
+                                        <img src="/media/{{ item.created_by.profile.profile_picture }}"
+                                             style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 5px 0 0 10.5px; ">
+                                    {% else %}
+                                        <img src="/media/base/profile_pic_blank.png"
+                                             style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                    {% endif %}
+
+                                    <a href="{% url 'person:follow_unfollow_user'  item.created_by.username ' ' %}"
+                                       style="font-weight: 500">
+                                        {{ item.created_by.username }}</a>
+                                    <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% elif item.privacy == 'followers' and request.user in item.user.profile.followers.all %}
+                        {% if item in videos %}
+                            <div class="item vids">
+                                <div class="vid-box">
+
+                                    <div class="video-container">
+
+                                        <a href="{% url 'person:viewvideo' item.user.id item.id ' ' %}">
+                                            <video controls class="video">
+                                                <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                            </video>
+                                        </a>
+
+
+                                        {#                                <div class="vid-comments">#}
+                                        {#                                    <h6 class="comment-title">Comments</h6>#}
+                                        {#                                    {% for i in video_comments %}#}
+                                        {#                                        {% if item.id == i.video.id %}#}
+                                        {##}
+                                        {#                                            <p><a><img src="/media/{{ i.user.profile.profile_picture }}"#}
+                                        {#                                                       style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover"></a>#}
+                                        {#                                                <a>{{ i.user.username }}</a> {{ i.body }}</p>#}
+                                        {##}
+                                        {#                                        {% endif %}#}
+                                        {##}
+                                        {#                                    {% endfor %}#}
+                                        {#                                    <input placeholder="enter comment ">#}
+                                        {##}
+                                        {##}
+                                        {#                                </div>#}
+
+                                    </div>
+                                    <div>
+                                        {% if item.user.profile.profile_picture %}
+                                            <img src="/media/{{ item.user.profile.profile_picture }}"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                        {% else %}
+                                            <img src="/media/base/profile_pic_blank.png"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                        {% endif %}
+
+                                        <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                           style="font-weight: 500">
+                                            {{ item.user.username }}</a>
+                                        <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+                                        {#                            <h5 style="text-transform: capitalize;margin-left: 10px">{{ item.title }}</h5>#}
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        {% elif item in posts %}
+                            <div class="item post">
+                                {#                        <div class="post-box">#}
+                                <div class="posts post-box" style=" box-shadow: 4px 7px 9px 2px #cfcbcb82;">
+                                    <div class="posts"
+                                         style="margin-bottom: 5px;padding: 10px;">
+                                        {#                                <div class="posts">#}
+                                        <div class="timeline-content ">
+                                            {#                                        <a href="{% url 'person:viewpost' item.user.id item.id ' '%}" ">#}
+
+
+                                            <strong style="text-transform: capitalize">{{ item.title }}</strong>
+                                            <p> {{ item.content |safe }}</p>
+
+
+                                            {#                                        </a>#}
+
+                                            <div class="card-title">
+
+                                            </div>
+
+                                        </div>
+                                        {#                                </div>#}
+                                    </div>
+
+                                </div>
+                                {% if item.user.profile.profile_picture %}
+                                    <img src="/media/{{ item.user.profile.profile_picture }}"
+                                         style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                {% else %}
+                                    <img src="/media/base/profile_pic_blank.png"
+                                         style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                {% endif %}
+                                <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                   style="font-weight: 500">
+                                    {{ item.user.username }}</a>
+                                <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+
+                            </div>
+                        {% elif item in images %}
+                            <div class=" item image">
+
+                                <div class="image-box">
+
+
+                                    <a href="{% url 'person:viewimage' item.user.id item.id ' ' %}">
+
+
+                                        <img src="/media/{{ item.image }}">
+                                    </a>
+                                    <div>
+                                        {% if item.user.profile.profile_picture %}
+                                            <img src="/media/{{ item.user.profile.profile_picture }}"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                        {% else %}
+                                            <img src="/media/base/profile_pic_blank.png"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                        {% endif %}
+                                        <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                           style="font-weight: 500">
+                                            {{ item.user.username }}</a>
+                                        <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        {% else %}
+                            <div class=" item blog">
+                                <div class="post-box">
+
+                                    <div class=""
+                                         style="margin-bottom: 5px;box-shadow: 4px 7px 9px 2px #cfcbcb82;border-radius: 15px;padding: 10px;">
+                                        <div class="posts">
+                                            <div class="timeline-content ">
+                                                <a href="{% url 'person:viewblogpost' item.pk  ' ' %}">
+
+
+                                                    {#                                            <strong style="text-transform: capitalize">{{ item.title }}</strong>#}
+                                                    <p> {{ item.content | safe }}</p>
+
+
+                                                </a>
+
+
+                                            </div>
+
+                                        </div>
+                                        <div class="card-title">
+
+                                        </div>
+
+                                    </div>
+                                    {% if item.created_by.profile.profile_picture %}
+                                        <img src="/media/{{ item.created_by.profile.profile_picture }}"
+                                             style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 5px 0 0 10.5px; ">
+                                    {% else %}
+                                        <img src="/media/base/profile_pic_blank.png"
+                                             style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                    {% endif %}
+
+                                    <a href="{% url 'person:follow_unfollow_user'  item.created_by.username ' ' %}"
+                                       style="font-weight: 500">
+                                        {{ item.created_by.username }}</a>
+                                    <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% elif item.privacy == 'followers' and request.user in item.created_by.profile.followers.all %}
+                        {% if item in videos %}
+                            <div class="item vids">
+                                <div class="vid-box">
+
+                                    <div class="video-container">
+
+                                        <a href="{% url 'person:viewvideo' item.user.id item.id ' ' %}">
+                                            <video controls class="video">
+                                                <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                            </video>
+                                        </a>
+
+
+                                        {#                                <div class="vid-comments">#}
+                                        {#                                    <h6 class="comment-title">Comments</h6>#}
+                                        {#                                    {% for i in video_comments %}#}
+                                        {#                                        {% if item.id == i.video.id %}#}
+                                        {##}
+                                        {#                                            <p><a><img src="/media/{{ i.user.profile.profile_picture }}"#}
+                                        {#                                                       style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover"></a>#}
+                                        {#                                                <a>{{ i.user.username }}</a> {{ i.body }}</p>#}
+                                        {##}
+                                        {#                                        {% endif %}#}
+                                        {##}
+                                        {#                                    {% endfor %}#}
+                                        {#                                    <input placeholder="enter comment ">#}
+                                        {##}
+                                        {##}
+                                        {#                                </div>#}
+
+                                    </div>
+                                    <div>
+                                        {% if item.user.profile.profile_picture %}
+                                            <img src="/media/{{ item.user.profile.profile_picture }}"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                        {% else %}
+                                            <img src="/media/base/profile_pic_blank.png"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                        {% endif %}
+
+                                        <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                           style="font-weight: 500">
+                                            {{ item.user.username }}</a>
+                                        <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+                                        {#                            <h5 style="text-transform: capitalize;margin-left: 10px">{{ item.title }}</h5>#}
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        {% elif item in posts %}
+                            <div class="item post">
+                                {#                        <div class="post-box">#}
+                                <div class="posts post-box" style=" box-shadow: 4px 7px 9px 2px #cfcbcb82;">
+                                    <div class="posts"
+                                         style="margin-bottom: 5px;padding: 10px;">
+                                        {#                                <div class="posts">#}
+                                        <div class="timeline-content ">
+                                            {#                                        <a href="{% url 'person:viewpost' item.user.id item.id ' '%}" ">#}
+
+
+                                            <strong style="text-transform: capitalize">{{ item.title }}</strong>
+                                            <p> {{ item.content |safe }}</p>
+
+
+                                            {#                                        </a>#}
+
+                                            <div class="card-title">
+
+                                            </div>
+
+                                        </div>
+                                        {#                                </div>#}
+                                    </div>
+
+                                </div>
+                                {% if item.user.profile.profile_picture %}
+                                    <img src="/media/{{ item.user.profile.profile_picture }}"
+                                         style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                {% else %}
+                                    <img src="/media/base/profile_pic_blank.png"
+                                         style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                {% endif %}
+                                <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                   style="font-weight: 500">
+                                    {{ item.user.username }}</a>
+                                <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+
+                            </div>
+                        {% elif item in images %}
+                            <div class=" item image">
+
+                                <div class="image-box">
+
+
+                                    <a href="{% url 'person:viewimage' item.user.id item.id ' ' %}">
+
+
+                                        <img src="/media/{{ item.image }}">
+                                    </a>
+                                    <div>
+                                        {% if item.user.profile.profile_picture %}
+                                            <img src="/media/{{ item.user.profile.profile_picture }}"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                        {% else %}
+                                            <img src="/media/base/profile_pic_blank.png"
+                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                        {% endif %}
+                                        <a href="{% url 'person:follow_unfollow_user'  item.user.username ' ' %}"
+                                           style="font-weight: 500">
+                                            {{ item.user.username }}</a>
+                                        <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        {% else %}
+                            <div class=" item blog">
+                                <div class="post-box">
+
+                                    <div class=""
+                                         style="margin-bottom: 5px;box-shadow: 4px 7px 9px 2px #cfcbcb82;border-radius: 15px;padding: 10px;">
+                                        <div class="posts">
+                                            <div class="timeline-content ">
+                                                <a href="{% url 'person:viewblogpost' item.pk  ' ' %}">
+
+
+                                                    {#                                            <strong style="text-transform: capitalize">{{ item.title }}</strong>#}
+                                                    <p> {{ item.content | safe }}</p>
+
+
+                                                </a>
+
+
+                                            </div>
+
+                                        </div>
+                                        <div class="card-title">
+
+                                        </div>
+
+                                    </div>
+                                    {% if item.created_by.profile.profile_picture %}
+                                        <img src="/media/{{ item.created_by.profile.profile_picture }}"
+                                             style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 5px 0 0 10.5px; ">
+                                    {% else %}
+                                        <img src="/media/base/profile_pic_blank.png"
+                                             style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                    {% endif %}
+
+                                    <a href="{% url 'person:follow_unfollow_user'  item.created_by.username ' ' %}"
+                                       style="font-weight: 500">
+                                        {{ item.created_by.username }}</a>
+                                    <a style="font-size: 12px">  {{ item.created_at.date }}</a>
+
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    {% endif %}
+
+
+                {% endif %}
+
+
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        const videos = document.querySelectorAll('.video');
+        videos.forEach(function (video) {
+            video.addEventListener('mouseenter', function () {
+
+                video.setAttribute('controls', true);
+                video.play();
+                video.muted = true;
+            });
+
+        });
+        videos.forEach(function (video) {
+            video.addEventListener('mouseleave', function () {
+                // Remove controls when the mouse leaves the video
+                video.removeAttribute('controls');
+                video.pause()
+            });
+        });
+
+        {#const tabs = document.querySelectorAll('[data-tab-value]');#}
+
+
+        {#tabs.forEach(function (tab) {#}
+        {##}
+        {#for (const t  in  tabslink) {#}
+        {#    const classes = t.getAttribute('data-tab-value');#}
+        {#    console.log(classes);#}
+        {##}
+        {#    tab.addEventListener('click', () => {#}
+        {##}
+        {#        const classname = tab.getAttribute('data-tab-value');#}
+        {#        const show = document.getElementById(classname);#}
+        {##}
+        {#        for (var i = 0; i < tabs.length; i++) {#}
+        {#            const item = tabs[i].getAttribute('data-tab-value');#}
+        {#            const a = document.getElementById(item);#}
+        {#            if (a != show) {#}
+        {#                a.hidden = true;#}
+        {#            } else {#}
+        {#                a.hidden = false;#}
+        {#            }#}
+        {#        }#}
+        {##}
+        {##}
+        {#    })#}
+        {##}
+
+
+        {#  const progressBar = document.querySelectorAll('.progress-bar');#}
+        {#video.addEventListener('timeupdate',function (){#}
+        {#    var percentage = (video.currentTime/ video.duration)*100;#}
+        {#    progressBar.style.width = percentage + '%';#}
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navItems = document.querySelectorAll('.nav-item');
+            const allItems = document.querySelectorAll('.item');
+
+            // Show all items initially, except those with the 'saves' class
+            allItems.forEach(item => {
+                if (!item.classList.contains('saves')) {
+                    item.classList.add('visible');
+                }
+            });
+
+            navItems.forEach(navItem => {
+                navItem.addEventListener('click', () => {
+                    const filterValue = navItem.getAttribute('data-tab-value');
+
+                    // Remove 'visible' class from all items
+                    allItems.forEach(item => {
+                        item.classList.remove('visible');
+                    });
+
+                    if (filterValue === 'all') {
+                        // Show all items, except those with the 'saves' class
+                        allItems.forEach(item => {
+
+                            item.classList.add('visible');
+
+                        });
+                    } else {
+                        // Show items matching the filter value
+                        allItems.forEach(item => {
+                            if (item.classList.contains(filterValue)) {
+                                item.classList.add('visible');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

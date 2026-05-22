@@ -1,10 +1,1019 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'other_user_posts.html' %}
+{% block content %}
+    {% load social_share  %}
+<style>
+    .item {
+        display: flex;
+        margin: 2% 0 auto 1%;
+        {#width: fit-content;#}
+        flex-wrap: wrap;
+        width: -webkit-fill-avaliable;
+        width: -moz-avaliable;
+
+    }
+
+    video {
+        border-radius: 10px;
+        max-width: 100%;
+    {#max-height: 800px;#}
+
+    }
+
+    .comment {
+        width: 35%;
+    {#margin: 0 200px;#}{#background-color: #eeeeee;#} max-height: 750px;
+        overflow: hidden;
+    {#padding: 10px;#} border-radius: 10px;
+        min-width: 300px;
+        border-radius: 0 0 1px 0;
+        border-style: none;
+
+    }
+
+    .title {
+        text-transform: capitalize;
+        font-weight: 330;
+
+    }
+
+    .video {
+        display: block;
+        margin: 0;
+        padding: 0;
+    {#width: fit-content;#}
+
+    }
+
+    .name {
+        text-transform: capitalize;
+        color: black;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 400;
+    }
+
+    .username {
+        color: black;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 450;
+    }
+
+    .pro {
+        display: flex;
+        margin: 5px 8px;
+    }
+
+    .pro_pic {
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        object-fit: cover;
+    }
+
+    .com {
+
+        font-weight: 400;
+        font-size: 14px;
+        margin: 0 10px;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+        font-weight: 50z0;
+    }
+
+    .dropbtn {
+        background-color: black;
+        color: white;
+        padding: 10px;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    .show {
+        display: block;
+    }
+
+    a.name {
+
+
+    }
+
+    h4.title {
+        font-size: 25px;
+        margin: 10px 0 15px 0;
+    }
+
+    div button.btn {
+        margin: 8px 5px;
+        /* color: black; */
+        border-radius: 18px;
+        padding: 5px 20px;
+        font-size: 13px;
+        height: 35px;
+
+    }
+
+    .form-control {
+        border: 1px;
+        border-bottom-style: solid;
+    }
+
+
+    {##video::-webkit-media-controls-progress{#}
+    {#    background-color: red; /* Default color */#}
+    {#    color: pink;#}
+    {##}
+
+
+</style>
+       {% if not request.user  in target_user.profile.blocked.all %}
+
+    {% if video.privacy %}
+        {% if video.privacy == 'public'  or request.user == video.user %}
+        	<div class="item">
+    <div class="video">
+    <div class="video-container" style="max-width: 1280px;width: auto">
+        <video id="video" class="vid-item"controls style="width: 1280px;" autoplay>
+            <source src="{{ video.video_file.url }}" type="video/mp4">
+{#            Your browser does not support the video tag.#}
+        </video>
+</div>
+
+        <div>
+
+            <div>
+                <h4 class="title"><strong style=";font-weight: 500;margin: 0 7px">{{ video.title }}</strong></h4>
+
+                <div class="pro">
+                    {% if target_user.profile.profile_picture %}
+                        <img src="/media/{{ target_user.profile.profile_picture }}"
+                             style="border-radius: 50%;width: 37px;height: 37px;object-fit: cover;margin: 10px 10px 0 0;">
+                    {% else %}
+                        <img src="'/media/base/profile_pic_blank.png'"
+                             style="border-radius: 50%;width: 37px;height: 37px;object-fit: cover;margin: 10px 10px 0 0;">
+                    {% endif %}
+                    <div style="width: -webkit-fill-available;  width: -moz-avaliable;">
+                        <div style="display: flex; width: 100%">
+                            <div style="display: flex">
+                                <div style="display: flex; flex-direction: column">
+
+                                    <a class="username" style=" width: max-content;">{{ target_user.username }}</a>
+                                    <p style="display: flex;font-size: 12px;margin:0 5px">
+                                        <a id="follower-count"
+                                           style="margin-right: 2px"> {{ target_user.profile.followers.count }}</a>
+                                        followers </p>
+
+                                </div>
+
+
+{#                                {% if user %}#}
+                                    <button class="btn btn-dark"
+                                            id="follow-btn" data-profile-id="{{ target_user.profile.id }}"
+                                            style="margin: 8px 15px; padding: 3px 35px">
+                                        {% if user in target_user.profile.followers.all %}
+                                            Unfollow
+                                        {% else %}
+                                            Follow
+
+                                        {% endif %}
+                                    </button>
+                                    </div>
+
+                                    <div style="display: flex;justify-content: flex-end;width: -webkit-fill-available;  width: -moz-avaliable;">
+
+                                        <button data-video-id="{{ video.id }}"
+                                                class="btn btn-dark" id="like-btn"
+                                                data-profile-id="{{ target_user.profile.id }}">
+                                            {% if user in video.likes.all %}
+                                                dislike
+                                            {% else %}
+                                                Like
+
+                                            {% endif %}
+
+                                        </button>
+                                        <button
+                                                class="btn btn-dark" id="save-btn">
+                                            {% if user in video.saves.all %}
+                                                saved
+                                            {% else %}
+                                                save
+                                            {% endif %}
+
+                                        </button>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false" id="stb-button">
+                                                {{ is_in_boards }}
+
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                {% for board in boards %}
+
+                                                    <li><a class="dropdown-item stb"
+                                                           data-board-id="{{ board.title }}">{{ board.title }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                     <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" style=""
+                                data-bs-target="#staticBackdrop">
+                            Share
+                        </button>
+                        <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                             data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5 " id="staticBackdropLabel">Share</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% post_to_facebook video.get_absolute_url "<p style='color: blue;'>facebook</p>" %}
+                                        {% post_to_linkedin video.get_absolute_url %}
+                                        {% post_to_twitter video.get_absolute_url %}
+                                        {% post_to_reddit video.get_absolute_url "<p style='color: blue;'>reddit</p>" %}
+                                        {% post_to_whatsapp video.get_absolute_url "Share via WhatsApp" %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                                    </div>
+
+                                    </div>
+
+{#                                {% endif %}#}
+
+                        <div style="width: -webkit-fill-available;font-size: 12px;font-weight: 500;margin: 15px 0px">
+                            <div>
+                                <a class="name"> {{ target_user.first_name }} {{ target_user.last_name }} </a>
+                            </div>
+                            {{ video.created_at.date }},
+                            views <a>{{ video.views.count }}</a>,
+                            <a> likes <a id="like-count">{{ video.likes.count }}</a>
+
+                            </a>
+
+                            {% if video.user == request.user %}
+                                <a href="{% url 'person:editvideo' video.id %}">edit</a>
+
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div style="margin: 0 20px 10px">
+
+        <div>
+            <div class="comment">
+             {% if request.user.is_authenticated %}
+                <form method="post" enctype="multipart/form-data" id="comment-form"
+                      action="{% url 'submit_video_comment'  video.id %}">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="comment here " name="body"
+                               style="border-radius: 0">
+                        <button class="btn " type="submit"
+                                style="margin: 10px 0 0 0;padding: 5px 0px;border-bottom-color: black;border-radius: 0;">
+                            submit
+                        </button>
+                    </div>
+                </form>
+                 {% endif %}
+
+                <h6>{{ comment.count }} Comments</h6>
+                <div id="comments-section">
+                    {% for i in comment %}
+                    <div style="display: flex;margin: 10px 0">
+                        {% if i.user.profile.profile_picture %}
+                            <img class='pro_pic' src="/media/{{ i.user.profile.profile_picture }}">
+
+                        {% else %}
+                            <img class='pro_pic' src="/media/base/profile_pic_blank.png">
+                        {% endif %}
+                        <div class="com">
+                            <a href="{% url 'person:follow_unfollow_user' i.user.username ' ' %}">{{ i.user.username }}</a>
+                            {{ i.body }}
+                              {% if request.user.is_authenticated %}
+                                    {% if request.user == video.user or request.user == i.user %}
+
+
+                                    <a type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                       data-bs-target="#{{ i.id }}">
+                                        delete
+                                    </a>
+
+                                    <div class="modal fade" id="{{ i.id }}" tabindex="-1"
+                                         aria-labelledby="{{ i.id }}"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="{{ i.id }}">Delete
+                                                        Comment</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {{ i.body }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+
+                                                    <a href="{% url 'person:delete_video_comment' i.id %}">
+                                                        <button type="button" class="btn btn-primary">Delete</button>
+
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% endif %}
+                                {% endif %}
+
+
+                            <br>
+
+
+                            <div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+            {%  elif video.privacy == 'followers' and request.user  in followers %}
+            <div class="item">
+    <div class="video">
+    <div class="video-container" style="max-width: 1280px;width: auto">
+        <video id="video1" class="vid-item"controls style="width: 1280px;" autoplay>
+            <source src="/media/{{ video.video_file }}" type="video/mp4">
+{#            Your browser does not support the video tag.#}
+        </video>
+</div>
+
+        <div>
+
+            <div>
+                <h4 class="title"><strong style=";font-weight: 500;margin: 0 7px">{{ video.title }}</strong></h4>
+
+                <div class="pro">
+                    {% if target_user.profile.profile_picture %}
+                        <img src="/media/{{ target_user.profile.profile_picture }}"
+                             style="border-radius: 50%;width: 37px;height: 37px;object-fit: cover;margin: 10px 10px 0 0;">
+                    {% else %}
+                        <img src="'/media/base/profile_pic_blank.png'"
+                             style="border-radius: 50%;width: 37px;height: 37px;object-fit: cover;margin: 10px 10px 0 0;">
+                    {% endif %}
+                    <div style="width: -webkit-fill-available;  width: -moz-avaliable;">
+                        <div style="display: flex; width: 100%">
+                            <div style="display: flex">
+                                <div style="display: flex; flex-direction: column">
+
+                                    <a class="username" style=" width: max-content;">{{ target_user.username }}</a>
+                                    <p style="display: flex;font-size: 12px;margin:0 5px">
+                                        <a id="follower-count"
+                                           style="margin-right: 2px"> {{ target_user.profile.followers.count }}</a>
+                                        followers </p>
+
+                                </div>
+
+
+                                {% if user.is_authenticated %}
+                                    <button class="btn btn-dark"
+                                            id="follow-btn" data-profile-id="{{ target_user.profile.id }}"
+                                            style="margin: 8px 15px; padding: 3px 35px">
+                                        {% if user in target_user.profile.followers.all %}
+                                            Unfollow
+                                        {% else %}
+                                            Follow
+
+                                        {% endif %}
+                                    </button>
+                                    </div>
+
+                                    <div style="display: flex;justify-content: flex-end;width: -webkit-fill-available;  width: -moz-avaliable;">
+
+                                        <button data-video-id="{{ video.id }}"
+                                                class="btn btn-dark" id="like-btn"
+                                                data-profile-id="{{ target_user.profile.id }}">
+                                            {% if user in video.likes.all %}
+                                                dislike
+                                            {% else %}
+                                                Like
+
+                                            {% endif %}
+
+                                        </button>
+                                        <button
+                                                class="btn btn-dark" id="save-btn">
+                                            {% if user in video.saves.all %}
+                                                saved
+                                            {% else %}
+                                                save
+                                            {% endif %}
+
+                                        </button>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                    data-bs-toggle="dropdown" aria-expanded="false" id="stb-button">
+                                                {{ is_in_board }}
+
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                {% for board in boards %}
+
+                                                    <li><a class="dropdown-item stb"
+                                                           data-board-id="{{ board.title }}">{{ board.title }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                     <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" style=""
+                                data-bs-target="#staticBackdrop">
+                            Share
+                        </button>
+                        <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                             data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5 " id="staticBackdropLabel">Share</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% post_to_facebook video.get_absolute_url "<p style='color: blue;'>facebook</p>" %}
+                                        {% post_to_linkedin video.get_absolute_url %}
+                                        {% post_to_twitter video.get_absolute_url %}
+                                        {% post_to_reddit video.get_absolute_url "<p style='color: blue;'>reddit</p>" %}
+                                        {% post_to_whatsapp video.get_absolute_url "Share via WhatsApp" %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                                    </div>
+
+                                    </div>
+
+                                {% endif %}
+
+                        <div style="width: -webkit-fill-available;font-size: 12px;font-weight: 500;margin: 15px 0px">
+                            <div>
+                                <a class="name"> {{ target_user.first_name }} {{ target_user.last_name }} </a>
+                            </div>
+                            {{ video.created_at.date }},
+                            views <a>{{ video.views.count }}</a>,
+                            <a> likes <a id="like-count">{{ video.likes.count }}</a>
+
+                            </a>
+
+                            {% if video.user == request.user %}
+                                <a href="{% url 'person:editvideo' video.id %}">edit</a>
+
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div style="margin: 0 20px 10px">
+
+        <div>
+            <div class="comment">
+            {% if request.user.is_authenticated %}
+
+                <form method="post" enctype="multipart/form-data" id="comment-form"
+                      action="{% url 'submit_video_comment'  video.id %}">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="comment here " name="body"
+                               style="border-radius: 0">
+                        <button class="btn " type="submit"
+                                style="margin: 10px 0 0 0;padding: 5px 0px;border-bottom-color: black;border-radius: 0;">
+                            submit
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+
+                <h6>{{ comment.count }} Comments</h6>
+                <div id="comments-section">
+                    {% for i in comment %}
+                    <div style="display: flex;margin: 10px 0">
+                        {% if i.user.profile.profile_picture %}
+                            <img class='pro_pic' src="/media/{{ i.user.profile.profile_picture }}">
+
+                        {% else %}
+                            <img class='pro_pic' src="/media/base/profile_pic_blank.png">
+                        {% endif %}
+                        <div class="com">
+                            <a href="{% url 'person:follow_unfollow_user' i.user.username ' ' %}">{{ i.user.username }}</a>
+                            {{ i.body }}
+
+                            <br>
+                              {% if request.user.is_authenticated %}
+                                    {% if request.user == video.user or request.user == i.user %}
+
+
+                                    <a type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                       data-bs-target="#{{ i.id }}">
+                                        delete
+                                    </a>
+
+                                    <div class="modal fade" id="{{ i.id }}" tabindex="-1"
+                                         aria-labelledby="{{ i.id }}"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="{{ i.id }}">Delete
+                                                        Comment</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {{ i.body }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+
+                                                    <a href="{% url 'person:delete_video_comment' i.id %}">
+                                                        <button type="button" class="btn btn-primary">Delete</button>
+
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% endif %}
+                                {% endif %}
+
+
+                            <div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+            {%  else %}
+              <h1 style="margin: 10px 2%">{{ blog.title }}</h1>
+
+            <div class="content-box">
+                {{ blog.content|safe }}
+
+                <div style="
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    /* align-content: flex-end; */
+    align-items: flex-start;">
+
+
+                    <div style=" margin: 0 0 0 0;">
+
+                        <a class="an">{{ blog.created_at.date }}</a>
+                        <a class="an">| Author : {{ blog.created_by }} | </a>
+                        {#        <a href="{% url 'blog:post_list' %}" class="an">Back to Posts</a>#}
+                        {% if user == blog.created_by %}
+                            <a class="an" href="{% url 'person:editblogpost' blog.id %}">
+                                edit
+                            </a>
+                        {% endif %}
+
+                    </div>
+                    <div style="margin-top: 10px">
+
+
+                        <button class="btn btn-light btn-sm" style="padding: 3px 0;margin: 0 15px 0 0;"
+
+                                data-post-id="{{ post.id }}" style="width: fit-content">
+                            {#                {% if request.user in post.likes.all %}#}
+                            {#                    <img src="/media/base/icons8-heart-filled.png" style="height: 15px">#}
+                            {#                    <a id="like-btn">dislike</a>#}
+                            {#                {% else %}#}
+                            <img src="/media/base/icons8-heart-empty.png" style="height: 15px">
+                            <a id="like-btn"> {% if user in blog.likes.all %}
+                                dislike
+                            {% else %}
+                                Like
+
+                            {% endif %}
+                            </a>
+                            {#                {% endif %}#}
+                        </button>
+                        <button
+                                class="btn btn-dark btn-sm" id="save-btn">
+                            {% if user in blog.saves.all %}
+                                saved
+                            {% else %}
+                                save
+                            {% endif %}
+                        </button>
+                        <div class="dropdown btn btn-sm ">
+                            <button onclick="myFunction()" class="dropbtn" id="stb-button">
+
+                                {{ is_in_board }}</button>
+                            <div id="myDropdown" class="dropdown-content">
+
+                                {% for board in boards %}
+
+                                    <a data-board-id="{{ board.title }}" class="stb">
+                                        {{ board.title }}</a>
+
+                                {% endfor %}
+
+                            </div>
+
+
+                        </div>
+                        <button class="btn btn-sm btn-dark" data-profile-id="{{ blog.user.profile.id }}"
+                                style="width: fit-content;
+                        height: fit-content;margin-left: 0" id="follow-btn">
+
+                            {% if request.user in target_user.profile.followers.all %}
+                                unfollow
+                            {% else %}
+                                follow
+                            {% endif %}
+                        </button>
+                        <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" style="margin: 0;
+}"
+                                data-bs-target="#staticBackdrop">
+                            Share
+                        </button>
+                        <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                             data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5 btn-dark" id="staticBackdropLabel">Share</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% post_to_facebook blog.get_absolute_url "<p style='color: blue;'>facebook</p>" %}
+                                        {% post_to_linkedin blog.get_absolute_url %}
+                                        {% post_to_twitter blog.get_absolute_url %}
+                                        {% post_to_reddit blog.get_absolute_url "<p style='color: blue;'>reddit</p>" %}
+                                        {% post_to_whatsapp blog.get_absolute_url "Share via WhatsApp" %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <button type="button" class="btn btn-primary">Understood</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+                <div style="display: flex;align-items: center">
+
+                    {% if request.user %}
+
+                        <form method="post" id="comment-form" action="{% url 'submit_blog_comment' blog.id %}"
+                              enctype="multipart/form-data"
+                              style="width:-webkit-fill-available;margin: 40px 0 10px;display: flex">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="text" name="body" class="input-group-sm" style="width:85%">
+                            <button class='btn btn-dark btn-sm' type="submit" value="Post">comment</button>
+
+                        </form>
+                             {% endif %}
+
+
+                </div>
+
+                {% if comment.count == 1 %}
+                    <h6 style="
+    margin: 10px 0;"> {{ comment.count }} Comment </h6>
+                {% else %}
+                    <h6 style="
+    margin: 10px 0;"> {{ comment.count }} Comments </h6>
+
+                {% endif %}
+                <div class="info" id="comments-section">
+                    {% for c in comment %}
+                        <p class="comment">
+                            <img src="/media/{{ c.created_by.profile.profile_picture }}"
+                                 style="width: 30px;height: 30px;object-fit: cover;border-radius: 50%;margin: 5px 0;object-fit: cover !important;">
+
+                            <a href="{% url 'person:follow_unfollow_user' c.created_by.username ' ' %}">{{ c.created_by.username }}</a>
+                            {{ c.body }}
+                          {% if request.user.is_authenticated %}
+                                    {% if request.user == video.user or request.user == c.user %}
+
+
+                                    <a type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                       data-bs-target="#{{ c.id }}">
+                                        delete
+                                    </a>
+
+                                    <div class="modal fade" id="{{ c.id }}" tabindex="-1"
+                                         aria-labelledby="{{ c.id }}"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="{{ c.id }}">Delete
+                                                        Comment</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {{ c.body }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+
+                                                    <a href="{% url 'person:delete_video_comment' c.id %}">
+                                                        <button type="button" class="btn btn-primary">Delete</button>
+
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        {% endif %}
+                                {% endif %}
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+           {% else %}
+         <div>
+                    <h2>This Video is Unavaliable</h2>
+                </div>
+
+{% endif  %}
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function (){
+        const video = document.getElementById('video');
+         {#window.addEventListener('load', function () {#}
+             video.play()
+
+    {##}
+
+    });
+</script>
+
+{%  if user.is_authenticated %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const postId = "{{ post.id }}";  // Ensure this matches the post ID in your URL
+        const ws = new WebSocket(`ws://${window.location.host}/ws/comments/{{ video.id }}/`);
+
+        ws.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+
+            if (data.comment) {
+                const commentSection = document.getElementById('comments-section');
+
+                const commentHTML = ` <div style="display: flex;margin: 10px 0">
+                            <img class='pro_pic' src="${data.profile_picture}">
+                            <div class="com">
+                                <a href="/person/follow_unfollow_user/${data.username}/">${data.username}</a>
+                                   ${data.comment}}<br>
+                                <div>
+                                </div>
+                            </div>
+                        </div>`;
+
+                commentSection.innerHTML += commentHTML;
+
+                const commentCountElem = document.querySelector('h6');
+                let commentCount = parseInt(commentCountElem.textContent);
+                commentCount += 1;
+                commentCountElem.textContent = commentCount === 1 ? `${commentCount} Comment` : `${commentCount} Comments`;
+            }
+        };
+
+        ws.onerror = function (e) {
+            console.error('WebSocket error:', e);
+        };
+
+        window.onbeforeunload = function () {
+            ws.close();
+        };
+
+        document.getElementById('comment-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')  // Ensure CSRF token is sent
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const commentSection = document.getElementById('comments-section');
+
+                        const commentHTML = `
+                        <p class="comment" style="font-size: 14px">
+                            <img src="${data.profile_picture}" alt="Profile Picture"
+                              style="width: 30px;height: 30px;object-fit: cover;border-radius: 50%;margin: 5px 0;object-fit: cover !important;">
+
+                            <a href="/person/follow_unfollow_user/${data.username}/">${data.username}</a>
+                            ${data.comment}
+                        </p>
+                    `;
+
+                        commentSection.innerHTML += commentHTML;
+
+                        // Update the comment count
+                        const commentCountElem = document.querySelector('h6');
+                        let commentCount = parseInt(commentCountElem.textContent);
+                        commentCount += 1;
+                        commentCountElem.textContent = commentCount === 1 ? `${commentCount} Comment` : `${commentCount} Comments`;
+
+                        // Clear the form
+                        this.reset();
+                    } else {
+                        console.error('Error submitting comment:', data.error);
+                    }
+                });
+        });
+    });
+</script>
+
+{#    cor likes, saves,follow and unfollow  #}
+<script>
+    {#video.addEventListener('progress', handleEvent);#}
+
+            {#document.getElementById('video').addEventListener('loadedmetadata', function() {#}
+    {#        video.style.setProperty('--progress-bar-color', 'green');#}
+    {#        video.style.setProperty('--progress-bar-height', '10px');#}
+    {##}
+    {#        const styleSheet = document.styleSheets[0];#}
+    {#    styleSheet.insertRule(`#}
+    {#        video#video::-webkit-media-controls-progress-value {#}
+    {#            background-color: var(--progress-bar-color);#}
+    {#        }`, styleSheet.cssRules.length);#}
+    {##}
+    {#    styleSheet.insertRule(`#}
+    {#        video#video::-webkit-media-controls-progress-bar {#}
+    {#            height: var(--progress-bar-height);#}
+    {#        }`, styleSheet.cssRules.length);#}
+    {##}
+    {#;#}
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#like-btn').click(function () {
+            var imageId = $(this).data('video-id');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "person:viewvideo" action_type="like" video_id=video.id pk=target_user.id %}',
+                success: function (response) {
+                    $('#like-count').text(response.total_likes);
+
+                    $('#like-btn').text(response.liked ? 'unlike' : 'like');
+
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('#follow-btn').click(function () {
+            var profileId = $(this).data('profile-id');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "person:viewvideo" target_user.id video.id "follow" %}',
+                success: function (response) {
+                    $('#follower-count').text(response.total_follows);
+
+                    $('#follow-btn').text(response.follows ? 'Unfollow' : 'Follow');
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('#save-btn').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'person:viewvideo' target_user.id video.id "save" %}',
+                success: function (response) {
+                    {#$('#save-count').text(response.total_saves);#}
+                    $('#save-btn').text(response.saved ? 'saved' : 'save');
+                }
+            })
+        })
+    });
+    $(document).ready(function () {
+        $('.stb').click(function () {
+            let boardId = $(this).data('board-id').toString();
+            let urlrep = '{% url 'person:viewvideo' video_id=video.id pk=video.user.id  action_type=-1 %}'.replace(-1, boardId);
+            $.ajax({
+                type: 'POST',
+                url: urlrep,
+                success:
+
+                    function (response) {
+                        $('#stb-button').text(response.saved ? 'saved to board ' : 'save to board ');
+
+
+                    }
+
+            })
+
+
+        });
+    });
+
+</script>
+{#    for comments #}
+
+{%  endif %}
+{% endblock %}

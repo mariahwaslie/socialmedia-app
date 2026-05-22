@@ -1,10 +1,427 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+
+<style>
+    .dropbtn {
+        background-color: black;
+        color: white;
+        padding: 10px;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+    /* Dropdown button on hover & focus */
+    {#.dropbtn:hover, .dropbtn:focus {#}
+    {#    background-color: rgba(176, 176, 176, 0.65);#}
+    {#    color: black;#}
+
+
+    /* The container <div> - needed to position the dropdown content */
+
+
+    .video {
+        max-height: 700px;
+        border-radius: 20px;
+        margin: 5px;
+    }
+
+    .card-text:last-child {
+        margin-bottom: 0;
+        box-shadow: -2px -1px 14px 0px #c4c4c47d;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    a:hover {
+        text-decoration: none;
+        color: black;
+    }
+
+    .card-text {
+        background-color: #ffffff;
+
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 5px;
+        max-width: 280px;
+        min-width: 200px;
+        max-height: 300px;
+        overflow: hidden;
+        font-weight: 400;
+
+    }
+
+    .content {
+        columns: 14rem;
+        width: 98%;
+        margin-top: 10px;
+    {#display: table;#}
+    }
+
+    .timeline-content {
+        display: block;
+        flex-wrap: wrap;
+    }
+
+    .video {
+    {#min-height: 250px;#} max-height: 500px;
+        border-radius: 10px 10px;
+        border-color: #FFFFFF;
+        max-width: 100%;
+        display: block;
+        background-color: black;
+        margin: 10px;
+    }
+
+    .posts {
+        display: inline-flex;
+    }
+
+    .video-container {
+        padding: 0;
+        margin: auto;
+        display: inline-block;
+        border-radius: 15px;
+
+    }
+
+    body {
+        display: block
+    }
+
+    li {
+        list-style: none;
+    }
+
+    li a, .nav-link {
+        text-decoration: none;
+        color: black;
+    }
+
+    p {
+        font-weight: 500;
+        margin-left: 10px;
+        max-height: 400px;
+        overflow: hidden;
+
+
+    }
+
+    div .container {
+        display: flex;
+        margin: 0 0 0 0;
+        padding: 25px 0 0 0;
+    }
+
+    button {
+        margin-left: 25px;
+        text-align: center;
+        width: 130px;
+        height: 35px;
+        border-radius: 10px;
+    {#padding: 10px;#} border-style: none;
+        font-weight: 400;
+        font-size: 14px;
+        margin: 7px 0 0 5px;
+    {#background-color: #93a7da;#}
+
+    }
+
+    button a {
+        color: #000000;
+        text-decoration: none;
+    }
+
+
+    div .follow {
+        display: flex;
+    {#padding-top: 38px;#}{#margin-right: 20px;#}{#padding: 1rem;#} margin: 0;
+        padding: 12px 0 0 10px;
+    }
+
+    div .follow p {
+        margin-right: 20px;
+        font-size: 13px;
+        width: max-content;
+
+    }
+
+    div.container.c {
+        margin: 0;
+        padding-bottom: 30px;
+        padding-top: 20px;
+    }
+
+
+    .card-title {
+        max-width: 250px;
+        overflow: hidden;
+    {#padding :0 10px;#} text-transform: capitalize;
+
+    }
+
+    .card-title p {
+        font-size: 12px;
+    }
+
+    div.card-title div strong {
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+
+    .nav-link a:active {
+        color: white;
+        background-color: black;
+        border-radius: 10px;
+        text-decoration: underline;
+    }
+
+    .video {
+        display: block;
+        max-width:100%;
+    }
+
+    .posts {
+        display: inline-block;
+        box-shadow: 1px 4px 7px #e4e4e4;
+        border-radius: 10px;
+    }
+
+    .img img {
+        object-fit: cover;
+        max-width: 100%;
+        border-radius: 10px;
+        display: inline-flex;
+        flex-wrap: wrap;
+        margin: 5px;
+    }
+    .img{
+        display: inline-flex;
+    }
+
+    .board-box {
+        width: 300px;
+        height: 200px;
+        border-radius: 20px;
+        background-color: #e6dba48f;
+        padding: 10px;
+    }
+
+    h6.title {
+        text-transform: capitalize;
+        font-weight: normal;
+        font-size: 13px;
+        margin-left: 10px;
+        margin-top: 10px;
+
+
+    }
+
+    #all div {
+  max-width: 290px;
+}
+    .info{
+        display:inline-block;
+    }
+    .edits{
+        margin: 20px;
+
+    }
+</style>
+
+{% if board.privacy == 'public' or  board.user == request.user %}
+    <div style="align-items:center;display:flex;flex-direction: column;">
+        <div class="content all" id="all" data-tab>
+            {% for item in items %}
+            {% if item.video  %}
+                <div>
+                    <a href="{% url 'person:viewvideo' item.video.user.id  item.video.id ' ' %}">
+                        <video class="video" controls>
+                            <source src="/media/{{ item.video.video_file}}" type="video/mp4">
+                        </video>
+
+                    </a>
+                     <div class="info">
+                            <h6 class="title">
+                                <strong>{{ item.video.title }}</strong>
+                                <br>{{ item.video.created_at.date }}
+                            </h6>
+
+                        </div>
+                </div>
+
+            {% elif item.post  %}
+                <div>
+                    <div class="posts">
+                        <div>
+
+                            <a href="{% url 'person:viewpost' item.post.user.id item.post.id ' ' %}"
+                               style="color: black;text-decoration: none">
+                                {{ item.post.content|safe }}
+                                <div class="card-title">
+                                    <p><strong>{{ item.post.title }}</strong><br> {{ item.post.created_at.date }} </p>
+
+                                </div>
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            {% elif item.image %}
+
+
+                <div class="img">
+
+                    <div style="display: inline">
+                        <div>
+
+                             <a href="{% url 'person:viewimage' item.image.user.id  item.image.id ' ' %}">
+                            <img src="/media/{{ item.image.image }}">
+                        </a>
+
+                        </div>
+
+                        <div class="info">
+                            <h6 class="title">
+                                <strong>{{ item.image.title }}</strong>
+                                <br>{{ item.image.created_at.date }}
+                            </h6>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+            {% elif item.blog %}
+
+                <div>
+                <div class="posts">
+                    <div>
+
+                        <a href="{% url 'person:viewblogpost' item.blog.id ' ' %}"
+                           style="color: black;text-decoration: none">
+                            {{ item.blog.content|safe }}
+                            <div class="card-title">
+                                <p><strong>{{ item.blog.title }}</strong><br> {{ item.blog.created_at.date }} </p>
+
+                            </div>
+
+
+                    </div>
+                </div>
+                            {% endif %}
+
+            {% endfor %}
+
+            </div>
+        </div>
+        {#            {% endfor %}#}
+    </div>
+    {% if request.user == board.user %}
+        <div class="edits">
+
+        <a href="{% url 'person:deleteboard' board.id %}">delete board</a>
+        <a href="{% url 'person:edit_board' board.id %}"> rearrange board</a>
+        </div>
+
+    {% endif %}
+{% elif boards.privacy == 'followers' and request.user in boards.user.profile.followers %}
+    <div style="align-items:center;display:flex;flex-direction: column;">
+        <div class="content all" id="all" data-tab>
+            {% for item in items %}
+            {% if item.video  %}
+                <div>
+                    <a href="{% url 'person:viewvideo' item.video.user.id  item.video.id ' ' %}">
+                        <video class="video" controls>
+                            <source src="/media/{{ item.video.video_file}}" type="video/mp4">
+                        </video>
+
+                    </a>
+                    <h6 class="title"><strong>{{ item.title }}</strong></h6>
+                    <p>{{ item.created_at }}
+                    </p>
+                </div>
+
+            {% elif item.posts %}
+                <div>
+                    <div class="posts">
+                        <div>
+
+                            <a href="{% url 'person:viewpost' item.post.user.id item.post.id ' ' %}"
+                               style="color: black;text-decoration: none">
+                                {{ item.post.content|safe }}
+                                <div class="card-title">
+                                    <p><strong>{{ item.post.title }}</strong><br> {{ item.post.created_at.date }} </p>
+
+                                </div>
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            {% elif item.image %}
+
+
+
+                <div class="img">
+                    <div style="display: inline">
+                        <a href="{% url 'person:viewimage' item.image.user.id  item.image.id ' ' %}">
+                            <img src="/media/{{ item.image.image }}">
+                        </a>
+                        <div>
+                            <h6 class="title">
+                                <strong>{{ item.image.title }}</strong>
+                                <br>{{ item.image.created_at.date }}
+                            </h6>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            {% elif item.blog %}
+
+
+                <div>
+                <div class="posts">
+                    <div>
+
+                        <a href="{% url 'person:viewblogpost' item.blog.id ' ' %}"
+                           style="color: black;text-decoration: none">
+                            {{ item.blog.content|safe }}
+                            <div class="card-title">
+                                <p><strong>{{ item.blog.title }}</strong><br> {{ item.blog.created_at.date }} </p>
+
+                            </div>
+
+
+                    </div>
+                </div>
+                            {% endif %}
+
+            {% endfor %}
+
+            </div>
+        </div>
+        {#            {% endfor %}#}
+    </div>
+
+{% endif %}
+
+
+{% endblock %}

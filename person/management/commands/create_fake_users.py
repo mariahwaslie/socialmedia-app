@@ -22,5 +22,3 @@ class Command(BaseCommand):
             )
             self.stdout.write(self.style.SUCCESS(f'Successfully created user {user.username}'))
 
-if __name__ == '__main__':
-    Command().run()

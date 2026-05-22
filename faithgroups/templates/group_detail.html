@@ -1,10 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block basic_block %}
+    <h2>{{ group.name }}</h2>
+    <p>{{ group.description }}</p>
+
+    {% if group.privacy == 'public' or request.user in group.members.all %}
+        <h3>Posts</h3>
+        {% for post in posts %}
+            <div>
+
+              <p>{{ post.content|safe }}</p>
+            <p>Posted by {{ post.user.username }} on {{ post.created_at }}</p>
+
+            </div>
+
+        {% endfor %}
+
+
+            <a href="{% url 'faith:create_group_post' group.id %}">Create Post</a>
+        {#{% else %}#}
+        {#    <a href="{% url 'groups:join_group' group.id %}">Join Group</a>#}
+    {% endif %}
+
+    {% if not request.user in group.members.all %}
+        {% if group.join_privacy == 'anyone' %}
+            <form action="{% url 'faith:join_group' group.id request.user.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-dark" id="join-button">Join Group</button>
+            </form>
+        {% else %}
+            <form method="post" enctype="multipart/form-data" action="{% url 'faith:request_to_join' group.id %}">
+                {% csrf_token %}
+                <textarea name="text" placeholder="enter reason"></textarea>
+                <button type="submit" name="request_to_join" class="btn btn-dark" id="join-res">request Group</button>
+            </form>
+
+        {% endif %}
+    {%  else %}
+        <div>
+        <p>message the group</p>
+        <a href="{% url 'chat:chatroom' group_chat.id %}">
+
+                <button class="btn btn-dark">{{ group.name }} chat</button>
+
+        </a>
+        </div>
+
+        {% if admins %}
+        	<a href="{% url 'faith:create_event' group.id %}">create an event</a>
+        {% endif %}
+    {% endif %}
+    {% if admins %}
+        <h2>Requests to join </h2>
+        {% for r in request_to_join %}
+            <p>username : @{{ r.user.username }} , Name: {{ r.user.first_name }} {{ r.user.last_name }} requested to
+                join
+                reason {{ r.text }}</p>
+
+            <form method="post" action="{% url 'faith:join_group' group.id  r.user.id %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">approve</button>
+
+            </form>
+            <form method="post" action="{% url 'faith:deny_group_join' group.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button name="request_denied" type="submit">deny</button>
+            </form>
+        {% endfor %}
+
+
+
+    {% endif %}
+
+
+
+  <h2>Events</h2>
+        {% for event in events %}
+
+            {{ event.title }}
+            {{ event.description|safe }}
+            <p>date :{{ event.date }}</p>
+            <p>location: {{ event.location_type }}</p>
+            <p>organizer :{{ event.organizer }}</p>
+        {% endfor %}
+    <h2>Prayers</h2>
+    {% for prayer in prayers %}
+    	{{ prayer.title }}
+        {{ prayer.content |safe }}
+    {% endfor %}
+    <h2>Videos</h2>
+    {%  for video in videos %}
+         <video src="/media/{{ video.video_file }}">
+
+         </video>
+    {% endfor %}
+    <h2>Images</h2>
+    {% for image in images %}
+        <img src="{{ image.image.url }}">
+    	
+    {% endfor %}
+    
+
+    <script>
+        document.getElementById('join-button').addEventListener('click', function () {
+            fetch("{% url 'faith:join_group' group.id request.user.id %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('join-button').textContent = 'You are now a member';
+                        document.getElementById('join-button').disabled = true;
+                    }
+                });
+        });
+        document.getElementById('join-res').addEventListener('click', function(){
+
+           fetch("{% url 'faith:request_to_join' group.id %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('join-res').textContent = 'Your Request has been sent';
+                        document.getElementById('join-res').disabled = true;
+                    }
+                });
+
+
+
+        });
+    </script>
+{% endblock %}

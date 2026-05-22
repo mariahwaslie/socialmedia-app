@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+    <div>
+	{% for group in groups  %}
+        <a href="{% url 'faith:group_details' group.id  %}">
+        {{ group.name }}
+        <p>{{ group.description }}</p>
+        </a>
+        <button>request to join </button>
+
+	{% endfor %}
+	</div>
+{% endblock %}

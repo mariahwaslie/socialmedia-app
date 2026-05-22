@@ -1,10 +1,874 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'other_user_posts.html' %}
+{% block content %}
+    {% load static %}
+    {% load social_share %}
+    {% load social_share %}
+
+
+    <style>
+        .content {
+            border-radius: 10px;
+            margin: auto;
+            max-width: 800px;
+            display: flex;
+            padding: 30px 10px;
+
+        }
+
+        div {
+        {#margin: 20px;#}
+        }
+
+        div .box {
+            display: flex;
+            flex-wrap: wrap;
+            width: fit-content;
+
+        {#border-radius: 15px;#} margin: 0;
+        {#max-height: 550px;#}{#box-shadow: 0px 0px 10px 3px #e7e7e7;#}
+
+        }
+
+        .bar-box {
+            display: flex;
+            margin: 0;
+            flex-direction: column;
+        {#padding: 0 10px;#} height: 100%;
+            min-width: 300px;
+        {#max-height: 600px;#}
+
+        }
+
+        .profile {
+            display: flex;
+        {#border-top-style: solid; border-bottom-style: solid;#}{# border-color: #e0e0e0;#}{#    border-width: thin;#} padding: 5px;
+            margin: 0 0 10px 10px;
+        {#border-radius: 15px;#}
+        }
+
+        img {
+            object-fit: scale-down;
+            max-width: 100%;
+            max-height: 610px;
+            border-radius: 3px;
+        }
+
+        .side-bar {
+        {#background-color: #4d4d4d;#} display: flex;
+            min-width: 280px;
+            flex-direction: column;
+            padding: 0;
+        {#display: grid;#}{#margin: 14px 0;#}{#border-style: solid;#}{#border-width: thin;#}{#border-color: #dddddd;#} max-height: 90%;
+            overflow: hidden;
+        }
+
+        .profile h6 {
+            padding: 9px 7px 0;
+            font-weight: 500;
+            font-size: 13px;
+
+        }
+
+        .profile a {
+            font-weight: 500;
+            font-size: 13px;
+        {#padding: 6px 5px 7px;#}
+        }
+
+        .comments {
+            overflow-y: scroll;
+            max-height: 100%;
+            margin: 10px;
+
+        }
+
+        .comments::-webkit-scrollbar {
+            display: none;
+        }
+
+        .bar-box div {
+            margin: 0 10px;
+            height: -webkit-fill-available;
+        {#height: 87%;#}
+        }
+
+        div h6 {
+            margin-bottom: 1rem;
+            margin-left: 17px;
+
+        }
+
+        .form-control {
+            border-radius: 15px;
+        }
+
+        .box {
+        {#box-shadow:-3px 2px 15px #00000078;#} border-radius: 10px;
+        {#padding: 10px;#}
+        }
+
+        {#.box{#}
+        {#    border-style: solid;#}
+        {#    border-width: thin;#}
+        /* Dropdown Button */
+        .dropbtn {
+            background-color: black;
+            color: white;
+            padding: 3px 30px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+
+        /* Dropdown button on hover & focus */
+        {#.dropbtn:hover, .dropbtn:focus {#}
+        {#    background-color: rgba(176, 176, 176, 0.65);#}
+        {#    color: black;#}
+
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #DDDDDD;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        .show {
+            display: block;
+        }
+
+        .btn-dark {
+            font-size: 12px;
+            padding: 3px 25px;
+            border-radius: 15px;
+
+        }
+
+        .user-image {
+            max-height: 800px;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+
+        button.btn.btn-dark.btn-outline-secondary {
+            color: black;
+            background: white;
+            border: solid;
+            border-bottom-style: solid;
+            border-left-style: none;
+            border-right: none;
+            border-top: none;
+            border-radius: 0;
+        {#padding: 0 10px;#} border-width: 1px;
+
+        }
+
+        div.input-group.mb-3 input.form-control {
+            border-style: none;
+            border-bottom-style: solid;
+            border-radius: 0px;
+        }
+
+        @media (max-width: 425px) {
+            div .box {
+                display: flex;
+                width: fit-content;
+                margin: 0;
+                flex-direction: column !important;
+                align-content: space-between;
+                align-items: normal;
+                flex-wrap: wrap;
+            }
+
+            .side-bar {
+                display: none;
+            }
+        }
+    </style>
+
+    {% if not request.user  in target_user.profile.blocked.all %}
+
+        {#    <div class="content">#}
+        {% if image.privacy %}
+            {% if image.privacy == 'public' or request.user == image.user %}
+
+                <div>
+                <div style="margin: 0">
+                    <div class="box" style="padding: 20px 1% 0 1%; margin: auto">
+
+
+                        <div style="margin: 0; display: flex;justify-content: center;flex-direction: column;width: fit-content">
+
+                            <div>
+
+                                <img src="/media/{{ image.image }}" class="user-image">
+
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="side-bar">
+                            <div class="profile">
+                                <img src="/media/{{ image.user.profile.profile_picture }}"
+                                     style="border-radius: 50%;width: 40px;height: 40px;object-fit: cover;">
+
+                                <div><a href="{% url 'person:follow_unfollow_user' image.user.username ' ' %}"
+                                        style="color: black;text-decoration: none">{{ image.user.username }}</a>
+                                    <a href="#" id="follow-btn">
+                                        {% if user in image.user.profile.followers %}
+                                            unfollow
+                                        {% else %}
+                                            follow
+                                        {% endif %}
+                                    </a>
+                                    <div style="font-size: 11px; font-weight: 400">
+                                        <a id="follower-count"
+                                           style="font-weight: 400">{{ image.user.profile.followers.count }}</a>
+                                        followers
+
+                                    </div>
+
+                                </div>
+                                {% if profile.user in image.user.followers %}
+
+                                {% endif %}
+                            </div>
+                            <div class="bar-box">
+
+                                <div>
+                                    {% if comment.count == 1 %}
+                                        <h6> {{ comment.count }} Comment </h6>
+                                    {% else %}
+                                        <h6> {{ comment.count }} Comments </h6>
+
+                                    {% endif %}
+
+                                    <div class="comments" id="comments-section">
+
+                                        {% for i in comment %}
+                                            <p style="font-size: 14px"><img
+                                                    src="/media/{{ i.user.profile.profile_picture }}"
+                                                    style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover">
+                                                <a style="font-weight: 500">{{ i.user.username }}</a> {{ i.body }}
+                                                {% if request.user.is_authenticated %}
+                                                    {% if request.user == post.user or request.user == i.user %}
+
+                                                    {% endif %}
+
+                                                    <a type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                                       data-bs-target="#{{ i.id }}">
+                                                        delete
+                                                    </a>
+
+                                                    <div class="modal fade" id="{{ i.id }}" tabindex="-1"
+                                                         aria-labelledby="{{ i.id }}"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="{{ i.id }}">Delete
+                                                                        Comment</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    {{ i.body }}
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">
+                                                                        Close
+                                                                    </button>
+
+                                                                    <a href="{% url 'person:delete_image_comment' i.id %}">
+                                                                        <button type="button" class="btn btn-primary">
+                                                                            Delete
+                                                                        </button>
+
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </p>
+
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div>
+
+
+                                <div style="display: flex;align-items: flex-end;flex-direction: row;flex-wrap: wrap;">
+                                    {% if user.is_authenticated %}
+                                        <form method="post" enctype="multipart/form-data"
+                                              action="{% url 'submit_image_comment' image.id %}"
+                                              id='comment-form'>
+                                            {% csrf_token %}
+                                            {{ form.as_p }}
+                                            <div class="input-group mb-3" style="height: 30px">
+                                                <input type="text" name="body" placeholder="enter your comment here"
+                                                       class="form-control">
+                                                <button class='btn btn-dark btn-outline-secondary' type="submit"
+                                                        value="comment"
+                                                        name="submit_form_1">
+                                                    Post
+                                                </button>
+                                            </div>
+
+
+                                        </form>
+                                    {% endif %}
+                                </div>
+
+                                <div class="user-posts">
+
+                                    <div style="margin: 5px 0;">
+                                        <button data-image-id="{{ image.id }}"
+                                                class="btn btn-dark" id="like-btn"
+                                                data-profile-id="{{ target_user.profile.id }}">
+                                            Like
+                                        </button>
+                                        <button
+                                                class="btn btn-dark" id="save-btn">
+                                            Save
+                                        </button>
+                                        <div class="dropdown">
+                                            <button onclick="myFunction()" class="dropbtn" id="stb-button">Save to Board
+                                            </button>
+                                            <div id="myDropdown" class="dropdown-content">
+
+                                                {% for board in boards %}
+
+                                                    <a data-board-id="{{ board.title }}" class="stb">
+                                                        {{ board.title }}</a>
+
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 11px;padding:  0 8px">
+                                        <div>
+                                            {% if request.user == target_user %}
+                                                <a href="{% url 'person:editimage' image.id %}">Edit</a>
+                                                |
+                                            {% endif %}
+                                            {##}
+                                            {#                                {{ image.views.count }} views | <a#}
+                                            {#                                    id="like-count">{{ image.likes.count }} likes</a>#}
+                                            {#                            </div>#}
+                                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" style="margin: 0;padding: 0 45%;
+}"
+                                                    data-bs-target="#staticBackdrop">
+                                                Share
+                                            </button>
+                                            <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                                                 data-bs-keyboard="false" tabindex="-1"
+                                                 aria-labelledby="staticBackdropLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5 btn-dark"
+                                                                id="staticBackdropLabel">
+                                                                Share</h1>
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {% post_to_facebook image.get_absolute_url "<p style='color: blue;'>facebook</p>" %}
+                                                            {% post_to_linkedin image.get_absolute_url %}
+                                                            {% post_to_twitter image.get_absolute_url %}
+                                                            {% post_to_reddit image.get_absolute_url "<p style='color: blue;'>reddit</p>" %}
+                                                            {% post_to_whatsapp image.get_absolute_url "Share via WhatsApp" %}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary">Understood
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                    {#        <p>Comments </p>#}
+                </div>
+            {% elif  image.privacy == 'followers' and request.user in followers %}
+                <div>
+                    <div style="margin: 0">
+                        <div class="box" style="padding: 20px 1% 0 1%; margin: auto">
+
+
+                            <div style="margin: 0; display: flex;justify-content: center;flex-direction: column;width: fit-content">
+
+                                <div>
+
+                                    <img src="/media/{{ image.image }}" class="user-image">
+
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="side-bar">
+                                <div class="profile">
+                                    <img src="/media/{{ image.user.profile.profile_picture }}"
+                                         style="border-radius: 50%;width: 40px;height: 40px;object-fit: cover;">
+
+                                    <div><a href="{% url 'person:follow_unfollow_user' image.user.username ' ' %}"
+                                            style="color: black;text-decoration: none">{{ image.user.username }}</a>
+                                        <a href="#" id="follow-btn">
+                                            {% if user in image.user.profile.followers %}
+                                                unfollow
+                                            {% else %}
+                                                follow
+                                            {% endif %}
+                                        </a>
+                                        <div style="font-size: 11px; font-weight: 400">
+                                            <a id="follower-count"
+                                               style="font-weight: 400">{{ image.user.profile.followers.count }}</a>
+                                            followers
+
+                                        </div>
+
+                                    </div>
+                                    {% if profile.user in image.user.followers %}
+
+                                    {% endif %}
+                                </div>
+                                <div class="bar-box">
+
+                                    <div>
+                                        {% if comment.count == 1 %}
+                                            <h6> {{ comment.count }} Comment </h6>
+                                        {% else %}
+                                            <h6> {{ comment.count }} Comments </h6>
+
+                                        {% endif %}
+
+                                        <div class="comments" id="comments-section">
+
+                                            {% for i in comment %}
+                                                <p style="font-size: 14px"><img
+                                                        src="/media/{{ i.user.profile.profile_picture }}"
+                                                        style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover">
+                                                    <a style="font-weight: 500">{{ i.user.username }}</a> {{ i.body }}
+                                                    {% if request.user.is_authenticated %}
+                                                        {% if request.user == post.user or request.user == i.user %}
+
+
+
+                                                            <a type="button" class="btn btn-light btn-sm"
+                                                               data-bs-toggle="modal"
+                                                               data-bs-target="#{{ i.id }}">
+                                                                delete
+                                                            </a>
+
+                                                            <div class="modal fade" id="{{ i.id }}" tabindex="-1"
+                                                                 aria-labelledby="{{ i.id }}"
+                                                                 aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h1 class="modal-title fs-5"
+                                                                                id="{{ i.id }}">Delete
+                                                                                Comment</h1>
+                                                                            <button type="button" class="btn-close"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            {{ i.body }}
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-bs-dismiss="modal">
+                                                                                Close
+                                                                            </button>
+
+                                                                            <a href="{% url 'person:delete_blog_comment' i.id %}">
+                                                                                <button type="button"
+                                                                                        class="btn btn-primary">Delete
+                                                                                </button>
+
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </p>
+
+
+                                            {% endfor %}
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div>
+
+
+                                    <div style="display: flex;align-items: flex-end;flex-direction: row;flex-wrap: wrap;">
+                                        {% if user.is_authenticated %}
+                                            <form method="post" enctype="multipart/form-data"
+                                                  action="{% url 'submit_image_comment' image.id %}"
+                                                  id='comment-form'>
+                                                {% csrf_token %}
+                                                {{ form.as_p }}
+                                                <div class="input-group mb-3" style="height: 30px">
+                                                    <input type="text" name="body" placeholder="enter your comment here"
+                                                           class="form-control">
+                                                    <button class='btn btn-dark btn-outline-secondary' type="submit"
+                                                            value="comment"
+                                                            name="submit_form_1">
+                                                        Post
+                                                    </button>
+                                                </div>
+
+                                            </form>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="user-posts">
+
+                                        <div style="margin: 5px 0;">
+                                            <button data-image-id="{{ image.id }}"
+                                                    class="btn btn-dark" id="like-btn"
+                                                    data-profile-id="{{ target_user.profile.id }}">
+                                                Like
+                                            </button>
+                                            <button
+                                                    class="btn btn-dark" id="save-btn">
+                                                Save
+                                            </button>
+                                            <div class="dropdown">
+                                                <button onclick="myFunction()" class="dropbtn" id="stb-button">Save to
+                                                    Board
+                                                </button>
+                                                <div id="myDropdown" class="dropdown-content">
+
+                                                    {% for board in boards %}
+
+                                                        <a data-board-id="{{ board.title }}" class="stb">
+                                                            {{ board.title }}</a>
+
+                                                    {% endfor %}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 11px;padding:  0 8px">
+                                            {#                            <div>#}
+                                            {#                                {% if request.user == target_user %}#}
+                                            {#                                    <a href="{% url 'person:editimage' image.id %}">Edit</a>#}
+                                            {#                                    |#}
+                                            {#                                {% endif %}#}
+                                            {##}
+                                            {#                                {{ image.views.count }} views | <a#}
+                                            {#                                    id="like-count">{{ image.likes.count }} likes</a>#}
+                                            {#                            </div>#}
+                                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" style="margin: 0;padding: 0 45%;
+}"
+                                                    data-bs-target="#staticBackdrop">
+                                                Share
+                                            </button>
+                                            <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                                                 data-bs-keyboard="false" tabindex="-1"
+                                                 aria-labelledby="staticBackdropLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5 btn-dark"
+                                                                id="staticBackdropLabel">
+                                                                Share</h1>
+                                                            <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            {% post_to_facebook image.get_absolute_url "<p style='color: blue;'>facebook</p>" %}
+                                                            {% post_to_linkedin image.get_absolute_url %}
+                                                            {% post_to_twitter image.get_absolute_url %}
+                                                            {% post_to_reddit image.get_absolute_url "<p style='color: blue;'>reddit</p>" %}
+                                                            {% post_to_whatsapp image.get_absolute_url "Share via WhatsApp" %}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                    {#        <p>Comments </p>#}
+                </div>
+            {% else %}
+                <div class="item">
+
+                    <h2>{{ image.privacy }} This Image Is Not Avaliable </h2>
+
+                </div>
+            {% endif %}
+        {% endif %}
+        {% else %}
+         <div>
+                    <h2>This Image is Unavaliable</h2>
+                </div>
+    {% endif %}
+
+
+
+
+{% if user.is_authenticated %}
+
+    <script>
+        $(document).ready(function () {
+            $('#like-btn').click(function () {
+                var imageId = $(this).data('image-id').toString();
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "person:viewimage" action_type="like" image_id=image.id pk=image.user.id %}',
+                    success: function (response) {
+                        $('#like-count').text(response.total_likes);
+
+                        $('#like-btn').text(response.liked ? 'UnLike' : 'Like');
+
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('.stb').click(function () {
+                var boardId = $(this).data('board-id').toString();
+                var urlrep = '{% url 'person:viewimage' image_id=image.id pk=image.user.id   action_type=-1 %}'.replace(-1, boardId);
+                $.ajax({
+                    type: 'POST',
+                    url: urlrep,
+                    success:
+
+                        function (response) {
+                            $('#stb-button').text(response.saved ? 'saved to board ' : 'save to board ');
+
+
+                        }
+
+                })
+
+
+            });
+        })
+
+
+        $(document).ready(function () {
+            $('#follow-btn').click(function () {
+                var profileId = $(this).data('profile-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "person:viewimage" image.user.pk image.id "follow"  %}',
+                    success: function (response) {
+                        $('#follower-count').text(response.total_follows);
+                        $('#follow-btn').text(response.follows ? 'Unfollow' : 'Follow');
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('#save-btn').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'person:viewimage' target_user.pk image.id "save" %}',
+                    success: function (response) {
+                        {#$('#save-count').text(response.total_saves);#}
+                        $('#save-btn').text(response.saved ? 'Saved' : 'Save');
+                    }
+                })
+            })
+        })
+
+
+        // Close the dropdown menu if the user clicks outside of it
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const postId = "{{ post.id }}";  // Ensure this matches the post ID in your URL
+            const ws = new WebSocket(`ws://${window.location.host}/ws/comments/{{ image.id }}/`);
+
+            ws.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+
+                if (data.comment) {
+                    const commentSection = document.getElementById('comments-section');
+
+                    const commentHTML = `
+                    <p class="comment">
+                        <img src="${data.profile_picture}" alt="Profile Picture">
+                        <a href="/person/follow_unfollow_user/${data.username}/">${data.username}</a>
+                        ${data.comment}
+                    </p>
+                `;
+
+                    commentSection.innerHTML += commentHTML;
+
+                    const commentCountElem = document.querySelector('h6');
+                    let commentCount = parseInt(commentCountElem.textContent);
+                    commentCount += 1;
+                    commentCountElem.textContent = commentCount === 1 ? `${commentCount} Comment` : `${commentCount} Comments`;
+                }
+            };
+
+            ws.onerror = function (e) {
+                console.error('WebSocket error:', e);
+            };
+
+            window.onbeforeunload = function () {
+                ws.close();
+            };
+
+            document.getElementById('comment-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')  // Ensure CSRF token is sent
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const commentSection = document.getElementById('comments-section');
+
+                            const commentHTML = `
+                        <p class="comment">
+                            <img src="${data.profile_picture}" alt="Profile Picture"
+                              style="width: 30px;height: 30px;object-fit: cover;border-radius: 50%;margin: 5px 0;object-fit: cover !important;">
+
+                            <a href="/person/follow_unfollow_user/${data.username}/">${data.username}</a>
+                            ${data.comment}
+                        </p>
+                    `;
+
+                            commentSection.innerHTML += commentHTML;
+
+                            // Update the comment count
+                            const commentCountElem = document.querySelector('h6');
+                            let commentCount = parseInt(commentCountElem.textContent);
+                            commentCount += 1;
+                            commentCountElem.textContent = commentCount === 1 ? `${commentCount} Comment` : `${commentCount} Comments`;
+
+                            // Clear the form
+                            this.reset();
+                        } else {
+                            console.error('Error submitting comment:', data.error);
+                        }
+                    });
+            });
+        });
+    </script>
+{% endif %}
+
+
+{#    </div>#}
+
+{% endblock %}

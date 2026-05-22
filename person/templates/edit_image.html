@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+
+    {% if request.user == image.user %}
+        <h1>Edit Image</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <a class="btn btn-secondary">Cancel</a>
+        <a href="{% url 'person:imagedelete' image.id %}">delete</a>
+        </form>
+    {% endif %}
+{% endblock %}

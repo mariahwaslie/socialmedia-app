@@ -2,12 +2,78 @@
 {% block basic_block %}
     {% load static %}
     <style>
+        .btn.btn-light {
+            background-color: #f0efef;
+            border-radius: 20px;
+            font-family: 'Roboto', 'sans-serif';
+            box-shadow: #c7c7c5 1px 6px 7px;
+        }
+
+        button.btn.btn-light:hover {
+            background-color: black;
+            color: #FFFFFF;
+        }
+
+        .bible .v {
+            font-size: 10px;
+            padding: 0 5px;
+            font-weight: 500;
+        }
+
+        .bible .d {
+            font-size: 1.2rem;
+            padding: 0;
+            font-weight: 550;
+            font-family: "Sentinel A", "Sentinel B", "Gentium Plus", "Ezra", Georgia, Times, serif;
+            margin: 0 20px;
+
+
+        }
+
+        .bible .p, .bible .q1, .bible .mt1 {
+        {#margin: 20px;#} font-family: "Sentinel A", "Sentinel B", "Gentium Plus", "Ezra", Georgia, Times, serif;
+            font-weight: 300;
+        {#line-height: calc(var(1.2rem) + var(1rem));#} text-indent: 2rem;
+            -webkit-column-break-before: auto;
+
+        }
+
+        .bible p.q1 {
+            margin: 0;
+        }
+
+    </style>
+    <style>
+        {#span iframe, .ytp-cued-thumbnail-overlay-image, #player {#}
+        {#    width: fit-content !important;#}
+        {#    height: fit-content !important;#}
+
+
+        .dropdown-menu.show {
+            display: block;
+            padding: 10px;
+        }
+
+
         .content {
             display: inline-block;
         {#background-color: #80808054;#} border-radius: 10px;
             padding: 10px;
-            max-width: 500px;
+            max-width: 330px;
         }
+
+        {#button.ytp-large-play-button {#}
+        {#    display: none !important;#}
+        {##}
+        {##}
+        {#.ytp-large-play-button > svg:nth-child(1) {#}
+        {#    display: none !important;#}
+        {##}
+
+        {#.ytp-large-play-button {#}
+        {#    display: none;#}
+        {##}
+
 
         .title {
             text-transform: capitalize;
@@ -26,7 +92,7 @@
 
         div.content, .content p {
 
-            max-height: 248px;
+            max-height: 500px;
 
         }
 
@@ -37,11 +103,12 @@
         .board {
             width: 99%;
             margin: auto;
-            columns: 17rem auto;
+            columns: 14rem auto;
+
         }
 
         img {
-            max-width: 280px;
+            max-width: 100%;
             height: fit-content;
             border-radius: 10px;
         }
@@ -51,130 +118,497 @@
             height: fit-content;
         }
 
+        {#.item.bible {#}
+        {#display: none;#}
+
+
+        .content-item {
+        {#display: inline-flex;#}
+        }
+
+        .search-video {
+            max-width: 100%;
+        }
+
+        body.date-20240825.en_US.ltr.site-center-aligned.site-as-giant-card.webkit.webkit-537 {
+            display: none;
+        }
+
+        .ytp-large-play-button.ytp-button.ytp-large-play-button-red-bg[style] {
+            display: none !important;
+        }
+
+        iframe {
+            border: 0;
+            width: 100% !important;
+            height: fit-content !important;
+        }
+
+        @media (max-width: 501px) {
+            .board {
+                width: 99%;
+                margin: auto;
+                columns: 24rem auto;
+            }
+
+        }
+
+
     </style>
     {% if query %}
 
     {% endif %}
     <div style="display:flex;margin: 0 10px;flex-wrap: wrap">
         {% for category in categories %}
-            <form action="{% url 'person:search' %}" method="get" style="float:right">
+            <form action="{% url 'search:search' %}" method="get" style="float:right;">
                 <input type="text" class="form-control" id="search" name="search" value="{{ category }}"
-                       style="width: 0px;height: 0" hidden>
+                       style="width: 0px;height: 0;
+
+}" hidden>
                 <button class="btn  btn-sm" type="submit"
-                        style="margin: 5px;border-radius:15px;padding:7px;background-color: #e0e0e2ad ">{{ category.name }}</button>
+                        style="margin: 5px;border-radius:15px;padding:7px;background-color: #f0dfdf;box-shadow: #bfbfbfbd -4px 1px 9px;
+font-weight: 500;">{{ category.name }}</button>
             </form>
         {% endfor %}
     </div>
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle btn-light" type="button" id="dropdownMenuButton1"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                style="border-radius: 50px;margin: 10px">
+                data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 50px;margin: 10px">
             <img src="/media/base/filter.png">
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><label class="dropdown-item" >Posts<input class="form-check-input mt-0" type="checkbox" value="Boards" data-tab-value="posts"
-                                                         aria-label="Boards" name="Boards" ></label>
-            </li>
-            <li><label class="dropdown-item" >Videos<input class="form-check-input mt-0" type="checkbox" value="Boards"
-                                                          aria-label="Boards" name="Boards" data-tab-value="videos"></label>
-            </li>
-            <li><label class="dropdown-item" >Images<input class="form-check-input mt-0" type="checkbox" value="Boards"
-                                                          aria-label="Boards" name="Boards" data-tab-value="images"></label>
-            </li>
-            <li><label class="dropdown-item" >Accounts<input class="form-check-input mt-0" type="checkbox" value="Boards"
-                                                            aria-label="Boards" name="Boards" data-tab-value="accounts"></label>
-            </li>
-            <li><label class="dropdown-item" >Boards<input class="form-check-input mt-0" type="checkbox" value="Boards"
-                                                          aria-label="Boards" name="Boards" data-tab-value="boards"></label>
-            </li>
+            <li><label class="dropdown-item"><input class="form-check-input mt-0" type="checkbox" value="Posts"
+                                                    data-tab-value="posts">Posts</label></li>
+            <li><label class="dropdown-item"><input class="form-check-input mt-0" type="checkbox" value="Videos"
+                                                    data-tab-value="videos">Videos</label></li>
+            <li><label class="dropdown-item"><input class="form-check-input mt-0" type="checkbox" value="Images"
+                                                    data-tab-value="images">Images</label></li>
+            <li><label class="dropdown-item"><input class="form-check-input mt-0" type="checkbox"
+                                                    value="Accounts" data-tab-value="accounts">Accounts</label></li>
+            {#            <li><label class="dropdown-item">Boards<input class="form-check-input mt-0" type="checkbox" value="Boards" data-tab-value="boards"></label></li>#}
+            <li><label class="dropdown-item"><input class="form-check-input mt-0" type="checkbox" value="Bible"
+                                                    data-tab-value="bible">Bible</label></li>
+            <li><label class="dropdown-item"><input class="form-check-input mt-0" type="checkbox"
+                                                    value="Questions" data-tab-value="questions">Questions</label></li>
 
 
         </ul>
     </div>
-
 
     <div class="board">
         {% block searches %}
 
         {% endblock %}
         {% if results %}
-
-
             {% for result in results %}
+                {#                {{ result }}#}
 
-                {% if result.content %}
-                    {% if results.user%}
-                        <a href="{% url 'person:viewpost' result.user.id result.id ' ' %}"
-                       style="text-decoration: none;color: black ">
+                {% if not request.user  in result.user.profile.blocked.all and not  request.user  in result.created_by.profile.blocked.all %}
 
-                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px" class="posts">
-                            <div class="content">
-                                <strong class="title">{{ result.title }}</strong>
-                                <p>{{ result.content|safe }}</p>
-                            </div>
-                        </div>
-                    </a>
-                        {%  elif result.created_by %}
-                        <a href="{% url 'person:viewblogpost' result.id ' ' %}"
-                       style="text-decoration: none;color: black ">
+                {% if result.privacy %}
+                    {% if result.privacy == 'public' or request.user == result.user or request.user == result.created_by %}
+                        {% if result.content %}
+                            {% if result.user %}
+                                <div class="posts content-item">
+                                    <a href="{% url 'person:viewpost' result.user.id result.id ' ' %}"
+                                       style="text-decoration: none;color: black ">
 
-                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px" class="posts">
-                            <div class="content">
-                                <strong class="title">{{ result.title }}</strong>
-                                <p>{{ result.content|safe }}</p>
-                            </div>
-                        </div>
-                    </a>
+                                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px"
+                                             class="posts">
+                                            <div class="content">
+                                                <strong class="title">{{ result.title }}</strong>
+                                                <p>{{ result.content|safe }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            {% elif result.created_by %}
+                                <div class="questions content-item">
+                                    <a href="{% url 'blog:post_detail' result.id %}"
+                                       style="text-decoration: none;color: black ">
+
+                                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px"
+                                             class="posts">
+                                            <div class="content">
+                                                <h2 class="title">{{ result.title }} </h2>
+                                                {#                                                <p>{{ result.content|safe }}</p>#}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% elif result.name %}
+                                <div class="bible content-item">
+                                    <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                                            data-bs-target="#{{ result.id }}" style="margin: 10px; padding: 15px 30px;">
+                                        {{ result.name }}
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="{{ result.id }}"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable ">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5"
+                                                        id="{{ result.id }}"> {{ result.name }}</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <p>{{ result.content|safe }}</p>
 
 
-
-                    {% endif %}
-
-                {% elif result.video_file %}
-                    <div class="contents videos">
-                        <div class="inner">
-
-                            <a href="{% url 'person:viewvideo' result.user.id result.id ' ' %}">
-
-                                <video controls style="max-width: 320px;border-radius: 10px;">
-                                    <source src="/media/{{ result.video_file }}" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-
-                            </a>
-
-                        </div>
-                    </div>
-
-                {% elif result.image %}
-                    {% if result.privacy == 'public' %}
-                        <div style="display: inline-block" class="images">
-                            <div class="img">
-                                <a href="{% url 'person:viewimage' result.user.id result.id ' ' %}">
-
-
-                                    <img src="/media/{{ result.image }}">
-                                </a>
-                                <div>
-                                    <h6 class="title">
-                                        <strong>{{ result.title }}</strong>
-                                        | {{ result.created_at.date }}
-                                    </h6>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <a href="{% url 'bibleconnect:read_chapter' result.bibleversion.versionid result.book.name result.number %}">
+                                                        <button type="button" class="btn btn-dark">View Chapter</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
 
+                            {% endif %}
+
+                        {% elif result.video_file %}
+                            <div class="contents videos content-item">
+                                <div class="inner">
+
+                                    <a href="{% url 'person:viewvideo' result.user.id result.id ' ' %}">
+
+                                        <video class="search-video" controls style="border-radius: 10px;">
+                                            <source src="/media/{{ result.video_file }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
+
+                        {% elif result.image %}
+                            <div class="images content-item">
+
+                                <div style="display: inline-block" class="images">
+                                    <div class="img">
+                                        <a href="{% url 'person:viewimage' result.user.id result.id ' ' %}">
+
+
+                                            <img src="/media/{{ result.image }}">
+                                        </a>
+                                        <div>
+                                            <h6 class="title">
+                                                <strong>{{ result.title }}</strong>
+                                                | {{ result.created_at.date }}
+                                            </h6>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        {% endif %}
+                    {% elif result.privacy == 'followers' and request.user in result.created_by.profile.followers.all %}
+                        {% if result.content %}
+                            {% if result.user %}
+                                <div class="posts content-item">
+                                    <a href="{% url 'person:viewpost' result.user.id result.id ' ' %}"
+                                       style="text-decoration: none;color: black ">
+
+                                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px"
+                                             class="posts">
+                                            <div class="content">
+                                                <strong class="title">{{ result.title }}</strong>
+                                                <p>{{ result.content|safe }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            {% elif result.created_by %}
+                                <div class="questions content-item">
+                                    <a href="{% url 'blog:post_detail' result.id %}"
+                                       style="text-decoration: none;color: black ">
+
+                                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px"
+                                             class="posts">
+                                            <div class="content">
+                                                <h2 class="title">{{ result.title }} </h2>
+                                                {#                                                <p>{{ result.content|safe }}</p>#}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% elif result.name %}
+                                <div class="bible content-item">
+                                    <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                                            data-bs-target="#{{ result.id }}" style="margin: 10px; padding: 15px 30px">
+                                        {{ result.name }}
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="{{ result.id }}"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable ">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5"
+                                                        id="{{ result.id }}"> {{ result.name }}</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <p>{{ result.content|safe }}</p>
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <a href="{% url 'bibleconnect:read_chapter' result.bibleversion.versionid result.book.name result.number %}">
+                                                        <button type="button" class="btn btn-dark">View Chapter</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+                        {% elif result.video_file %}
+                            <div class="contents videos content-item">
+                                <div class="inner">
+
+                                    <a href="{% url 'person:viewvideo' result.user.id result.id ' ' %}">
+
+                                        <video class="search-video" controls style="border-radius: 10px;">
+                                            <source src="/media/{{ result.video_file }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        {% elif result.image %}
+                            <div class="images content-item">
+                                <div style="display: inline-block" class="images">
+                                    <div class="img">
+                                        <a href="{% url 'person:viewimage' result.user.id result.id ' ' %}">
+
+
+                                            <img src="/media/{{ result.image }}">
+                                        </a>
+                                        <div>
+                                            <h6 class="title">
+                                                <strong>{{ result.title }}</strong>
+                                                | {{ result.created_at.date }}
+                                            </h6>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        {% endif %}
+                    {% elif result.privacy == 'followers' and request.user in result.user.profile.followers.all %}
+                        {% if result.content %}
+                            {% if result.user %}
+                                <div class="posts content-item">
+                                    <a href="{% url 'person:viewpost' result.user.id result.id ' ' %}"
+                                       style="text-decoration: none;color: black ">
+
+                                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px"
+                                             class="posts">
+                                            <div class="content">
+                                                <strong class="title">{{ result.title }}</strong>
+                                                <p>{{ result.content|safe }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            {% elif result.created_by %}
+                                <div class="questions content-item">
+                                    <a href="{% url 'blog:post_detail' result.id %}"
+                                       style="text-decoration: none;color: black ">
+
+                                        <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px"
+                                             class="posts">
+                                            <div class="content">
+                                                <h2 class="title">{{ result.title }} </h2>
+                                                {#                                                <p>{{ result.content|safe }}</p>#}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% elif result.name %}
+                                <div class="bible content-item">
+                                    <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                                            data-bs-target="#{{ result.id }}" style="margin: 10px; padding: 15px 30px">
+                                        {{ result.name }}
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="{{ result.id }}"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable ">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5"
+                                                        id="{{ result.id }}"> {{ result.name }}</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <p>{{ result.content|safe }}</p>
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <a href="{% url 'bibleconnect:read_chapter' result.bibleversion.versionid result.book.name result.number %}">
+                                                        <button type="button" class="btn btn-dark">View Chapter</button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            {% endif %}
+
+                        {% elif result.video_file %}
+                            <div class="contents videos content-item">
+                                <div class="inner">
+
+                                    <a href="{% url 'person:viewvideo' result.user.id result.id ' ' %}">
+
+                                        <video class="search-video" controls style="border-radius: 10px;">
+                                            <source src="/media/{{ result.video_file }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        {% elif result.image %}
+                            <div class="images content-item">
+
+                                <div style="display: inline-block" class="images">
+                                    <div class="img">
+                                        <a href="{% url 'person:viewimage' result.user.id result.id ' ' %}">
+
+
+                                            <img src="/media/{{ result.image }}">
+                                        </a>
+                                        <div>
+                                            <h6 class="title">
+                                                <strong>{{ result.title }}</strong>
+                                                | {{ result.created_at.date }}
+                                            </h6>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        {% endif %}
+
+
                     {% endif %}
+                {% else %}
+                    {% if result.content %}
+                        {% if result.created_by %}
+                            <div class="questions content-item">
+                                <a href="{% url 'blog:post_detail' result.id %}"
+                                   style="text-decoration: none;color: black ">
 
+                                    <div style="box-shadow: 3px 5px 9px 0 #b7b7b7cf;border-radius: 10px" class="posts">
+                                        <div class="content">
+                                            <h2 class="title">{{ result.title }} </h2>
+                                            {#                                            <p>{{ result.content|safe }}</p>#}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% elif result.name %}
+                            <div class="bible content-item">
+                                <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                                        data-bs-target="#{{ result.id }}" style="margin: 10px; padding: 15px 30px">
+                                    {{ result.name }}
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="{{ result.id }}"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable ">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5"
+                                                    id="{{ result.id }}"> {{ result.name }}</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <p>{{ result.content|safe }}</p>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <a href="{% url 'bibleconnect:read_chapter' result.bibleversion.versionid result.book.name result.number %}">
+                                                    <button type="button" class="btn btn-dark">View Chapter</button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    {% endif %}
                 {% endif %}
-
+            {% endif %}
 
             {% endfor %}
 
             {% for user in users %}
+                {%  if not request.user  in user.profile.blocked.all%}
                 {% if user.profile %}
-                    <div>
+                    <div class="accounts content-item">
                         <div style="display:
                                 flex;
                                 margin: 30px 10px;
@@ -217,41 +651,66 @@
 
 
                 {% endif %}
+                {% endif %}
 
             {% endfor %}
 
             </div>
 
         {% endif %}
+
     <script>
-        const tabs = document.querySelectorAll('[data-tab-value]');
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('.dropdown-menu input[type="checkbox"]');
+            const contentItems = document.querySelectorAll('.content-item');
 
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const selectedTypes = Array.from(checkboxes)
+                        .filter(checkbox => checkbox.checked)
+                        .map(checkbox => checkbox.getAttribute('data-tab-value'));
 
-        tabs.forEach(function (tab) {
+                    contentItems.forEach(item => {
+                        // If no checkboxes are checked, show all items
+                        if (selectedTypes.length === 0) {
+                            item.style.display = '';
+                        } else {
+                            // Check if the item matches any of the selected types
+                            const matchesSelectedType = selectedTypes.some(type => item.classList.contains(type));
+                            item.style.display = matchesSelectedType ? '' : 'none';
+                        }
+                    });
+                });
+            });
+        });
 
-            {#for (const t  in  tabslink) {#}
-            {#    const classes = t.getAttribute('data-tab-value');#}
-            {#    console.log(classes);#}
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('.dropdown-menu input[type="checkbox"]');
+            const boardItems = document.querySelectorAll('.bible' +
+                '');
 
-            tab.addEventListener('change', () => {
+            // Initially hide all board items
+            boardItems.forEach(item => item.style.display = 'none');
 
-                const classname = tab.getAttribute('data-tab-value');
-                const show = document.getElementById(classname);
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const selectedTypes = Array.from(checkboxes)
+                        .filter(checkbox => checkbox.checked)
+                        .map(checkbox => checkbox.getAttribute('data-tab-value'));
 
-                for (var i = 0; i < tabs.length; i++) {
-                    const item = tabs[i].getAttribute('data-tab-value');
-                    const a = document.getElementsByClassName(item);
-                    if (a !== show) {
-                        a.hidden = true;
-                        console.log(a)
-                    } else {
-                        a.hidden = false;
-                    }
-                }
-
-
-            })
-        })
+                    // Specifically handle board items
+                    boardItems.forEach(item => {
+                        if (selectedTypes.includes('bible')) {
+                            item.style.display = '';  // Show board items
+                        } else {
+                            item.style.display = 'none';  // Hide board items
+                        }
+                    });
+                });
+            });
+        });
     </script>
 
 {% endblock %}

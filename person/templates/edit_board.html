@@ -1,10 +1,306 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{#{% extends 'base.html' %}#}
+{#{% load static %}#}
+{##}
+{#{% block head_block %}#}
+{#    <script src="{% static 'person/static/js/Sortable.min.js' %}"></script>#}
+{##}
+{#    <style>#}
+{#        li {#}
+{#            list-style: none;#}
+{#        }#}
+{#        .img img {#}
+{#            object-fit: cover;#}
+{#            max-width: 100%;#}
+{#            border-radius: 10px;#}
+{#            display: inline-flex;#}
+{#            flex-wrap: wrap;#}
+{#            margin: 5px;#}
+{#        }#}
+{#        .content {#}
+{#            columns: 14rem;#}
+{#            width: 98%;#}
+{#            margin-top: 10px;#}
+{#        }#}
+{#        .container-item {#}
+{#            display: inline-block;#}
+{#        }#}
+{#        .title-img {#}
+{#            font-size: 12px;#}
+{#            margin: 0 0 0 20px;#}
+{#            text-transform: capitalize;#}
+{#            font-weight: 600 !important;#}
+{#        }#}
+{#        .container-item video {#}
+{#            max-width: 100%;#}
+{#            border-radius: 10px;#}
+{#        }#}
+{#    </style>#}
+{#{% endblock %}#}
+{#{% block basic_block %}#}
+{#<!-- edit_board.html -->#}
+{#<form method="post" action="{% url 'reorder_items' board.id %}" id="reorderForm">#}
+{#    {% csrf_token %}#}
+{#    <div id="sortable" class="content">#}
+{#        {% for item in items %}#}
+{#            {% if item.type == 'image' %}#}
+{#                <div class="sortable-item img" data-id="{{ item.id }}"  data-type="image">#}
+{#                    <div class="container-item">#}
+{#                        <img src="{{ item.obj.image.url }}" alt="{{ item.obj.title }}">#}
+{#                        <div>#}
+{#                            <p class="title-img">{{ item.image.title }} {{ item.order }}</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% elif item.type == 'video' %}#}
+{#                <div class="sortable-item" data-id="{{ item.id }}"  data-type="video">#}
+{#                    <div class="container-item">#}
+{#                        <video src="{{ item.obj.video_file.url }}"></video>#}
+{#                        <div>#}
+{#                            <p>{{ item.obj.title }}</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% elif item.type == 'post' %}#}
+{#                <div class="sortable-item" data-id="{{ item.obj.id }}"  data-type="post">#}
+{#                    <h3>{{ item.post.title }}</h3>#}
+{#                    <div>{{ item.obj.content|safe }}</div>#}
+{#                </div>#}
+{#            {% elif item.type == 'blog' %}#}
+{#                <div class="sortable-item" data-id="{{ item.obj.id }}"  data-type="blog">#}
+{#                    <h3>{{ item.obj.title }}</h3>#}
+{#                    <div>{{ item.obj.content|safe }}</div>#}
+{#                </div>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#    <button type="submit">Save Order</button>#}
+{#</form>#}
+{#<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>#}
+{##}
+{#<script>#}
+{#    document.addEventListener('DOMContentLoaded', function () {#}
+{#        var el = document.getElementById('sortable');#}
+{#        var sortable = Sortable.create(el, {#}
+{#            onEnd: function () {#}
+{#                var order = [];#}
+{#                el.querySelectorAll('.sortable-item').forEach(function (item) {#}
+{#                    var type = item.getAttribute('data-type');#}
+{#                    var id = item.getAttribute('data-id');#}
+{#                    order.push(type + '-' + id);#}
+{#                });#}
+{##}
+{#                fetch("{% url 'reorder_items' board.id %}", {#}
+{#                    method: 'POST',#}
+{#                    headers: {#}
+{#                        'X-CSRFToken': '{{ csrf_token }}',#}
+{#                        'Content-Type': 'application/json',#}
+{#                    },#}
+{#                    body: JSON.stringify({#}
+{#                        item_order: order#}
+{#                    }),#}
+{#                })#}
+{#                .then(response => response.json())#}
+{#                .then(data => {#}
+{#                    if (data.status === 'success') {#}
+{#                        alert('Order updated successfully!');#}
+{#                    } else {#}
+{#                        alert('Failed to update order.');#}
+{#                    }#}
+{#                });#}
+{#            }#}
+{#        });#}
+{#    });#}
+{#</script>#}
+{##}
+{#{% endblock %}#}
+{% extends 'base.html' %}
+{% load static %}
+{#    <script src="{% static 'person/static/js/Sortable.min.js' %}"></script>#}
+
+{% block head_block %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <style>
+        li {
+            list-style: none;
+        }
+
+        .img img {
+            object-fit: cover;
+            max-width: 100%;
+            border-radius: 10px;
+            display: inline-flex;
+            flex-wrap: wrap;
+            margin: 5px;
+        }
+
+        .content {
+            columns: 14rem;
+            width: 98%;
+            margin-top: 10px;
+        }
+
+        .container-item {
+            display: inline-block;
+        }
+
+        .title-img {
+            font-size: 12px;
+            margin: 0 0 0 20px;
+            text-transform: capitalize;
+            font-weight: 600 !important;
+        }
+
+        .container-item video {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .posts {
+            {#max-height: 530px;#}
+            overflow: hidden;
+            box-shadow: 1px 4px 7px #d9d9d9;
+            border-radius: 15px;
+        }
+
+        .posts {
+            display: inline-flex;
+        }
+
+        .posts {
+            display: inline-block;
+            box-shadow: 1px 4px 7px #e4e4e4;
+            border-radius: 10px;
+        }
+
+        .card-title {
+            max-width: 250px;
+            overflow: hidden;
+            margin :5px 5px;
+            text-transform: capitalize;
+
+        }
+
+        .card-title p {
+            font-size: 12px;
+        }
+
+        div.card-title div strong {
+            font-weight: 500;
+            font-size: 13px;
+        }
+    </style>
+{% endblock %}
+
+{% block basic_block %}
+    <form method="post" id="reorderForm" style="margin: 15px">
+        {% csrf_token %}
+        <div id="sortable" class="content">
+            {% for item in items %}
+                {% if item.type == 'image' %}
+                    <div class="sortable-item img" data-id="{{ item.id }}" data-type="image">
+                        <div class="container-item">
+                            <img src="{{ item.obj.image.url }}" alt="{{ item.obj.title }}">
+                            <div>
+                                <p class="title-img">{{ item.obj.title }} {{ item.order }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% elif item.type == 'video' %}
+                    <div class="sortable-item" data-id="{{ item.id }}" data-type="video">
+                        <div class="container-item">
+                            <video src="{{ item.obj.video_file.url }}"></video>
+                            <div>
+                                <p class="title-img">{{ item.obj.title }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% elif item.type == 'post' %}
+{#                    <div  data-id="{{ item.id }}" data-type="post">#}
+{##}
+{#                        <div>#}
+{#                            <h3>{{ item.obj.title }}</h3>#}
+{#                            <div style="padding: 5px">{{ item.obj.content|safe }}</div>#}
+{##}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+
+                    <div>
+                        <div class="sortable-item ">
+                            <div class="posts">
+
+                                <a style="color: black;text-decoration: none;">
+                                    <div style=" max-height: 530px;overflow: hidden">
+
+                                         {{ item.obj.content|safe }}
+
+                                    </div>
+
+
+                                    <div class="card-title">
+                                        <p><strong>{{ item.obj.title }}</strong><br> {{ item.obj.created_at.date }}
+                                        </p>
+
+                                    </div>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                {% elif item.type == 'blog' %}
+                    <div class="sortable-item" data-id="{{ item.id }}" data-type="blog">
+                        <div>
+                            <div>{{ item.obj.content|safe }}</div>
+
+                            <div>
+                                <h3>{{ item.obj.title }}</h3>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <button type="submit">Save Order</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var el = document.getElementById('sortable');
+            var sortable = Sortable.create(el, {
+                onEnd: function () {
+                    var order = [];
+                    el.querySelectorAll('.sortable-item').forEach(function (item) {
+                        var type = item.getAttribute('data-type');
+                        var id = item.getAttribute('data-id');
+                        order.push(type + '-' + id);
+                    });
+
+                    fetch("{% url 'reorder_items' board.id %}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            item_order: order
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            {#if (data.status === 'success') {#}
+                            {#    alert('Order updated successfully!');#}
+                            {##}
+                            {#    alert('Failed to update order.');#}
+                            {##}
+                        })
+                        .catch(error => {
+                            alert('An error occurred while updating the order.');
+                            console.error('Error:', error);
+                        });
+                }
+            });
+        });
+    </script>
+{% endblock %}

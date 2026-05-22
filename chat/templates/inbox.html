@@ -1,10 +1,234 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block basic_block %}
+    <style>
+        .reciver_message {
+            width: fit-content;
+            padding: 0 10px ;
+            margin: 15px 0;
+            color: #070707;
+            font-family: "Roboto", sans-serif;
+            display: flex;
+            /* width: min-content; */
+            border-left-style: solid;
+            border-color: #7f4646;
+            align-content: flex-start;
+        }
+
+        .user_message {
+            width: fit-content;
+            min-width: 350px;
+            padding: 7px;
+            margin: 15px 0px;
+            color: black;
+            font-family: "Roboto", sans-serif;
+            border-left-style: solid;
+            border-color: black;
+        }
+
+        .form {
+        {#margin-left: 10%;#} padding: 10px;
+            margin: 5px 0 5px 10px;
+        }
+
+        .form textarea {
+            width: 300px;
+            resize: none;
+        }
+
+        #title {
+            margin: 10px 20px;
+
+        }
+
+        .user_pic {
+            width: 40px;
+            height: 40px;
+        {#margin: 0 0 -80px -45px;#} border-radius: 50%;
+            object-fit: cover;
+        }
+
+        #chat-log {
+            margin-left: 80px;
+            max-height: 700px;
+            overflow-y: scroll;
+        {#max-width: 600px;#}
+        }
+
+        .lrg-con {
+            margin-bottom: 10px;
+        }
+
+        .date {
+            font-size: 10px;
+        }
+
+        .read {
+            font-size: 7px;
+        }
+    </style>
+
+    <h4 id="title">message {{ recipient.username }}
+        <img src="/media/{{ recipient.profile.profile_picture }}" class="user_pic">
+    </h4>
+
+    <div id="chat-log">
+        {% for message in all_messages %}
+            {% if message.sender == request.user %}
+                <div class="reciver_message" style="display: flex;
+    flex-direction: column;
+
+}">
+
+                    <p>{{ message.body|safe }}</p>
+                    <div>
+                        <p class="read">{% if message.is_read %}
+                            Read
+
+                        {% endif %}
+
+
+                        </p>
+
+                    </div>
+
+
+                    {#              <p class="date">{{ message.date.time }}</p>#}
+
+
+                </div>
+            {% elif message.recipient == request.user %}
+
+                {#        {% if message.recipient.profile.profile_picture %}#}
+                {#                    <img src="/media/{{  message.recipient.profile.profile_picture}}" class="user_pic">#}
+                {#                    {%  else  %}#}
+                {#                    {{message.recipient.username  }}#}
+                {#                {% endif %}#}
+                <div class="user_message">
+
+
+                    <p>{{ message.body |safe }}</p>
+                    <p class="date">{{ message.date.time }}</p>
+
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <form id="message-form" class="form">
+        {% csrf_token %}
+
+        <textarea id="message-input" name="body"></textarea>
+        <button id="send-button" type="submit" class="btn btn-dark">Send</button>
+
+
+    </form>
+    {##}
+    <script>
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/single_chat/{{ single_chat.id }}/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            const chatLog = document.querySelector('#chat-log');
+
+            if (data.type === 'previous_messages') {
+                data.messages.forEach(message => {
+                    const messageElement = document.createElement('div');
+                    messageElement.className = message.user === '{{ user }}' ? 'reciver_message' : 'user_message';
+                    messageElement.innerHTML = '<p>' + message.body + '</p>';
+                    chatLog.appendChild(messageElement);
+                });
+            } else if (data.type === 'new_message') {
+                const messageElement = document.createElement('div');
+                messageElement.className = data.sender === '{{ user }}' ? 'reciver_message' : 'user_message';
+                messageElement.innerHTML = '<p>' + data.message;
+                chatLog.appendChild(messageElement);
+            }
+
+            // Scroll to bottom of chat log
+            chatLog.scrollTop = chatLog.scrollHeight;
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#message-form').onsubmit = function (e) {
+            e.preventDefault();
+            const message = tinymce.get('message-input').getContent();  // Get the TinyMCE content
+            chatSocket.send(JSON.stringify({
+                'message': message,
+            }));
+            tinymce.get('message-input').resetContent();  // Clear the TinyMCE editor
+        };
+    </script>
+    <script>
+        tinymce.init({
+            skin: 'borderless',
+            icons: 'small',
+            selector: " #message-input",
+            menubar: false,
+            toolbar_location: "bottom",
+            plugins: "autoresize link lists emoticons image media",
+            autoresize_bottom_margin: 0,
+            max_height: 500,
+            width: 600,
+            placeholder: "Enter message . . .",
+            toolbar: "bold italic strikethrough link numlist bullist emoticons image media ",
+            setup: function (editor) {
+                editor.ui.registry.addButton("send", {
+                    tooltip: "Send Message",
+                    text: "Send",
+                    onAction: function () {
+                        const message = editor.getContent();
+                        chatSocket.send(JSON.stringify({
+                            'message': message,
+                        }));
+                        editor.resetContent();
+                    },
+                });
+                document.getElementById("send-button").addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const message = editor.getContent();
+                    chatSocket.send(JSON.stringify({
+                        'message': message,
+                    }));
+                    editor.resetContent();  // Clear the TinyMCE editor after sending
+                });
+            },
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement("input");
+                input.setAttribute("type", "file");
+                if (meta.filetype == "image") {
+                    input.setAttribute("accept", "image/*");
+                }
+                if (meta.filetype == "media") {
+                    input.setAttribute("accept", "video/*");
+                }
+
+                input.onchange = function () {
+                    var file = this.files[0];
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        var id = "blobid" + (new Date()).getTime();
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(",")[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+                        cb(blobInfo.blobUri(), {title: file.name});
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            },
+            automatic_uploads: true,
+        });
+
+
+    </script>
+    <script src="{% static 'js/uploader.js' %}"></script>
+
+{% endblock %}

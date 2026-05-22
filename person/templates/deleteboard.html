@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+    {% if request.user == board.user  %}
+
+	 <h1>Delete Post</h1>
+        <p>Are you sure you want to delete the post "{{ board.title }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            <a href="{% url 'person:follow_unfollow_user' board.user.username ' ' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+{% endif %}
+{% endblock %}

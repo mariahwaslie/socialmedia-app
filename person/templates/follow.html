@@ -1,10 +1,1434 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<!-- template.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block basic_block %}
+    <style>
+
+        .card-text:last-child {
+            margin-bottom: 0;
+            box-shadow: -2px -1px 14px 0px #c4c4c47d;
+        }
+
+        a {
+            text-decoration: none;
+        {#color: black;#}
+        }
+
+        a:hover, li a:hover, li.nav-item:active, ul li.nav-item a.nav-link:hover, ul li.nav-item a.nav-link:focus, ul li.nav-item a.nav-link:focus-visible {
+            text-decoration: none;
+            border-style: none;
+        }
+
+        .post-box {
+        {#box-shadow: 4px 7px 9px 2px #cfcbcb82;#} border-radius: 10px;
+            max-height: 400px;
+            overflow: hidden;
+        {#padding: 10px;#} margin: 10px 0;
+        }
+
+        .posts {
+            padding: 10px;
+            max-height: 270px;
+            overflow: hidden;
+        }
+
+        .card-text:last-child {
+            margin-bottom: 0;
+            box-shadow: -2px -1px 14px 0px #c4c4c47d;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover, a:focus {
+            text-decoration: none;
+            color: black;
+        }
+
+        a.nav-link.active:hover, .nav .nav-item .nav-link.active:focus {
+            border-radius: 15px;
+            padding: 5px 20px;
+        }
+
+        a.nav-link.active, li.nav-item {
+            border-style: none;
+            font-weight: 500;
+
+
+        }
+
+
+        {#.card-text {#}
+        {#    background-color: #ffffff;#}
+        {##}
+        {#    padding: 10px;#}
+        {#    border-radius: 10px;#}
+        {#    margin-top: 5px;#}
+        {#    max-width: 280px;#}
+        {#    min-width: 200px;#}
+        {#    max-height: 300px;#}
+        {#    overflow: hidden;#}
+        {#    font-weight: 400;#}
+        {##}
+        {##}
+
+        .content {
+            columns: 14rem;
+            width: 98%;
+            margin-top: 10px;
+        {#display: table;#}
+        }
+
+        .timeline-content {
+            display: block;
+            flex-wrap: wrap;
+        }
+
+        .video {
+        {#min-height: 250px;#} max-height: 500px;
+            border-radius: 10px 10px;
+            border-color: #FFFFFF;
+            max-width: 100%;
+            display: block;
+            background-color: black;
+            margin: 10px;
+        }
+
+        .posts {
+            display: inline-flex;
+        }
+
+        .video-container {
+            padding: 0;
+            margin: auto;
+            display: inline-block;
+            border-radius: 15px;
+
+        }
+
+        body {
+            display: block
+        }
+
+        ul.nav li {
+            list-style: none;
+        }
+
+        .nav li a, .nav-link {
+            text-decoration: none;
+            color: black;
+            border-radius: 10px;
+        }
+
+        {#p {#}
+        {#    font-weight: 500;#}
+        {#    margin-left: 10px;#}
+        {##}
+        {##}
+        {##}
+
+        div .container {
+            display: flex;
+            margin: 0 0 0 0;
+            padding: 25px 0 0 0;
+        }
+
+        button {
+            margin-left: 25px;
+            text-align: center;
+            width: 130px;
+            height: 35px;
+            border-radius: 10px;
+        {#padding: 10px;#} border-style: none;
+            font-weight: 400;
+            font-size: 14px;
+            margin: 7px 0 0 5px;
+        {#background-color: #93a7da;#}
+
+        }
+
+        button a {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .name {
+        {#font-weight: normal;#} font-size: 12px;
+            text-transform: capitalize;
+            width: max-content;
+            margin-left: 15px;
+
+
+        }
+
+        .username {
+            font-weight: 350;
+            font-size: 21px;
+            margin: 0 0 0 10px;
+        {#padding-left: 20%;#} padding: 10px 0 17px 0;
+        {#text-transform: capitalize;#}
+
+
+        }
+
+        div .follow {
+            display: flex;
+        {#padding-top: 38px;#}{#margin-right: 20px;#}{#padding: 1rem;#} margin: 0;
+            padding: 1px 0 0 10px;
+        }
+
+        div .follow p {
+            margin-right: 20px;
+            font-size: 13px;
+            width: max-content;
+
+        }
+
+        .profile_pic_img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        {#margin-right: 10px;#} margin-top: 20px;
+        }
+
+        .text {
+            display: block
+        }
+
+        .bio {
+            display: flex;
+            font-size: 14px;
+            padding: 0 0 0 10px;
+            margin: -10px 0 10px 0;
+
+        }
+
+        .nav {
+            margin: 0 auto;
+            width: fit-content;
+            flex
+        }
+
+        {#.nav-item:hover {#}
+        {#    background-color: #eeeeee;#}
+        {#    color: black;#}
+        {#    border-radius: 5px;#}
+        {#    border-style: none;#}
+        {##}
+        {##}
+
+        {#.nav-link:hover {#}
+        {#    color: black;#}
+        {#    background-color: #eeeeee;#}
+        {#border-radius: 10px;#}
+        {##}
+        {##}
+
+        {#.nav-link:focus {#}
+        {#    color: white;#}
+        {#    background-color: black;#}
+        {#    border-radius: 10px;#}
+        {##}
+        {##}
+
+        .nav-link {
+            font-weight: 500;
+
+        }
+
+        div.container.c {
+            margin: 0;
+            padding-bottom: 30px;
+            padding-top: 20px;
+        }
+
+
+        .card-title {
+            max-width: 250px;
+            overflow: hidden;
+        {#padding :0 10px;#} margin-left: 15px;
+            text-transform: capitalize;
+
+        }
+
+        .card-title p {
+            font-size: 10px;
+        }
+
+        h6.title strong {
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+
+        .video {
+            display: block;
+        {#max-width: 240px;#}
+        }
+
+        .posts {
+            display: inline-block;
+        }
+
+        .img img {
+            object-fit: cover;
+            max-width: 250px;
+            border-radius: 10px;
+            display: inline-flex;
+            flex-wrap: wrap;
+            margin: 5px;
+        }
+
+        .board-box {
+            width: 300px;
+            border-radius: 20px;
+            display: flex;
+            flex-wrap: nowrap;
+            height: 330px;
+        }
+
+        h6.title {
+            text-transform: capitalize;
+            font-weight: normal;
+            font-size: 13px;
+            margin-left: 10px;
+            margin-top: 10px;
+
+
+        }
+
+        ul.nav li {
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav a.nav-link {
+            border: none;
+            color: black;
+            padding: 10px;
+        }
+    </style>
+
+    <style>
+        /* Basic styling for visibility */
+        .item {
+            display: none;
+        }
+
+        .item.visible {
+            display: flow;
+        }
+
+        .f-name {
+            margin: 3px 0 0 5px;
+        }
+
+        .nav-link:hover, .nav-link:focus, .nav-link:active {
+            /* background-color: #eeeeee; */
+            background-color: #000;
+            color: white !important;
+            font-family: 'Poppins', 'sans-serif';
+            border-radius: 10px;
+
+        }
+
+        {#.nav-link a:active {#}
+        {#    color: white;#}
+        {#    background-color: black;#}
+        {#    text-decoration: underline;#}
+        {##}
+        .nav-link {
+            font-weight: 500;
+            font-family: 'Poppins', 'sans-serif';
+            margin: 2px;
+            font-size: 14px;
+        }
+
+        .btn-light {
+            background-color: #FFFFFF;
+            font-size: 13px;
+            padding: 0;
+            width: 75px;
+        }
+
+        .btn-light:hover {
+            background-color: #FFFFFF;
+        }
+
+        #follow-btn {
+            margien-top: 10px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+    </style>
+
+    {%  if not request.user  in target_user.profile.blocked.all  %}
+
+    <div style="width: 55%;
+    margin: auto;width: min-content">
+
+        <div class=" container c">
+            {% if profile.profile_picture %}
+                <img src="/media/{{ profile.profile_picture }}" class="profile_pic_img">
+            {% else %}
+                <img src="/media/base/profile_pic_blank.png" class="profile_pic_img" style="opacity: 0.5">
+
+            {% endif %}
+            <div style="display: flex;
+    flex-direction: column;">
+                <div class="container">
+                    <div class="text">
+
+                        <p class="username">{{ profile.user.username }} </p>
+                        <p class="name">{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                           <div class="bio">
+                    {{ profile.bio }}
+                </div>
+
+                    </div>
+                    <div class="text">
+                        {#                                                {% if user.is_authenticated %}#}
+                        <div>
+                            <div>
+                                <button id="follow-btn" type="button" data-profile-id="{{ target_user.profile.id }}">
+
+                                    {% if user in profile.followers.all %}
+                                        unfollow
+                                    {% else %}
+                                        Follow
+                                    {% endif %}
+
+                                </button>
+                                {% if request.user in target_user.profile.followers.all %}
+                                    <a href="{% url 'chat:inbox' target_user.username %}">
+
+                                        <button id="msg" type="button">
+                                            message
+                                        </button>
+
+
+                                    </a>
+
+                                {% endif %}
+
+
+                            </div>
+                            <div>
+
+
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                                        data-bs-target="#blocks1">
+                                    <img src="/media/base/icons8-dots-30.png"
+                                         style="width: 20px;height:20px">
+                                </button>
+
+                                <div class="modal fade" id="blocks1" tabindex="-1"
+                                     aria-labelledby="blocks1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <div class="modal-body">
+                                            {% if request.user != target_user %}
+                                                <button id="blocking" type="button"
+                                                        data-profile-id="{{ target_user.profile.id }}">
+                                                    <a id="t_block">{% if target_user  in request.user.profile.blocked.all %}
+                                                    	unblock
+                                                        {% else  %}
+                                                        block
+                                                    {% endif %}</a>
+                                                    {{ target_user.username }}
+                                                </button>
+                                             {% endif %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        {#                                                {% endif %}#}
+
+                        <div class="container follow">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#followers">
+                                <a id="follower-count">{{ profile.followers.count }}</a>
+                                Followers
+                            </button>
+
+                            <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#following"><a>{{ profile_list.count }}</a> Following
+
+                            </button>
+                            <div class="modal fade" id="following" tabindex="-1" aria-labelledby="following"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">{{ target_user.username }} is following</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" style="display: flex;flex-direction: column">
+                                            {% for f in following %}
+                                                <div style="display: flex">
+                                                    <div>
+                                                        {% if f.profile_picture %}
+                                                            <img src="/media/{{ f.profile_picture }}"
+                                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                                        {% else %}
+                                                            <img src="/media/base/profile_pic_blank.png"
+                                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <a class="f-name"
+                                                       href="{% url 'person:follow_unfollow_user'  f.user.username ' ' %}">
+                                                        {#                                                      >{{ f.username }}</a>#}
+                                                        {{ f.user.username }}
+                                                    </a>
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="followers" tabindex="-1" aria-labelledby="followers"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">{{ target_user.username }} followers</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" style="display: flex;flex-direction: column">
+                                            {% for f in followers %}
+                                                <div style="display: flex">
+                                                    <div>
+                                                        {% if f.profile.profile_picture %}
+                                                            <img src="/media/{{ f.profile.profile_picture }}"
+                                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;margin: 0 0 0 10.5px; ">
+                                                        {% else %}
+                                                            <img src="/media/base/profile_pic_blank.png"
+                                                                 style="width: 30px;height: 30px;border-radius: 50%;object-fit: cover;opacity:.5;margin: 0 0 0 10.5px;">
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <a class="f-name"
+                                                       href="{% url 'person:follow_unfollow_user'  f.username ' ' %}">{{ f.username }}</a>
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-dark btn-sm" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        {#<ul>#}
+                        {#    {% for f in profile_list %}#}
+                        {#        {% if  target_user in followers %}#}
+                        {#        <li><a href="{% url 'person:follow_unfollow_user'  f.user.username %}">{{ f.user.username }}</a></li>#}
+                        {#                {% endif %}#}
+                        {##}
+                        {#    {% endfor %}#}
+                        {#</ul>#}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <ul class="nav nav-underline" style="flex-wrap: nowrap">
+        <li class="nav-item" data-tab-value="all">
+            <a class="nav-link" aria-current="page" href="#">All</a>
+        </li>
+        {% if posts %}
+            <li class="nav-item" data-tab-value="posts">
+                <a class="nav-link" href="#">Prayers</a>
+            </li>
+        {% endif %}
+        {% if videos %}
+            <li class="nav-item" data-tab-value="vids">
+                <a class="nav-link " href="#">Videos</a>
+            </li>
+        {% endif %}
+        {% if blogs %}
+            <li class="nav-item" data-tab-value="blog">
+                <a class="nav-link " href="#">Blog</a>
+            </li>
+        {% endif %}
+
+        {% if images %}
+            <li class="nav-item" data-tab-value="image" href="#">
+                <a class="nav-link">
+                    Images
+                </a>
+            </li>
+        {% endif %}
+        <li class="nav-item" data-tab-value="saves">
+            <a class="nav-link">
+                Saves
+            </a>
+        </li>
+    </ul>
+    {#    tab content #}
+    <div style="align-items:center;display:flex;flex-direction: column;">
+    <div class="content all" id="all" data-tab>
+        {% for item in items_by_date %}
+            <div class=" " style="display:block">
+                {% if item.privacy %}
+                    {% if item.privacy == 'public' or  request.user == target_user %}
+                        {% if item in videos %}
+                            <div class="vids item" style="display: inline-block">
+                                <a href="{% url 'person:viewvideo' profile.user.id item.id ' ' %}">
+                                    <video class="vids item video">
+                                        <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                    </video>
+
+                                </a>
+                                <h6 class="vids item"
+                                    style="font-size: 12px;margin: 0 0 0 20px;text-transform: capitalize">
+                                    {{ item.title }}
+                                    {#                            {{ item.created_at.date }}#}
+                                </h6>
+
+                            </div>
+                        {% elif item in posts %}
+                            <div class="post-box posts item" style="box-shadow: 4px 7px 9px 2px #cfcbcb82;">
+
+                                <div class=""
+                                     style="margin-bottom: 5px;border-radius: 15px;padding: 10px;">
+                                    <div class="posts">
+                                        <div class="timeline-content ">
+                                            <a href="{% url 'person:viewpost' profile.user.id item.id ' ' %}">
+
+
+                                                <p> {{ item.content |safe }}</p>
+
+
+                                            </a>
+
+                                            <div class="card-title">
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {#                        <a href="#"#}
+                                {#                           style="font-weight: 500">#}
+                                {#                            {{ item.user.username }}</a>#}
+                                <a style="font-size: 12px;margin: 0 0 0 25px">
+                                    <strong style="text-transform: capitalize;"> {{ item.title }}</strong>
+                                    {#                            {{ item.created_at.date }}#}
+                                </a>
+                            </div>
+                        {% elif item in images %}
+                            <div class="img image item">
+                                <div style="display: inline">
+                                    <a href="{% url 'person:viewimage' profile.user.id item.id ' ' %}">
+                                        <img src="/media/{{ item.image }}">
+                                    </a>
+                                    <div>
+                                        <a style="font-size: 12px;margin: 0 0 0 25px">
+                                            <strong style="text-transform: capitalize;"> {{ item.title }}</strong>
+                                            {#                            {{ item.created_at.date }}#}
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        {% else %}
+                            <div class="post-box blog item">
+
+                                <div class=""
+                                     style="margin-bottom: 5px;box-shadow: 4px 7px 9px 2px #cfcbcb82;border-radius: 15px;padding: 10px;">
+                                    <div class="posts">
+                                        <div class="timeline-content ">
+                                            <a href="{% url 'person:viewblogpost' item.id  ' ' %}">
+                                                {#                                            <strong style="text-transform: capitalize">{{ item.title }}</strong>#}
+                                                <p> {{ item.content | safe }}</p>
+
+                                            </a>
+
+                                            <div class="card-title">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a style="font-size: 12px;margin: 0 0 0 25px">
+                                    <strong style="text-transform: capitalize;"> {{ item.title }}</strong>
+                                    {#                            {{ item.created_at.date }}#}
+                                </a>
+
+                            </div>
+
+                        {% endif %}
+                    {% elif item.privacy == 'followers' and request.user in followers %}
+                        {% if item in videos %}
+                            <div class="vids item">
+                                <a href="{% url 'person:viewvideo' profile.user.id item.id ' ' %}">
+                                    <video class="video">
+                                        <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                    </video>
+
+                                </a>
+                                <h6 style="font-size: 12px;margin: 0 0 0 20px;text-transform: capitalize">
+                                    {{ item.title }}
+                                    {#                            {{ item.created_at.date }}#}
+                                </h6>
+
+                            </div>
+
+                        {% elif item in posts %}
+                            <div class="post-box posts item" style="box-shadow: 4px 7px 9px 2px #cfcbcb82;">
+
+                                <div class=""
+                                     style="margin-bottom: 5px;border-radius: 15px;padding: 10px;">
+                                    <div class="posts">
+                                        <div class="timeline-content ">
+                                            <a href="{% url 'person:viewpost' profile.user.id item.id ' ' %}">
+
+
+                                                <p> {{ item.content |safe }}</p>
+
+
+                                            </a>
+
+                                            <div class="card-title">
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {#                        <a href="#"#}
+                                {#                           style="font-weight: 500">#}
+                                {#                            {{ item.user.username }}</a>#}
+                                <a style="font-size: 12px;margin: 0 0 0 25px">
+                                    <strong style="text-transform: capitalize;"> {{ item.title }}</strong>
+                                    {#                            {{ item.created_at.date }}#}
+                                </a>
+                            </div>
+
+                        {% elif item in images %}
+
+
+                            <div class="img image item">
+                                <div style="display: inline">
+                                    <a href="{% url 'person:viewimage' profile.user.id item.id ' ' %}">
+                                        <img src="/media/{{ item.image }}">
+                                    </a>
+                                    <div>
+                                        <a style="font-size: 12px;margin: 0 0 0 25px">
+                                            <strong style="text-transform: capitalize;"> {{ item.title }}</strong>
+                                            {#                            {{ item.created_at.date }}#}
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        {% else %}
+                            <div class="post-box blog item" style="box-shadow: 4px 7px 9px 2px #cfcbcb82;">
+
+                                <div class=""
+                                     style="margin-bottom: 5px;padding: 10px;">
+                                    <div class="posts">
+                                        <div class="timeline-content ">
+                                            <a href="{% url 'person:viewblogpost' item.id  ' ' %}">
+                                                {#                                            <strong style="text-transform: capitalize">{{ item.title }}</strong>#}
+                                                <p> {{ item.content | safe }}</p>
+
+                                            </a>
+
+                                            <div class="card-title">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a style="font-size: 12px;margin: 0 0 0 25px">
+                                    <strong style="text-transform: capitalize;"> {{ item.title }}</strong>
+                                    {#                            {{ item.created_at.date }}#}
+                                </a>
+
+                            </div>
+
+                        {% endif %}
+                        {#                {% elif item.privacy == 'followers' and request.user in followers %}#}
+
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        {% endfor %}
+    </div>
+    <div class="content " id="saves" style="display:block">
+        {% if target_user == user %}
+            <div class="saves item">
+                <a class=" " href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false" style="background-color: #DDDDDD">
+                    <img src="/media/base/icons8-plus-24.svg" style="background-color: #FFF9F9"> </a>
+
+
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'person:createimage' %}">Image</a></li>
+                    <li><a class="dropdown-item" href="{% url 'person:uploadvideo' %}">Video</a></li>
+                    <li><a class="dropdown-item" href="{% url 'person:post' %}">Prayer</a></li>
+                    <li><a class="dropdown-item" href="{% url 'person:createboard' %}">Board</a></li>
+
+                </ul>
+            </div>
+        {% endif %}
+
+        {% for item in saved %}
+            {% if item.privacy == 'public'  or request.user == target_user %}
+                {#                <div class="saves item" style="display:block">#}
+                {% if item in saved_vids %}
+                    <div class="saves item">
+                        <div style="display: inline-block">
+                            <a href="{% url 'person:viewvideo' profile.user.id item.id ' ' %}">
+                                <video class="video">
+                                    <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                </video>
+
+                            </a>
+                            <h6 class="title"><strong>{{ item.title }}</strong></h6>
+                            <p>{{ profile.video.created_at }}
+                            </p>
+
+                        </div>
+                    </div>
+                {% elif item in saved_posts %}
+
+                    <div class="saves item">
+                        <div class="posts">
+                            <div class="timeline-content ">
+
+                                <a href="{% url 'person:viewpost' profile.user.id item.id ' ' %}">
+                                    <p class="card-text">{{ item.content|safe }}</p>
+                                    <div class="card-title">
+                                        <p><strong>{{ item.title }}</strong><br> {{ item.created_at.date }} </p>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                {% elif item in saved_images %}
+
+                    <div class="saves item">
+                        <div class="img saves item" style="display: inline">
+                            <a href="{% url 'person:viewimage' profile.user.id item.id ' ' %}">
+                                <img src="/media/{{ item.image }}">
+                            </a>
+                            <div>
+                                <h6 class="title">
+                                    <strong>{{ item.title }}</strong>
+                                    <br>{{ item.created_at.date }}
+                                </h6>
+
+                            </div>
+
+                        </div>
+                    </div>
+                {% endif %}
+            {% elif item.privacy == 'only_me' and target_user == user %}
+                {% if item in saved_vids %}
+                    <div class="saves item">
+                        <div style="display: inline-block">
+                            <a href="{% url 'person:viewvideo' profile.user.id item.id ' ' %}">
+                                <video class="video">
+                                    <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                </video>
+
+                            </a>
+                            <h6 class="title"><strong>{{ item.title }}</strong></h6>
+                            <p>{{ profile.video.created_at }}
+                            </p>
+
+                        </div>
+                    </div>
+                {% elif item in saved_posts %}
+
+                    <div class="saves item">
+                        <div class="posts">
+                            <div class="timeline-content ">
+
+                                <a href="{% url 'person:viewpost' profile.user.id item.id ' ' %}">
+                                    <p class="card-text">{{ item.content|safe }}</p>
+                                    <div class="card-title">
+                                        <p><strong>{{ item.title }}</strong><br> {{ item.created_at.date }} </p>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                {% elif item in saved_images %}
+
+                    <div class="saves item">
+                        <div class="img saves item" style="display: inline">
+                            <a href="{% url 'person:viewimage' profile.user.id item.id ' ' %}">
+                                <img src="/media/{{ item.image }}">
+                            </a>
+                            <div>
+                                <h6 class="title">
+                                    <strong>{{ item.title }}</strong>
+                                    <br>{{ item.created_at.date }}
+                                </h6>
+
+                            </div>
+
+                        </div>
+                    </div>
+                {% endif %}
+            {% elif item.privacy == 'followers' and request.user in item.user.profile.followers.all %}
+                {% if item in saved_vids %}
+                    <div class="saves item">
+                        <div style="display: inline-block">
+                            <a href="{% url 'person:viewvideo' profile.user.id item.id ' ' %}">
+                                <video class="video">
+                                    <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                </video>
+
+                            </a>
+                            <h6 class="title"><strong>{{ item.title }}</strong></h6>
+                            <p>{{ profile.video.created_at }}
+                            </p>
+
+                        </div>
+                    </div>
+                {% elif item in saved_posts %}
+
+                    <div class="saves item">
+                        <div class="posts">
+                            <div class="timeline-content ">
+
+                                <a href="{% url 'person:viewpost' profile.user.id item.id ' ' %}">
+                                    <p class="card-text">{{ item.content|safe }}</p>
+                                    <div class="card-title">
+                                        <p><strong>{{ item.title }}</strong><br> {{ item.created_at.date }} </p>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                {% elif item in saved_images %}
+
+                    <div class="saves item">
+                        <div class="img saves item" style="display: inline">
+                            <a href="{% url 'person:viewimage' profile.user.id item.id ' ' %}">
+                                <img src="/media/{{ item.image }}">
+                            </a>
+                            <div>
+                                <h6 class="title">
+                                    <strong>{{ item.title }}</strong>
+                                    <br>{{ item.created_at.date }}
+                                </h6>
+
+                            </div>
+
+                        </div>
+                    </div>
+                {% endif %}
+            {% elif item.privacy == 'followers' and request.user in item.created_by.profile.followers.all %}
+                {% if item in saved_vids %}
+                    <div class="saves item">
+                        <div style="display: inline-block">
+                            <a href="{% url 'person:viewvideo' profile.user.id item.id ' ' %}">
+                                <video class="video">
+                                    <source src="/media/{{ item.video_file }}" type="video/mp4">
+                                </video>
+
+                            </a>
+                            <h6 class="title"><strong>{{ item.title }}</strong></h6>
+                            <p>{{ profile.video.created_at }}
+                            </p>
+
+                        </div>
+                    </div>
+                {% elif item in saved_posts %}
+
+                    <div class="saves item">
+                        <div class="posts">
+                            <div class="timeline-content ">
+
+                                <a href="{% url 'person:viewpost' profile.user.id item.id ' ' %}">
+                                    <p class="card-text">{{ item.content|safe }}</p>
+                                    <div class="card-title">
+                                        <p><strong>{{ item.title }}</strong><br> {{ item.created_at.date }} </p>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                {% elif item in saved_images %}
+
+                    <div class="saves item">
+                        <div class="img saves item" style="display: inline">
+                            <a href="{% url 'person:viewimage' profile.user.id item.id ' ' %}">
+                                <img src="/media/{{ item.image }}">
+                            </a>
+                            <div>
+                                <h6 class="title">
+                                    <strong>{{ item.title }}</strong>
+                                    <br>{{ item.created_at.date }}
+                                </h6>
+
+                            </div>
+
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+        {% endfor %}
+        {% for board in boards %}
+            {% if board.privacy == 'public'  or target_user == request.user %}
+                <div class="saves item">
+                    <a href="{% url 'person:viewboard' target_user.username board.id %}">
+                        <div>
+                            {% if board.board_images.all.3 %}
+                                <div class="board-box">
+
+                                    <img src="/media/{{ board.board_images.first.image }}"
+                                         style="width:50%;border-radius: 15px;margin: 0 5px;object-fit: cover;height:345px;">
+                                    <div style="width: 50%;display: flex;flex-direction: column;">
+
+                                        <img src="/media/{{ board.board_images.all.3.image }}"
+                                             style="height:50%;border-radius: 15px;margin: 5px;object-fit: cover">
+                                        <img src="/media/{{ board.board_images.all.2.image }}"
+                                             style="height:50%;border-radius: 15px;margin: 5px;object-fit: cover">
+                                    </div>
+                                </div>
+                            {% elif board.board_images.all.2.image %}
+                                <div class="board-box">
+
+                                    <img src="/media/{{ board.board_images.all.first.image }}"
+                                         style="width:50%;border-radius: 15px;margin: 5px;object-fit: cover">
+                                    <img src="/media/{{ board.board_images.all.last.image }}"
+                                         style="width:50%;border-radius: 15px;margin: 5px;object-fit: cover">
+                                </div>
+                            {% elif board.board_images.all.first.image %}
+                                <div class="board-box">
+
+                                    <img src="/media/{{ board.board_images.first.image }}"
+                                         style="width:100%;border-radius: 15px;margin: 0 5px;object-fit: cover;height:345px;">
+                                </div>
+                            {% endif %}
+
+
+                        </div>
+                        <div>
+                            <h5 style="margin: 20px 10px">{{ board.title }}</h5>
+                            {#                            <p>{{ board.images.all.count }} images</p>#}
+                        </div>
+                    </a>
+                </div>
+                {#            {% elif board.privacy == 'only_me' and target_user == user %}#}
+                {#                <div class="saves item">#}
+                {#                    <a href="{% url 'person:viewboard' target_user.username board.id %}">#}
+                {#                        <div>#}
+                {#                            {% if board.images.all.3.image %}#}
+                {#                                <div class="board-box">#}
+                {##}
+                {#                                    <img src="/media/{{ board.images.first.image }}"#}
+                {#                                         style="width:50%;border-radius: 15px;margin: 0 5px;object-fit: cover;height:345px;">#}
+                {#                                    <div style="width: 50%;display: flex;flex-direction: column;">#}
+                {##}
+                {#                                        <img src="/media/{{ board.images.all.3.image }}"#}
+                {#                                             style="height:50%;border-radius: 15px;margin: 5px;object-fit: cover">#}
+                {#                                        <img src="/media/{{ board.images.all.2.image }}"#}
+                {#                                             style="height:50%;border-radius: 15px;margin: 5px;object-fit: cover">#}
+                {#                                    </div>#}
+                {#                                </div>#}
+                {#                            {% elif board.images.all.2.image %}#}
+                {#                                <div class="board-box">#}
+                {##}
+                {#                                    <img src="/media/{{ board.images.all.first.image }}"#}
+                {#                                         style="width:50%;border-radius: 15px;margin: 5px;object-fit: cover">#}
+                {#                                    <img src="/media/{{ board.images.all.last.image }}"#}
+                {#                                         style="width:50%;border-radius: 15px;margin: 5px;object-fit: cover">#}
+                {#                                </div>#}
+                {#                            {% elif board.images.all.first.image %}#}
+                {#                                <div class="board-box">#}
+                {##}
+                {#                                    <img src="/media/{{ board.images.first.image }}"#}
+                {#                                         style="width:100%;border-radius: 15px;margin: 0 5px;object-fit: cover;height:345px;">#}
+                {#                                </div>#}
+                {#                            {% endif %}#}
+                {##}
+                {##}
+                {#                        </div>#}
+                {#                        <div>#}
+                {#                            <h5 style="margin: 20px 10px">{{ board.title }}</h5>#}
+                {#                            <p>{{ board.images.all.count }} images</p>#}
+                {#                        </div>#}
+                {#                    </a>#}
+                {#                </div>#}
+            {% elif board.privacy == 'followers' and request.user in followers %}
+                <div class="saves item">
+                    <a href="{% url 'person:viewboard' target_user.username board.id %}">
+                        <div>
+                            {% if board.board_images.all.3 %}
+                                <div class="board-box">
+
+                                    <img src="/media/{{ board.board_images.first.image }}"
+                                         style="width:50%;border-radius: 15px;margin: 0 5px;object-fit: cover;height:345px;">
+                                    <div style="width: 50%;display: flex;flex-direction: column;">
+
+                                        <img src="/media/{{ board.board_images.all.3.image }}"
+                                             style="height:50%;border-radius: 15px;margin: 5px;object-fit: cover">
+                                        <img src="/media/{{ board.board_images.all.2.image }}"
+                                             style="height:50%;border-radius: 15px;margin: 5px;object-fit: cover">
+                                    </div>
+                                </div>
+                            {% elif board.board_images.all.2.image %}
+                                <div class="board-box">
+
+                                    <img src="/media/{{ board.board_images.all.first.image }}"
+                                         style="width:50%;border-radius: 15px;margin: 5px;object-fit: cover">
+                                    <img src="/media/{{ board.board_images.all.last.image }}"
+                                         style="width:50%;border-radius: 15px;margin: 5px;object-fit: cover">
+                                </div>
+                            {% elif board.board_images.all.first.image %}
+                                <div class="board-box">
+
+                                    <img src="/media/{{ board.board_images.first.image }}"
+                                         style="width:100%;border-radius: 15px;margin: 0 5px;object-fit: cover;height:345px;">
+                                </div>
+                            {% endif %}
+
+
+                        </div>
+                        <div>
+                            <h5 style="margin: 20px 10px">{{ board.title }}</h5>
+                            {#                            <p>{{ board.images.all.count }} images</p>#}
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+
+
+
+        {% endfor %}
+
+    </div>
+    {% endif %}
+    {#    <script>#}
+    {#        function getCookie(name) {#}
+    {#            let cookieValue = null;#}
+    {#            if (document.cookie && document.cookie !== '') {#}
+    {#                const cookies = document.cookie.split(';');#}
+    {#                for (let i = 0; i < cookies.length; i++) {#}
+    {#                    const cookie = cookies[i].trim();#}
+    {#                    if (cookie.substring(0, name.length + 1) === (name + '=')) {#}
+    {#                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));#}
+    {#                        break;#}
+    {#                    }#}
+    {#                }#}
+    {#            }#}
+    {#            return cookieValue;#}
+    {#        }#}
+    {##}
+    {#        const csrftoken = getCookie('csrftoken');#}
+    {##}
+    {##}
+    {#        $.ajaxSetup({#}
+    {#            beforeSend: function (xhr, settings) {#}
+    {#                if (!/^http:.*/.test(settings.url) && !/^https:.*/.test(settings.url)) {#}
+    {#                    xhr.setRequestHeader("X-CSRFToken", csrftoken);#}
+    {#                }#}
+    {#            }#}
+    {#        });#}
+    {#        {% bootstrap_javascript %}#}
+    {##}
+    {#    </script>#}
+    {#    <script>#}
+    {#    var csrftoken = '{{ csrf_token }}';#}
+    {#</script>#}
+
+    <script>
+
+        $(document).ready(function () {
+            $('#follow-btn').click(function () {
+                var profileId = $(this).data('profile-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "person:follow_unfollow_user" action_type="follow"  username=target_user.username %}',
+                    data: {
+                        'csrfmiddlewaretoken': csrftoken  // Include CSRF token
+                    },
+                    {#beforeSend: function (xhr,settings) {#}
+                    {#// Include CSRF token#}
+                    {#xhr.setRequestHeader("X-CSRFToken", getCSRFToken());#}
+
+                    success: function (response) {
+                        $('#follower-count').text(response.total_follows);
+
+                        $('#follow-btn').text(response.follows ? 'Unfollow' : 'Follow');
+                        {#if (response.follows) {#}
+                        {#    $('#msg').removeClass('hide')#}
+                        {##}
+                        {#    $('#msg').addClass('hide')#}
+                        {##}
+                    }
+                });
+            });
+
+        });
+
+        function getCSRFToken() {
+            let csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            return csrftoken;
+        }
+
+        $(document).ready(function () {
+            var profileId = $(this).data('profile-id');
+
+            $('#blocking').click(function () {
+                var csrftoken = getCSRFToken();
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "person:follow_unfollow_user" action_type="block"  username=target_user.username %}',
+                    data: {
+                        'csrfmiddlewaretoken': csrftoken
+                    }, // Include CSRF token
+
+
+                    success: function (response) {
+                        if (response.blocked_user) {
+                            $('#t_block').text('unblocked');
+                        }else{
+                             $('#t_block').text('block');
+                        }
+
+
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+
+        const videos = document.querySelectorAll('.video');
+        const volumeBtn = document.getElementById('volume-btn');
+        videos.forEach(function (video) {
+            video.addEventListener('mouseenter', function () {
+
+                video.currentTime = 0; // Start from the beginning
+                video.mute()
+                video.play();
+
+
+                // Stop playing after 5 seconds
+                setTimeout(function () {
+                    video.pause();
+                }, 10000);
+
+            });
+
+        });
+        videos.forEach(function (video) {
+            video.addEventListener('touchend', function () {
+                // Remove controls when the mouse leaves the video
+                {#video.removeAttribute('controls');#}
+                video.pause()
+                video.muted = true;
+            });
+        });
+        videos.forEach(function (video) {
+            video.addEventListener('mouseleave', function () {
+                // Remove controls when the mouse leaves the video
+                {#video.removeAttribute('controls');#}
+                video.pause()
+                video.muted = true;
+            });
+        });
+
+        function getCSRFToken() {
+            return document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+
+
+    </script>
+    {#        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
+
+
+
+    {#const tabs = document.querySelectorAll('[data-tab-value]');#}
+
+
+    {#tabs.forEach(function (tab) {#}
+    {##}
+    {#    for (const t in tabslink) {#}
+    {#        const classes = t.getAttribute('data-tab-value');#}
+    {#        console.log(classes);#}
+    {##}
+    {#        tab.addEventListener('click', () => {#}
+    {##}
+    {#            const classname = tab.getAttribute('data-tab-value');#}
+    {#            const show = document.getElementById(classname);#}
+    {##}
+    {#            for (var i = 0; i < tabs.length; i++) {#}
+    {#                const item = tabs[i].getAttribute('data-tab-value');#}
+    {#                const a = document.getElementById(item);#}
+    {#                if (a != show) {#}
+    {#                    a.hidden = true;#}
+    {#                } else {#}
+    {#                    a.hidden = false;#}
+    {#                }#}
+    {#            }#}
+    {##}
+    {##}
+    {#        })#}
+    {#    }#}
+    {#);#}
+    {#$(document).ready(function () {#}
+    {#        var profileId = $(this).data('profile-id');#}
+    {#        $.ajax({#}
+    {#            type: 'POST',#}
+    {#            url: '{% url "person:follow_unfollow_user" action_type="follow"  username=target_user.username %}',#}
+    {#            beforeSend: function (xhr, settings) {#}
+    {#                // Include CSRF token#}
+    {#                xhr.setRequestHeader("X-CSRFToken", getCSRFToken());#}
+    {#            },#}
+    {#            success: function (response) {#}
+    {#            }#}
+    {#        });#}
+    {#    });#}
+    {##}
+
+
+
+
+    {#const progressBar = document.querySelectorAll('.progress-bar');#}
+    {#video.addEventListener('timeupdate', function () {#}
+    {#    var percentage = (video.currentTime / video.duration) * 100;#}
+    {#    progressBar.style.width = percentage + '%';#}
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navItems = document.querySelectorAll('.nav-item');
+            const allItems = document.querySelectorAll('.item');
+
+            // Show all items initially, except those with the 'saves' class
+            allItems.forEach(item => {
+                if (!item.classList.contains('saves')) {
+                    item.classList.add('visible');
+                }
+            });
+
+            navItems.forEach(navItem => {
+                navItem.addEventListener('click', () => {
+                    const filterValue = navItem.getAttribute('data-tab-value');
+
+                    // Remove 'visible' class from all items
+                    allItems.forEach(item => {
+                        item.classList.remove('visible');
+                    });
+
+                    if (filterValue === 'all') {
+                        // Show all items, except those with the 'saves' class
+                        allItems.forEach(item => {
+                            if (!item.classList.contains('saves')) {
+                                item.classList.add('visible');
+                            }
+                        });
+                    } else {
+                        // Show items matching the filter value
+                        allItems.forEach(item => {
+                            if (item.classList.contains(filterValue)) {
+                                item.classList.add('visible');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+    {#    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
+
+{% endblock %}
+
+
+{#<div#}
+{#            <div class="div-btn">#}
+
+{#</div>#}
+
+<!-- profile.html -->
+{#<div class="follow">#}
+{#<p>Followers {{ profile_list.count }}</p>#}
+{#<ul>#}
+{#    {% for f in profile_list %}#}
+{#        {% if  target_user in followers %}#}
+{#        <li><a href="{% url 'person:follow_unfollow_user'  f.user.username %}">{{ f.user.username }}</a></li>#}
+{#                {% endif %}#}
+{##}
+{#    {% endfor %}#}
+{#</ul>#}
+
+{#<p>Following {{ profile.followers.count }}</p>#}
+{#<ul>#}
+{#    {% for f in profile.followers.all %}#}
+{#        <li><a href="{% url 'person:follow_unfollow_user' f %}">@{{ f.username }}</a></li>#}
+{#    {% endfor %}#}
+{#</ul>#}
+{#</div>#}

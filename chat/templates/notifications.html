@@ -1,10 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block head_block %}
+    <style>
+       /* Notifications Container */
+.notifications-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notifications-container h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Notification List */
+#notifications-list {
+    list-style: none;
+    padding: 0;
+}
+
+/* Individual Notification */
+.notification {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    border-left: 4px solid #007bff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.notification.unread {
+    background-color: #e8f4ff;
+    border-left-color: #0056b3;
+}
+
+.notification p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Mark as Read Button */
+.mark-as-read {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.mark-as-read:hover {
+    background-color: #0056b3;
+}
+
+
+    </style>
+
+{% endblock %}
+{% block basic_block %}
+    {% csrf_token %}
+
+
+    <div class="notifications-container">
+        <h1>Notifications</h1>
+        <ul id="notifications-list">
+            {% for notification in notifications %}
+                <div class="notification {% if notification.unread %}unread{% endif %}">
+                    <div>
+
+
+                        <h6>{{ notification.verb }}</h6>
+                        <p>{{ notification.description | safe }}</p>
+                    </div>
+
+                    <button class="mark-as-read" data-id="{{ notification.id }}" >Mark as read
+                    </button>
+                </div>
+
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.mark-as-read').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const notificationId = this.dataset.id;
+                    fetch(`/notifications/mark-as-read/${notificationId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'same-origin',
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                this.parentElement.classList.add('read');
+                                this.remove();
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+
+{% endblock %}

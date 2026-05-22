@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'profile.html' %}
+{% block posts %}
+    <style>
+    .form-control{
+        margin: 10% 7%;
+        width: 100%;
+    }
+    input{
+
+    }
+    textarea{
+        height: 100px;
+    }
+    label{
+        display: flex;
+    }
+    </style>
+    {% load static %}
+<form method="post" enctype="multipart/form-data" class="form-control">
+{% csrf_token %}
+{{ form.as_p }}
+<button class="btn btn-dark" type="submit">Upload Audio</button>
+</form>
+
+{% endblock %}

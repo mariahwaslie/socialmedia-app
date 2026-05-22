@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{%  extends 'base.html' %}
+{%  block basic_block %}
+    <style>
+    .content-box{
+        margin: 3%;
+    }
+    .an{
+        text-transform: capitalize;
+        text-decoration: none;
+        color: #4d4d4d;
+        font-size: 10px;
+    }
+
+    </style>
+    <h1 style="margin: 10px 2%">{{ post.title }}</h1>
+
+    <div class="content-box">
+        {{ post.content|safe }}
+        <a class="an">{{ post.created_at.date}}</a>
+       <a class="an">| Author : {{post.created_by }} | </a>
+        <a href="{% url 'blog:post_list' %}" class="an">Back to Posts</a>
+          {% if user == post.created_by %}
+                	<a class="an" href="{% url 'blog:post_update' post.id %}">
+                    edit
+                    </a>
+                {% endif %}
+
+
+    </div>
+
+
+{% endblock %}

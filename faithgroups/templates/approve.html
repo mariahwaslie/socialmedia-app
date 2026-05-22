@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+
+    <h2> Approve Group</h2>
+      <p><strong>Group Name:</strong> {{ group_request.group_name }}</p>
+        <p><strong>Description:</strong> {{ group_request.description }}</p>
+        <p><strong>Requested by:</strong> {{ group_request.user.username }}</p>
+
+
+
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{  form.as_p }}
+    <button type="submit">Approve</button>
+    </form>
+{% endblock %}

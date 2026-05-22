@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block head_block %}
+    {% load static %}
+{#    <link rel="stylesheet" href="{% static 'person/style.css' %}">#}
+{% endblock %}
+{% block basic_block %}
+    <style>
+    p{
+        font-size: 14px;
+    }
+    label{
+        display: block;
+    }
+    @media (min-width: 768px) {
+    .container, .container-md, .container-sm {
+        max-width: 80%;
+    }
+}
+    </style>
+
+    <div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form class="was-validated form-control" method="post" enctype="multipart/form-data">
+			<h1>Create Account</h1>
+{#			<div class="social-container">#}
+{#				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>#}
+{#				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>#}
+{#				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>#}
+{#			</div>#}
+{#			<span>or use your email for registration</span>#}
+            {% csrf_token %}
+			 {{ form.as_p }}
+{#          {{ profile_form.as_p }}#}
+            <button type="submit" name="Register" value="Register" class="btn btn-dark">Register</button>
+
+{#            <button>Sign Up</button>#}
+		</form>
+{#        <a href="{% url 'u' %}">Login with Google</a>#}
+
+	</div>
+</div>
+
+{% endblock %}

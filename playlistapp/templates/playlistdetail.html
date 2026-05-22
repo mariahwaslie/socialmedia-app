@@ -1,10 +1,202 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<!-- playlistapp/templates/playlistapp/playlist_detail.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block basic_block %}
+    {#  <h2>{{ playlist.title }}</h2>#}
+    {#  <p>{{ playlist.description }}</p>#}
+    {#    <div>#}
+    {#    <div>#}
+    {#        <video id="videoPlayer" controls>#}
+    {#        <source id="videoSource" src="" type="video/mp4">#}
+    {#        Your browser does not support the video tag.#}
+    {#    </video>#}
+    {#    </div>#}
+    {##}
+    {##}
+    {#    </div>#}
+    {##}
+    {#  <ul id="video_list">#}
+    {#    {% for item in playlist.playlist_video_items.all %}#}
+    {#      <li>{{ item.video.title }} -#}
+    {#          <a href="#" data-url="/media/{{item.video.video_file}}"#}
+    {#                  target="_blank">{{ item.video.title }}</a></li>#}
+    {#    {% endfor %}#}
+    {#  </ul>#}
+    {#  <p href="{% url 'add_to_playlist' playlist.id %}">Add New Item</p>#}
+
+    {##}
+    {#      <script src="{% static 'scripts.js' %}"></script>#}
+    <style>
+        /* static/styles.css */
+        #videoPlayer {
+            width: 100%;
+            max-width: 100%;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #videoPlayer.hidden {
+            opacity: 0;
+        }
+
+        .items-vid {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .video-container, .play-title {
+            margin: 25px;
+        }
+
+        #videoPlayer {
+            border-radius: 15px;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        #videoimg {
+            width: 120px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 1200px;
+            min-width: 400px;
+        }
+
+        .mini-vid  {
+                display: flex;
+                margin: 10px 0 10px 0;
+            }
+        .vid-title{
+            padding: 10px 0 0 10px;
+            font-weight: 600;
+            text-transform: capitalize;
+            font-size: 13px;
+
+        }
+        .small{
+            font-weight: 500;
+            font-size: 11px;
+            color: gray;
+        }
+        .list-item-container{
+            width: 98%;
+            max-width: 1230px;
+        }
+        div.mini-vid:hover{
+            background-color: #d7d7d7;
+
+        }
+          div.mini-vid{
+              padding:5px;
+              border-radius: 3px;
+          }
+
+
+    </style>
+    <div class="play-title">
+
+        <h1>{{ playlist.title }}</h1>
+
+
+    </div>
+
+    <div class="items-vid">
+
+
+        <div class="video-container">
+
+            <video id="videoPlayer" controls>
+                <source id="videoSource" src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="vid-info">
+                <p>{{ playlist.description }}</p>
+            </div>
+
+
+        </div>
+
+        <div class="list-item-container">
+
+            <ul id="videoList">
+                {% for item in playlist_items %}
+                    <li>
+                        <a data-url="/media/{{ item.video.video_file }}"
+                           data-title="{{ item.video.title }}">
+                            <div class="mini-vid">
+                                <video id="videoimg" data-url="/media/{{ item.video.video_file }}">
+                                    <source src="/media/{{ item.video.video_file }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <div class="vid-title" data-url="/media/{{ item.video.video_file }}">
+                                    {{ item.video.title }}
+                                    <div class="small">
+                                          {{ item.video.user.username }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+
+
+    <script src="{% static 'scripts.js' %}"></script>
+    <script>
+        // static/scripts.js
+        // static/scripts.js
+        // static/scripts.js
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let videoPlayer = document.getElementById('videoPlayer');
+            let videoSource = document.getElementById('videoSource');
+            let videoList = document.getElementById('videoList');
+            let currentVideoIndex = 0;
+
+            function playVideo(url) {
+                videoSource.src = url;
+                videoPlayer.load();
+                videoPlayer.play();
+            }
+
+            function handleVideoClick(event) {
+                event.preventDefault();
+                let url = event.target.getAttribute('data-url');
+                playVideo(url);
+                currentVideoIndex = Array.from(videoList.children).indexOf(event.target.parentElement);
+            }
+
+            function onVideoEnded() {
+                currentVideoIndex++;
+                let nextVideo = videoList.children[currentVideoIndex];
+                if (nextVideo) {
+                    playVideo(nextVideo.querySelector('a').getAttribute('data-url'));
+                }
+            }
+
+            videoPlayer.addEventListener('ended', onVideoEnded);
+            videoList.addEventListener('click', handleVideoClick);
+
+            // Play the first video initially
+            let firstVideo = videoList.querySelector('a');
+            if (firstVideo) {
+                playVideo(firstVideo.getAttribute('data-url'));
+            }
+        });
+    </script>
+{% endblock %}

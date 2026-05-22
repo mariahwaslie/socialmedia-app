@@ -1,10 +1,690 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+    <style>
+        .videos {
+            border-radius: var(--card_border_radius);
+            max-height: 100%;
+            width: 320px;
+            display: block;
+            margin: 5px;
+        {#width: -webkit-fill-avaliable;#}
+
+        }
+
+        div.card-box img {
+            border-radius: var(--card_border_radius);
+            max-width: 320px;
+            margin: 5px 10px;
+            object-fit: cover;
+
+        }
+
+        .content-img {
+            border-radius: var(--card_border_radius);
+            object-fit: scale-down;
+            max-width: 300px;
+            margin: 6px;
+        }
+
+        .btn-link {
+
+            color: rgba(103, 103, 103, 0.91);
+        }
+
+        .btn-link:hover {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.99);
+            background-color: white;
+        }
+
+        .btn-link:focus, .btn-link:active {
+            text-decoration: underline;
+            color: black;
+            background-color: white;
+
+        }
+
+        :root {
+            --card_width: 250px;
+            --row_increment: 10px;
+            --card_border_radius: 14px;
+            --card_small: 26;
+            --card_med: 33;
+            --card_large: 45;
+        }
+
+        .card-content {
+            padding: 10px;
+            margin: 10px 10px 10px 20px;
+            border-radius: var(--card_border_radius);
+            max-height: 350px;
+            overflow: hidden;
+            box-shadow: 1px 2px 6px 1px #0000002e;
+            max-width: 325px;
+            display: block;
+
+        }
+
+        .card-box {
+
+            width: 99.5%;
+            transform: translate(10px, 10px);
+        {#margin: 0 0 0 22px;#} display: inline-block;
+            columns: 19rem auto;
+        }
+
+
+        .content {
+            margin: 50px auto;
+            border-style: none;
+            border-radius: 10px;
+            padding: 10px 10px;
+            width: 80%;
+            box-shadow: 0px 8px 14px 3px #e3e3e3;
+            max-width: 900px;
+
+
+        }
+
+        .info {
+            font-size: 14px;
+            color: #4d4d4d;
+            max-height: 7rem;
+            overflow-y: scroll;
+            width: -webkit-fill-available;
+            width: -moz-avaliable;
+        }
+
+        {#strong {#}
+        {#    text-transform: capitalize;#}
+        {#    font-weight: 500;#}
+        {##}
+
+
+        h4 {
+            text-transform: capitalize;
+        }
+
+        .image img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        div.image {
+            display: flex;
+            margin-right: 5px;
+            margin-top: 5px;
+            margin-left: 5px;
+        }
+
+        .user {
+            display: flex;
+            margin-bottom: 5px;
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .a, #l {
+        {#margin: 3px 0 0 10px;#} font-size: 12px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .a p:hover {
+            text-decoration: underline;
+        }
+
+        .info a {
+            font-weight: 500;
+        }
+
+        .info a:hover {
+            text-decoration: underline;
+        }
+
+        .a p a {
+            font-weight: 500;
+        }
+
+        .comment {
+            margin: 0;
+        }
+
+        .comment a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .info::-webkit-scrollbar {
+            display: none;
+        }
+
+        .title {
+            font-weight: 500;
+            font-size: 20px;
+            color: black;
+            text-decoration: none;
+            text-transform: capitalize;
+        }
+
+        .title:hover {
+            color: black;
+        }
+
+        .text {
+            margin-bottom: 10px;
+        }
+
+        a:target {
+            font-weight: 700;
+        }
+
+        iframe, #related video, div.ytp-cued-thumbnail-overlay-image, .ytp-cued-thumbnail-overlay {
+            width: 100% !important;
+            height: fit-content !important;
+            border-radius: 15px !important;
+        }
+
+        #related.ytp-large-play-button, iframe ytp-large-play-button svg, ytp-large-play-button.yt-button.ytp-large-play-button-red-bg {
+            display: none !important;;
+        }
+
+        div.card-content .ytp-large-play-button svg {
+            height: 0 !important;
+        }
+
+        iframe .ytp-large-play-button {
+            display: none !important;
+        }
+
+
+    </style>
+
+    {% block content %}
+    {% endblock %}
+    <ul class="nav nav-underline " style="margin:0 0 0 30px">
+        {% if not request.user  in target_user.profile.blocked.all %}
+
+
+            <li class="nav-item" data-tab-value="more-posts">
+                <a class="nav-link btn-link" aria-current="page"
+                   style="text-decoration: none">more from {{ target_user.username }}</a>
+            </li>
+        {% endif %}
+
+        <li class="nav-item " data-tab-value="related">
+            <a class="nav-link btn-link" style="text-decoration: none">related {{ items.count }}</a>
+        </li>
+
+
+    </ul>
+
+    {% if not request.user  in target_user.profile.blocked.all %}
+        <div class="card-box more-posts" id="more-posts" data-tab hidden>
+
+            {% for content in items_by_date|dictsortreversed:"created_at" %}
+                {% if content.privacy %}
+                    {% if content.privacy == 'public' or content.user == request.user or content.created_by == request.user %}
+                        {% if content in all_posts %}
+                            <a href="{% url 'person:viewpost' content.user.id content.id ' ' %}"
+                               style="color: black;text-decoration: none">
+                                <div class="card-content">
+
+                                    <h6 style="text-transform: capitalize">   {{ content.title }}</h6>
+                                    <p>   {{ content.content |safe }}</p>
+                                </div>
+
+                            </a>
+
+                        {% elif content in all_vids %}
+                            <div class="videos">
+                                <a href="{% url 'person:viewvideo' content.user.id content.id ' ' %}">
+                                    <video class="videos">
+                                        <source src="/media/{{ content.video_file }}" type="video/mp4">
+                                    </video>
+
+                                </a>
+                            </div>
+                        {% elif content in all_images %}
+                            <div style="display:block" class="content-img">
+                                <div>
+                                    <a href="{% url 'person:viewimage' content.user.id content.id ' ' %}">
+
+
+                                        <img src="/media/{{ content.image }}">
+                                    </a>
+                                    {#                        <div>#}
+                                    {#                            <h6 class="">#}
+                                    {#                                <strong>{{ content.title }}</strong>#}
+                                    {#                                | {{ content.created_at.date }}#}
+                                    {#                            </h6>#}
+                                    {##}
+                                    {#                        </div>#}
+
+                                </div>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'person:viewblogpost' content.id ' ' %}"
+                               style="color: black;text-decoration: none">
+                                <div class="card-content">
+
+                                    <h6 style="text-transform: capitalize">   {{ content.title }}</h6>
+                                    <p>   {{ content.content |safe }}</p>
+                                </div>
+
+                            </a>
+
+                        {% endif %}
+                    {% elif content.privacy == 'followers' and request.user in content.user.profile.followers.all %}
+                        {% if content in all_posts %}
+                            <a href="{% url 'person:viewpost' content.user.id content.id ' ' %}"
+                               style="color: black;text-decoration: none">
+                                <div class="card-content">
+
+                                    <h6 style="text-transform: capitalize">   {{ content.title }}</h6>
+                                    <p>   {{ content.content |safe }}</p>
+                                </div>
+
+                            </a>
+
+                        {% elif content in all_vids %}
+                            <div class="videos">
+                                <a href="{% url 'person:viewvideo' content.user.id content.id ' ' %}">
+                                    <video class="videos">
+                                        <source src="/media/{{ content.video_file }}" type="video/mp4">
+                                    </video>
+
+                                </a>
+                            </div>
+                        {% elif content in all_images %}
+                            <div style="display:block" class="content-img">
+                                <div>
+                                    <a href="{% url 'person:viewimage' content.user.id content.id ' ' %}">
+
+
+                                        <img src="/media/{{ content.image }}">
+                                    </a>
+                                    {#                        <div>#}
+                                    {#                            <h6 class="">#}
+                                    {#                                <strong>{{ content.title }}</strong>#}
+                                    {#                                | {{ content.created_at.date }}#}
+                                    {#                            </h6>#}
+                                    {##}
+                                    {#                        </div>#}
+
+                                </div>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'person:viewblogpost' content.id ' ' %}"
+                               style="color: black;text-decoration: none">
+                                <div class="card-content">
+
+                                    <h6 style="text-transform: capitalize">   {{ content.title }}</h6>
+                                    <p>   {{ content.content |safe }}</p>
+                                </div>
+
+                            </a>
+
+                        {% endif %}
+                    {% elif content.privacy == 'followers' and request.user in content.created_by.profile.followers.all %}
+                        {% if content.type == 'prayer' or content.type == 'blogpost' %}
+
+                            <a   {% if content.item.user %}
+                                href="{% url 'person:viewpost' content.item.user.id content.item.id ' ' %}"
+                            {% else %}
+                                href="{% url 'blog:post_detail'  content.item.id %}"
+                            {% endif %}
+                                style="color: black;text-decoration: none">
+                                <div class="card-content">
+
+                                    <h6 style="text-transform: capitalize">   {{ content.item.title }}</h6>
+                                    <p>   {{ content.item.content |safe }}</p>
+                                </div>
+
+                            </a>
+                            {#            {% elif content.type == 'blog' %}#}
+                            {##}
+                            {#                <a   {% if content.user %}#}
+                            {#                    href="{% url 'person:viewpost' content.user.id content.id ' ' %}"#}
+                            {#                {% else %}#}
+                            {#                    href="{% url 'blog:post_detail'  content.id %}"#}
+                            {#                {% endif %}#}
+                            {#                    style="color: black;text-decoration: none">#}
+                            {#                    <div class="card-content">#}
+                            {##}
+                            {#                        <h6 style="text-transform: capitalize">   {{ content.title }}</h6>#}
+                            {#                        <p>   {{ content.content |safe }}</p>#}
+                            {#                    </div>#}
+                            {##}
+                            {#                </a>#}
+
+                        {% elif content.type == 'blog' %}
+                            <a href="{% url 'blog:post_detail'  content.item.id %}"
+
+                               style="color: black;text-decoration: none;
+                   max-height: 800px;display: block;
+                   min-width: fit-content;
+                   min-height: min-content;">
+
+                                <div style="display:inline-table">
+                                    <div class="card-content"
+                                         style="width: 450px;font-weight: bolder;max-height: 800px;padding:10px ">
+
+                                        <h6 style="text-transform: capitalize;font-size: 25px;
+  font-weight: 700;
+  font-family: sans-serif;">   {{ content.item.title }}</h6>
+                                        {#            <p>   {{ content.content |safe }}</p>#}
+                                    </div>
+
+                                </div>
+
+                            </a>
+                        {% elif content.type == 'image' %}
+                            <div style="display:block" class="content-img" style="width:fit-content">
+                                <div>
+                                    <a href="{% url 'person:viewimage' content.item.user.id content.item.id ' ' %}">
+
+
+                                        <img src="/media/{{ content.item.image }}">
+                                    </a>
+
+                                </div>
+                            </div>
+                        {% elif content.type == 'video' %}
+                            <div class="videos">
+                                <a href="{% url 'person:viewvideo' content.item.user.id content.item.id ' ' %}">
+                                    <video class="videos">
+                                        <source src="/media/{{ content.item.video_file }}" type="video/mp4">
+                                    </video>
+
+                                </a>
+                            </div>
+                        {% else %}
+
+
+                        {% endif %}
+
+
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    {% endif %}
+    <div class="card-box related" id="related" data-tab>
+        {#        {% if related_posts %}#}
+
+        {% for content in related_posts %}
+            {% if not request.user  in content.item.user.profile.blocked.all and not request.user  in content.item.created_by.profile.blocked.all %}
+                {% if content.item.privacy %}
+                    {% if content.item.privacy == 'public' or content.item.user == request.user or content.item.created_by == request.user %}
+                        {% if content.type == 'prayer' or content.type == 'blogpost' %}
+
+                            <a   {% if content.item.user %}
+                                href="{% url 'person:viewpost' content.item.user.id content.item.id ' ' %}"
+                            {% else %}
+                                href="{% url 'blog:post_detail'  content.item.id %}"
+                            {% endif %}
+                                style="color: black;text-decoration: none">
+                                <div class="card-content">
+
+                                    <h6 style="text-transform: capitalize">   {{ content.item.title }}</h6>
+                                    <p>   {{ content.item.content |safe }}</p>
+                                </div>
+
+                            </a>
+                            {#            {% elif content.type == 'blog' %}#}
+                            {##}
+                            {#                <a   {% if content.user %}#}
+                            {#                    href="{% url 'person:viewpost' content.user.id content.id ' ' %}"#}
+                            {#                {% else %}#}
+                            {#                    href="{% url 'blog:post_detail'  content.id %}"#}
+                            {#                {% endif %}#}
+                            {#                    style="color: black;text-decoration: none">#}
+                            {#                    <div class="card-content">#}
+                            {##}
+                            {#                        <h6 style="text-transform: capitalize">   {{ content.title }}</h6>#}
+                            {#                        <p>   {{ content.content |safe }}</p>#}
+                            {#                    </div>#}
+                            {##}
+                            {#                </a>#}
+
+                        {% elif content.type == 'blog' %}
+                            <a href="{% url 'blog:post_detail'  content.item.id %}"
+
+                               style="color: black;text-decoration: none;
+                   max-height: 800px;display: block;
+                   min-width: fit-content;
+                   min-height: min-content;">
+
+                                <div style="display:inline-table">
+                                    <div class="card-content"
+                                         style="width: 450px;font-weight: bolder;max-height: 800px;padding:10px ">
+
+                                        <h6 style="text-transform: capitalize;font-size: 25px;
+  font-weight: 700;
+  font-family: sans-serif;">   {{ content.item.title }}</h6>
+                                        {#            <p>   {{ content.content |safe }}</p>#}
+                                    </div>
+
+                                </div>
+
+                            </a>
+                        {% elif content.type == 'image' %}
+                            <div style="display:block" class="content-img" style="width:fit-content">
+                                <div>
+                                    <a href="{% url 'person:viewimage' content.item.user.id content.item.id ' ' %}">
+
+
+                                        <img src="/media/{{ content.item.image }}">
+                                    </a>
+
+                                </div>
+                            </div>
+                        {% elif content.type == 'video' %}
+                            <div class="videos">
+                                <a href="{% url 'person:viewvideo' content.item.user.id content.item.id ' ' %}">
+                                    <video class="videos">
+                                        <source src="/media/{{ content.item.video_file }}" type="video/mp4">
+                                    </video>
+
+                                </a>
+                            </div>
+                        {% else %}
+
+
+                        {% endif %}
+                    {% elif content.item.privacy == 'followers' and request.user in content.item.user.profile.followers.all %}
+                        {% if content.type == 'prayer' or content.type == 'blogpost' %}
+
+                            <a   {% if content.item.user %}
+                                href="{% url 'person:viewpost' content.item.user.id content.item.id ' ' %}"
+                            {% else %}
+                                href="{% url 'blog:post_detail'  content.item.id %}"
+                            {% endif %}
+                                style="color: black;text-decoration: none">
+                                <div class="card-content">
+
+                                    <h6 style="text-transform: capitalize">   {{ content.item.title }}</h6>
+                                    <p>   {{ content.item.content |safe }}</p>
+                                </div>
+
+                            </a>
+                            {#            {% elif content.type == 'blog' %}#}
+                            {##}
+                            {#                <a   {% if content.user %}#}
+                            {#                    href="{% url 'person:viewpost' content.user.id content.id ' ' %}"#}
+                            {#                {% else %}#}
+                            {#                    href="{% url 'blog:post_detail'  content.id %}"#}
+                            {#                {% endif %}#}
+                            {#                    style="color: black;text-decoration: none">#}
+                            {#                    <div class="card-content">#}
+                            {##}
+                            {#                        <h6 style="text-transform: capitalize">   {{ content.title }}</h6>#}
+                            {#                        <p>   {{ content.content |safe }}</p>#}
+                            {#                    </div>#}
+                            {##}
+                            {#                </a>#}
+
+                        {% elif content.type == 'blog' %}
+                            <a href="{% url 'blog:post_detail'  content.item.id %}"
+
+                               style="color: black;text-decoration: none;
+                   max-height: 800px;display: block;
+                   min-width: fit-content;
+                   min-height: min-content;">
+
+                                <div style="display:inline-table">
+                                    <div class="card-content"
+                                         style="width: 450px;font-weight: bolder;max-height: 800px;padding:10px ">
+
+                                        <h6 style="text-transform: capitalize;font-size: 25px;
+  font-weight: 700;
+  font-family: sans-serif;">   {{ content.item.title }}</h6>
+                                        {#            <p>   {{ content.content |safe }}</p>#}
+                                    </div>
+
+                                </div>
+
+                            </a>
+                        {% elif content.type == 'image' %}
+                            <div style="display:block" class="content-img" style="width:fit-content">
+                                <div>
+                                    <a href="{% url 'person:viewimage' content.item.user.id content.item.id ' ' %}">
+
+
+                                        <img src="/media/{{ content.item.image }}">
+                                    </a>
+
+                                </div>
+                            </div>
+                        {% elif content.type == 'video' %}
+                            <div class="videos">
+                                <a href="{% url 'person:viewvideo' content.item.user.id content.item.id ' ' %}">
+                                    <video class="videos">
+                                        <source src="/media/{{ content.item.video_file }}" type="video/mp4">
+                                    </video>
+
+                                </a>
+                            </div>
+                        {% else %}
+
+
+                        {% endif %}
+                    {% elif content.item.privacy == 'followers' and request.user in content.item.created_by.profile.followers.all %}
+                        {% if content.type == 'prayer' or content.type == 'blogpost' %}
+
+                            <a   {% if content.item.user %}
+                                href="{% url 'person:viewpost' content.item.user.id content.item.id ' ' %}"
+                            {% else %}
+                                href="{% url 'blog:post_detail'  content.item.id %}"
+                            {% endif %}
+                                style="color: black;text-decoration: none">
+                                <div class="card-content">
+
+                                    <h6 style="text-transform: capitalize">   {{ content.item.title }}</h6>
+                                    <p>   {{ content.item.content |safe }}</p>
+                                </div>
+
+                            </a>
+                            {#            {% elif content.type == 'blog' %}#}
+                            {##}
+                            {#                <a   {% if content.user %}#}
+                            {#                    href="{% url 'person:viewpost' content.user.id content.id ' ' %}"#}
+                            {#                {% else %}#}
+                            {#                    href="{% url 'blog:post_detail'  content.id %}"#}
+                            {#                {% endif %}#}
+                            {#                    style="color: black;text-decoration: none">#}
+                            {#                    <div class="card-content">#}
+                            {##}
+                            {#                        <h6 style="text-transform: capitalize">   {{ content.title }}</h6>#}
+                            {#                        <p>   {{ content.content |safe }}</p>#}
+                            {#                    </div>#}
+                            {##}
+                            {#                </a>#}
+
+                        {% elif content.type == 'blog' %}
+                            <a href="{% url 'blog:post_detail'  content.item.id %}"
+
+                               style="color: black;text-decoration: none;
+                   max-height: 800px;display: block;
+                   min-width: fit-content;
+                   min-height: min-content;">
+
+                                <div style="display:inline-table">
+                                    <div class="card-content"
+                                         style="width: 450px;font-weight: bolder;max-height: 800px;padding:10px ">
+
+                                        <h6 style="text-transform: capitalize;font-size: 25px;
+  font-weight: 700;
+  font-family: sans-serif;">   {{ content.item.title }}</h6>
+                                        {#            <p>   {{ content.content |safe }}</p>#}
+                                    </div>
+
+                                </div>
+
+                            </a>
+                        {% elif content.type == 'image' %}
+                            <div style="display:block" class="content-img" style="width:fit-content">
+                                <div>
+                                    <a href="{% url 'person:viewimage' content.item.user.id content.item.id ' ' %}">
+
+
+                                        <img src="/media/{{ content.item.image }}">
+                                    </a>
+
+                                </div>
+                            </div>
+                        {% elif content.type == 'video' %}
+                            <div class="videos">
+                                <a href="{% url 'person:viewvideo' content.item.user.id content.item.id ' ' %}">
+                                    <video class="videos">
+                                        <source src="/media/{{ content.item.video_file }}" type="video/mp4">
+                                    </video>
+
+                                </a>
+                            </div>
+                        {% else %}
+
+
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+        {#        {% endif %}#}
+
+    </div>
+    <script type="text/javascript">
+
+        const tabs = document.querySelectorAll('[data-tab-value]');
+        tabs.forEach(function (tab) {
+            {#for (const t  in  tabslink) {#}
+            {#    const classes = t.getAttribute('data-tab-value');#}
+            {#    console.log(classes);#}
+            tab.addEventListener('click', () => {
+
+                const classname = tab.getAttribute('data-tab-value');
+                const show = document.getElementById(classname);
+
+                for (var i = 0; i < tabs.length; i++) {
+                    const item = tabs[i].getAttribute('data-tab-value');
+                    const a = document.getElementById(item);
+                    if (a != show) {
+                        a.hidden = true;
+                    } else {
+                        a.hidden = false;
+
+                    }
+                }
+
+
+            })
+        })
+
+    </script>
+
+{% endblock %}

@@ -1,10 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+    <style>
+        {#html body div div:root {#}
+        {#       --bg-color: #fafafa;#}
+        {#       --bg-alt-color: #f2f2f2;#}
+        {#       --text-color: #424547;#}
+        {#       --text-secondary-color: #5e6266;#}
+        {#       --text-tertiary-color: #9a9fa3;#}
+        {#       --text-bg-color: #fff;#}
+        {#       --input-bg-color: #ebeef0;#}
+        {#       --serif-font-size: 1.2rem;#}
+        {#       --sans-serif-font-size: 1rem;#}
+        {#       --line-height-offset: 1rem;#}
+        {#       --chapter-number-font-size: 6.5rem;#}
+        {#       --chapter-number-top-padding: .9rem;#}
+        {#   }#}
+        {##}
+
+        :root {
+            view-transition-name: root;
+        }
+
+        h1 {
+            font-family: "Sentinel A", "Sentinel B", "Gentium Plus", "Ezra", Georgia, Times, serif;
+            margin: 10px 60px;
+
+        }
+
+        html body div {
+            font-family: sans-serif;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+            font-size: 1.2rem;
+        }
+
+
+        body div {
+
+            font: normal 400 1.4rem / 2.4rem "Gotham A", "Gotham B", "Gentium Plus", "Ezra", Helvetica, Arial, sans-serif;
+            letter-spacing: .025rem;
+        }
+
+
+        .v {
+            font-size: 10px;
+            padding: 0 5px;
+            font-weight: 500;
+        }
+
+        .d {
+            font-size: 1.2rem;
+            padding: 0;
+            font-weight: 550;
+            font-family: "Sentinel A", "Sentinel B", "Gentium Plus", "Ezra", Georgia, Times, serif;
+            margin: 0 20px;
+
+
+        }
+
+        .content-box {
+            margin: 15px;
+            columns: 32rem;
+        }
+
+        .p, .q1 ,.mt1{
+        {#margin: 20px;#} font-family: "Sentinel A", "Sentinel B", "Gentium Plus", "Ezra", Georgia, Times, serif;
+            font-weight: 300;
+        {#line-height: calc(var(1.2rem) + var(1rem));#} text-indent: 2rem;
+            -webkit-column-break-before: auto;
+
+        }
+
+        p.q1 {
+            margin: 0;
+        }
+
+        .a {
+            color: #5c5c5c;
+            text-decoration: none;
+            font-family: fangsong;
+            padding: 20px;
+        }
+
+
+    </style>
+    <!-- bible/templates/bible/verse.html -->
+    <!-- bible/templates/bible/bibles.html -->
+    <h1> {{ chapter.name }}</h1>
+    <div class="content-box" style="margin: 0 40px;">
+        {{ chapter.content |safe }}
+    </div>
+
+
+
+
+    <div style="display: flex;
+    justify-content: space-between;margin:0 20px ">
+
+
+        {% if chapter.number != 'intro' and chapter.number != '1' %}
+            <a class="a"
+               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.name chapter.previous_chapter %}">
+                << prev chapter
+            </a>
+        {% elif chapter.book.name != fbook.name %}
+            <a class="a"
+               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.get_previous_book chapter.book.get_previous_book.get_chapter_num %}">
+                << prev chapter
+
+            </a>
+        {% endif %}
+
+        <a class="a" href="{% url 'bibleconnect:list_books'  chapter.bibleversion.versionid %}">
+            back to books
+
+        </a>
+
+        {% if chapter.get_number < chapter.count_chapters %}
+            <a class="a"
+               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.name chapter.next_chapter %}">
+                next chapter >>
+            </a>
+        {% elif chapter.number == 'intro' %}
+            <a class="a"
+               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.name '1' %}">
+                next chapter >></a>
+        {% elif chapter.book.get_next_book %}
+            <a class="a"
+               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.get_next_book '1' %}">
+                next chapter >></a>
+
+        {% endif %}
+
+
+    </div>
+
+
+
+
+
+
+
+
+    {#        <h5>{{ bible.name }} ({{ bible.abbreviation }}) </h5>#}
+    {#        <h3>{{ bibles.name }}</h3>#}
+
+
+{% endblock %}

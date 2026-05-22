@@ -1,10 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{%  extends 'base.html' %}
+{% block basic_block %}
+    <style>
+{#    form{#}
+{#    margin-top: 2%;#}
+{#    padding: 20px 0;#}
+  {#padding-top: 50px;#}
+{##}
+{#form input{#}
+{#    padding: 10px;#}
+{##}
+{#form label{#}
+{#    text-align: left;#}
+{#  font-weight: bold;#}
+{#  font-size: 12px;#}
+{# display: block;#}
+{##}
+{##}
+{#form select,form textarea,form input{#}
+{#  width:500px;#}
+{#    border-radius: 15px;#}
+{#    border-width: thin;#}
+{##}
+{##}
+{#form textarea{#}
+{#  height:100px;#}
+{##}
+{#h2{#}
+{#  padding-top: 10%;#}
+{##}
+{#label,select,textarea,input,h5,button{#}
+{#  margin-left: 7%;#}
+{##}
+{#form h5{#}
+{#    border-bottom-color: gray;#}
+{#    border-width: thin;#}
+    {#background-color: #3fafe5;#}
+{#    padding: 10px;#}
+{##}
+    div{
+    margin: 15px 2%;
+}
+{#label[for='id_content']{#}
+{#    display: none;#}
+{##}
+label{
+    margin: 0 2%;
+    font-weight: bold;
+    font-size: large;
+}
+    </style>
+    {% load static %}
+{#    <link rel="stylesheet" href="{% static 'person/post.css' %}">#}
+  <form method="post" class="form-control" enctype="multipart/form-data" >
+    <h5>Create A Prayer</h5>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" >Create Post</button>
+  </form>
+    <script>
+  tinymce.init({
+      selector: 'textarea',
+      height:500,
+      plugins: [
+     'preview',
+    'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+    'insertdatetime', 'wordcount'
+        ] ,
+    toolbar: 'undo redo | blocks | ' +
+      'bold italic backcolor | alignleft aligncenter | bullist numlist ',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      file_picker_types: 'image media',
+      image_advtab: true,
+      {#ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),#}
+      content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }"
+  });
+
+</script>
+    <script src="{% static 'js/uploader.js' %}"></script>
+    <!-- In your template file, add this script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function fetchNotifications() {
+        fetch('/notifications/')
+            .then(response => response.json())
+            .then(data => {
+                // Update your UI with the fetched notifications
+                console.log(data);
+            });
+    }
+
+    // Fetch notifications every 30 seconds
+    setInterval(fetchNotifications, 30000);
+});
+</script>
+
+{% endblock %}

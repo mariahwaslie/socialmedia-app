@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+
+    <style>
+        .div-bibles{
+
+            display: flex;
+            flex-direction: column;
+            margin: 0 20px;
+        }
+       div  a button.btn.btn-light{
+            text-decoration: none;
+        }
+       button.btn.btn-light{
+           font-family: 'Poppins','Sans-Serif';
+           border-radius: 10px;
+       }
+       button.btn.btn-light:hover{
+           color: white;
+           background-color: black;
+       }
+    </style>
+    <div class="div-bibles">
+    <!-- bible/templates/bible/verse.html -->
+    <!-- bible/templates/bible/bibles.html -->
+    <h1 style="margin: 30px;"> Bible Versions</h1>
+    {% for bible in list_bibles %}
+        {% if bible.versionid %}
+            <a href="{% url 'bibleconnect:list_books' bible_id=bible.versionid %}">
+
+                <button class="btn btn-light" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample" aria-expanded="false"
+                        aria-controls="collapseExample" style="min-width: 100%">
+                    {{ bible.name }}
+                </button>
+
+            </a>
+        {% endif %}
+    {% endfor %}
+    <h2>Find a Church Near Me</h2>
+
+    {#        <h5>{{ bible.name }} ({{ bible.abbreviation }}) </h5>#}
+    {#        <h3>{{ bibles.name }}</h3>#}
+
+</div>
+    <div>
+    <a href="{% url 'faith:create_church_request' %}">
+        <button class="btn btn-dark">Request to create a church page</button>
+    </a>
+    {% if request.user.is_staff  %}
+    	 <a href="{% url 'faith:review_group_requests' %}">
+        <button class="btn btn-dark">review church request</button>
+    </a>
+    {% endif %}
+
+
+    </div>
+
+{% endblock %}

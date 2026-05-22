@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{%  extends 'base.html' %}
+{%  block basic_block %}
+     <div class="container mt-5">
+        <h1>Delete Post</h1>
+             {% if chatroom.created_by == request.user %}
+
+        <p>Are you sure you want to delete the "{{ chatroom.name }}" chatroom?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            <a href="{% url 'chat:inboxlist'  %}" class="btn btn-secondary">Cancel</a>
+        </form>
+         {%  endif %}
+
+    </div>
+{%  endblock %}

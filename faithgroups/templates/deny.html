@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{%  extends 'base.html' %}
+{% block basic_block %}
+
+    <h4>{{ group_request.name }} {{ group_request.created_at }}</h4>
+    <p>{{ group_request.description }}</p>
+    <p>{{ group_request.user.username  }}</p>
+
+
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button type="submit"> Deny</button>
+    </form>
+{%  endblock %}

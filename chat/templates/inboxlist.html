@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+    <style>
+        .message-names{
+            padding: 10px 15px;
+        }
+        .message-names a{
+            color: #2b4aa9;
+            text-decoration: none;
+
+        }
+    </style>
+<h1 style="padding: 10px 10px 0 17px;">Inbox's & Chatrooms </h1>
+
+    {%  for i in message_unread %}
+            <div class="message-names">
+                <a href="{% url 'chat:inbox' i.user %}"><h5>{{ i.user}}</a>
+                {% if i.unread > 0  %}
+                     {{ i.unread }} new messages
+
+                {% endif %}
+            </h5>
+
+            </div>
+    {% endfor %}
+    {% for group in chatrooms %}
+    	  <div class="message-names">
+                <a href="{% url 'chat:chatroom' group.id %}"><h5>{{ group}}</h5></a>
+            </div>
+    {% endfor %}
+
+    <div style="padding:0 0 0 10px " >
+
+    <a href="{% url 'chat:notifications' %}">
+        <button class="btn btn-light">View Notifications</button>
+    </a>
+
+    <a href="{% url 'chat:creategroup' %}">
+            <button class="btn btn-light"> create group</button>
+    </a>
+
+    </div>
+
+{% endblock %}

@@ -1,10 +1,808 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'other_user_posts.html' %}
+{% load static %}
+{% load social_share %}
+{% block content %}
+    <style>
+        .dropbtn {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        /* Dropdown button on hover & focus */
+        {#.dropbtn:hover, .dropbtn:focus {#}
+        {#    background-color: rgba(176, 176, 176, 0.65);#}
+        {#    color: black;#}
+
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #DDDDDD;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        .show {
+            display: block;
+        }
+
+        #container1 {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-content: center;
+            width: 100%;
+            margin: auto;
+        }
+
+        .content {
+            margin: 50px auto 10px auto;
+            box-shadow: -4px 3px 14px 3px #e3e3e3
+        }
+
+        .btn-sm {
+            border-radius: 15px;
+            padding: 3px 20px;
+        }
+
+        .btn-dark {
+            margin: 2px 5px;
+        }
+
+        div.content {
+            margin: 0;
+        }
+
+        .dropbtn {
+            padding: 3px 20px;
+            border-radius: 15px;
+        }
+
+        form .btn-sm {
+            color: black;
+            background: white;
+            border: solid;
+            border-bottom-style: solid;
+            border-left-style: none;
+            border-right: none;
+            border-top: none;
+            border-radius: 0;
+        {#padding: 0 10px;#} border-width: 1px;
+
+        }
+
+        form input.input-group-sm {
+            border-style: none;
+            border-bottom-style: solid;
+            border-width: thin;
+            border-color: #d2d2d2;
+        }
+
+        form .btn-sm {
+            margin: 0;
+            padding: 0 5.1%;
+            border-color: #d2d2d2;
+        }
+
+        form {
+            width: 100%;
+        }
+    </style>
+    {% if not request.user  in target_user.profile.blocked.all %}
+        {% if post.privacy %}
+            {% if post.privacy == 'public' or post.user == request.user %}
+                <div id="container1">
+                    <div href="{% url 'person:follow_unfollow_user' post.user.username  ' ' %}"
+                         style="text-transform: none;text-decoration: none;color: black;font-size: 14px;
+            font-weight: 500;margin: 30px 10px 10px;">
+                        Prayer by @{{ post.user.username }}</div>
+                    <div class="content">
+
+
+                        <div class="text">
+                            <div style="display: flex;flex-direction: column">
+                                <div style="display: flex;flex-direction: row">
+
+                                    <a class="title">{{ post.title }}</a>
+
+
+                                </div>
+
+
+                            </div>
+
+                            {{ post.content|safe }}
+                        </div>
+
+
+                    </div>
+                    <div style="padding: 20px 0">
+                        <div style="display: flex;justify-content: end;">
+
+
+                            <div style="display: flex;justify-content: flex-end">
+
+
+                                <div>
+                                    <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" style="margin: 0;
+}"
+                                            data-bs-target="#staticBackdrop">
+                                        Share
+                                    </button>
+                                    <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                                         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                                                        Share</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {% post_to_facebook post.get_absolute_url "<p style='color: blue;'>facebook</p>" %}
+                                                    {% post_to_linkedin post.get_absolute_url %}
+                                                    {% post_to_twitter post.get_absolute_url %}
+                                                    {% post_to_reddit post.get_absolute_url "<p style='color: blue;'>reddit</p>" %}
+                                                    {% post_to_whatsapp post.get_absolute_url "Share via WhatsApp" %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <button class="btn btn-sm btn-dark" data-profile-id="{{ post.user.profile.id }}"
+                                            style="width: fit-content;
+                        height: fit-content;margin-left: 10px" id="follow-btn">
+
+                                        {% if request.user in target_user.profile.followers.all %}
+                                            Unfollow
+                                        {% else %}
+                                            Follow
+                                        {% endif %}
+                                    </button>
+                                    <button
+                                            class="btn btn-dark btn-sm" id="save-btn">
+                                        Save
+                                    </button>
+
+                                    <button class="btn btn-light btn-sm" style="padding: 3px 0;margin: 0 15px 0 0;"
+
+                                            data-post-id="{{ post.id }}" style="width: fit-content">
+                                        {% if request.user in post.likes.all %}
+                                            <img src="/media/base/icons8-heart-filled.png" style="height: 15px">
+                                            <a id="like-btn">Unlike</a>
+                                        {% else %}
+                                            <img src="/media/base/icons8-heart-empty.png" style="height: 15px">
+                                            <a id="like-btn">Like</a>
+                                        {% endif %}
+                                    </button>
+                                    <div class="dropdown">
+                                        <button onclick="myFunction()" class="dropbtn" id="stb-button">Save to Board
+                                        </button>
+                                        <div id="myDropdown" class="dropdown-content">
+
+                                            {% for board in boards %}
+
+                                                <a data-board-id="{{ board.title }}" class="stb">
+                                                    {{ board.title }}</a>
+
+                                            {% endfor %}
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                                <p class="a">
+
+                            </div>
+                        </div>
+
+                        <div style="display: flex;align-items: center">
+
+                            {% if user.is_authenticated %}
+                                <form id="comment-form" method="post" action="{% url 'submit_comment' post.id %}"
+                                      enctype="multipart/form-data"
+                                      style="width:-webkit-fill-available;margin: 40px 0 10px;">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <input id="comment-input" type="text" name="body" class="input-group-sm"
+                                           style="width:85%">
+                                    <button class='btn btn-dark btn-sm' type="submit" value="Post">Post</button>
+
+                                </form>
+                                {#                    <div class='user'>#}
+                                {##}
+                                {##}
+                                {#                    </div>#}
+
+
+
+                            {% endif %}
+                        </div>
+
+
+                        {% if comments.count == 1 %}
+                            <h6 id="count" style="
+    margin: 10px 0;"> {{ comments.count }} Comment </h6>
+                        {% else %}
+                            <h6 id="count" style="
+    margin: 10px 0;"> {{ comments.count }} Comments </h6>
+
+                        {% endif %}
+                        <div class="info" id="comments-section">
+                            {% for comment in comments %}
+                                <p class="comment">
+                                    <img src="/media/{{ comment.user.profile.profile_picture }}"
+                                         style="width: 30px;height: 30px;object-fit: cover;border-radius: 50%;margin: 5px 0">
+
+                                    <a href="{% url 'person:follow_unfollow_user' comment.user.username ' ' %}">{{ comment.user.username }}</a>
+                                    {{ comment.body }}{% if request.user.is_authenticated %}
+                                    {% if request.user == post.user or request.user == comment.user %}
+
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#{{ comment.id }}">
+                                            delete
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="{{ comment.id }}" tabindex="-1"
+                                             aria-labelledby="{{ comment.id }}"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete
+                                                            Comment</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ comment.body }}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+
+                                                        <a href="{% url 'person:comment-delete' comment.pk %}">
+                                                            <button type="button" class="btn btn-primary">Delete
+                                                            </button>
+
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                </p>
+
+
+                            {% endfor %}
+
+                        </div>
+
+                        <div style="font-size: 11px; margin: 7px 10px">
+                            {{ post.created_at.date }} . {{ post.views.count }} views .
+
+                            <a><span
+                                    id="follower-count">{{ post.user.profile.followers.all.count }}</span> followers .
+                            </a>
+                            <a
+                                    id="like-count" style="font-size: 13px"
+                                    style="color: black;text-decoration: none;font-weight: bold">
+                                {{ post.total_likes }}</a>
+                            <img src="/media/base/icons8-heart-empty.png" style="height: 15px">
+                            {% if request.user == post.user %}
+                                <a href="{% url 'person:editpost' post.id %}">edit post</a>
+                            {% endif %}
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            {% elif post.privacy == 'followers' and request.user in followers %}
+                <div id="container1">
+                    <div href="{% url 'person:follow_unfollow_user' post.user.username  ' ' %}"
+                         style="text-transform: none;text-decoration: none;color: black;font-size: 14px;
+            font-weight: 500;margin: 30px 10px 10px;">
+                        Prayer by @{{ post.user.username }}</div>
+                    <div class="content">
+
+
+                        <div class="text">
+                            <div style="display: flex;flex-direction: column">
+                                <div style="display: flex;flex-direction: row">
+
+                                    <a class="title">{{ post.title }}</a>
+
+
+                                </div>
+
+
+                            </div>
+
+                            {{ post.content|safe }}
+                        </div>
+
+
+                    </div>
+                    <div style="padding: 20px 0">
+                        <div style="display: flex;justify-content: end;">
+
+
+                            <div style="display: flex;justify-content: flex-end">
+
+
+                                <div>
+                                    <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" style="margin: 0;
+}"
+                                            data-bs-target="#staticBackdrop">
+                                        Share
+                                    </button>
+                                    <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                                         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5 " id="staticBackdropLabel">
+                                                        Share</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {% post_to_facebook post.get_absolute_url "<p style='color: blue;'>facebook</p>" %}
+                                                    {% post_to_linkedin post.get_absolute_url %}
+                                                    {% post_to_twitter post.get_absolute_url %}
+                                                    {% post_to_reddit post.get_absolute_url "<p style='color: blue;'>reddit</p>" %}
+                                                    {% post_to_whatsapp post.get_absolute_url "Share via WhatsApp" %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <button class="btn btn-sm btn-dark" data-profile-id="{{ post.user.profile.id }}"
+                                            style="width: fit-content;
+                        height: fit-content;margin-left: 10px" id="follow-btn">
+
+                                        {% if request.user in target_user.profile.followers.all %}
+                                            Unfollow
+                                        {% else %}
+                                            Follow
+                                        {% endif %}
+                                    </button>
+                                    <button
+                                            class="btn btn-dark btn-sm" id="save-btn">
+                                        Save
+                                    </button>
+
+                                    <button class="btn btn-light btn-sm" style="padding: 3px 0;margin: 0 15px 0 0;"
+
+                                            data-post-id="{{ post.id }}" style="width: fit-content">
+                                        {% if request.user in post.likes.all %}
+                                            <img src="/media/base/icons8-heart-filled.png" style="height: 15px">
+                                            <a id="like-btn">Unlike</a>
+                                        {% else %}
+                                            <img src="/media/base/icons8-heart-empty.png" style="height: 15px">
+                                            <a id="like-btn">Like</a>
+                                        {% endif %}
+                                    </button>
+                                    <div class="dropdown">
+                                        <button onclick="myFunction()" class="dropbtn" id="stb-button">Save to Board
+                                        </button>
+                                        <div id="myDropdown" class="dropdown-content">
+
+                                            {% for board in boards %}
+
+                                                <a data-board-id="{{ board.title }}" class="stb">
+                                                    {{ board.title }}</a>
+
+                                            {% endfor %}
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                                <p class="a">
+
+                            </div>
+                        </div>
+
+                        <div style="display: flex;align-items: center">
+
+                            {% if user.is_authenticated %}
+                                <form id="comment-form" method="post" action="{% url 'submit_comment' post.id %}"
+                                      enctype="multipart/form-data"
+                                      style="width:-webkit-fill-available;margin: 40px 0 10px;">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <input id="comment-input" type="text" name="body" class="input-group-sm"
+                                           style="width:85%">
+                                    <button class='btn btn-dark btn-sm' type="submit" value="Post">Post</button>
+
+                                </form>
+                                {#                    <div class='user'>#}
+                                {##}
+                                {##}
+                                {#                    </div>#}
+
+
+
+                            {% endif %}
+                        </div>
+
+
+                        {% if comments.count == 1 %}
+                            <h6 id="count" style="
+    margin: 10px 0;"> {{ comments.count }} Comment </h6>
+                        {% else %}
+                            <h6 id="count" style="
+    margin: 10px 0;"> {{ comments.count }} Comments </h6>
+
+                        {% endif %}
+                        <div class="info" id="comments-section">
+                            {% for comment in comments %}
+                                <p class="comment">
+                                    <img src="/media/{{ comment.user.profile.profile_picture }}"
+                                         style="width: 30px;height: 30px;object-fit: cover;border-radius: 50%;margin: 5px 0">
+
+                                    <a href="{% url 'person:follow_unfollow_user' comment.user.username ' ' %}">{{ comment.user.username }}</a>
+                                    {{ comment.body }}
+                                    {% if request.user.is_authenticated %}
+                                        {% if request.user == post.user or request.user == comment.user %}
+
+                                        {% endif %}
+
+                                        <a type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                           data-bs-target="#{{ comment.id }}">
+                                            delete
+                                        </a>
+
+                                        <div class="modal fade" id="{{ comment.id }}" tabindex="-1"
+                                             aria-labelledby="{{ comment.id }}"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="{{ comment.id }}">Delete
+                                                            Comment</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ comment.body }}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+
+                                                        <a href="{% url 'person:comment-delete' comment.id %}">
+                                                            <button type="button" class="btn btn-primary">Delete
+                                                            </button>
+
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            {% endfor %}
+
+                        </div>
+
+                        <div style="font-size: 11px; margin: 7px 10px">
+                            {{ post.created_at.date }} . {{ post.views.count }} views .
+
+                            <a><span
+                                    id="follower-count">{{ post.user.profile.followers.all.count }}</span> followers .
+                            </a>
+                            <a
+                                    id="like-count" style="font-size: 13px"
+                                    style="color: black;text-decoration: none;font-weight: bold">
+                                {{ post.total_likes }}</a>
+                            <img src="/media/base/icons8-heart-empty.png" style="height: 15px">
+                            {% if request.user == post.user %}
+                                <a href="{% url 'person:editpost' post.id %}">edit post</a>
+                            {% endif %}
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            {% else %}
+                <div>
+                    <h2>This Post is Unavaliable</h2>
+                </div>
+            {% endif %}
+        {% endif %}
+        {% else %}
+         <div>
+                    <h2>This Post is Unavaliable</h2>
+                </div>
+    {% endif %}
+
+
+
+
+
+
+    {#    {% if request.user.is_authenticated %}#}
+
+    <script>
+        const ws_url = `ws://${window.location.host}/ws/comments/{{ post_id }}/`;
+        // JavaScript code here...
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#like-btn').click(function () {
+                var postId = $(this).data('post-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "person:viewpost" action_type="like" post_id=post.id pk=target_user.id %}',
+                    success: function (response) {
+                        $('#like-count').text(response.total_likes);
+
+                        $('#like-btn').text(response.liked ? 'UnLike' : 'Like');
+
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('#follow-btn').click(function () {
+                var profileId = $(this).data('profile-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "person:viewpost" action_type="follow"  pk=post.user.id post_id=post.id %}',
+                    success: function (response) {
+                        $('#follower-count').text(response.total_follows);
+
+                        $('#follow-btn').text(response.follows ? 'Unfollow' : 'Follow');
+                    }
+                });
+            });
+        });
+        $(document).ready(function () {
+            $('#save-btn').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'person:viewpost' pk=post.user.id post_id=post.id action_type="save" %}',
+                    success: function (response) {
+                        $('#save-count').text(response.total_saves);
+                        $('#save-btn').text(response.saved ? 'Saved' : 'Save');
+                    }
+                })
+            })
+        })
+
+        $(document).ready(function () {
+            $('.stb').click(function () {
+                let boardId = $(this).data('board-id').toString();
+                let urlrep = '{% url 'person:viewpost' post_id=post.id pk=post.user.id  action_type=-1 %}'.replace(-1, boardId);
+                $.ajax({
+                    type: 'POST',
+                    url: urlrep,
+                    success:
+
+                        function (response) {
+                            $('#stb-button').text(response.saved ? 'saved to board ' : 'save to board ');
+
+
+                        }
+
+                })
+
+
+            });
+        });
+
+
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const postId = "{{ post.id }}";  // Ensure this matches the post ID in your URL
+            const ws = new WebSocket(`ws://${window.location.host}/ws/comments/${postId}/`);
+
+            ws.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+
+                if (data.comment) {
+                    const commentSection = document.getElementById('comments-section');
+
+                    const commentHTML = `
+                    <p class="comment">
+                        <img src="${data.profile_picture}" alt="Profile Picture">
+                        <a href="/person/follow_unfollow_user/${data.username}/">${data.username}</a>
+                        ${data.comment}
+                    </p>
+                `;
+
+                    commentSection.innerHTML += commentHTML;
+
+                    const commentCountElem = document.querySelector('h6');
+                    let commentCount = parseInt(commentCountElem.textContent);
+                    commentCount += 1;
+                    commentCountElem.textContent = commentCount === 1 ? `${commentCount} Comment` : `${commentCount} Comments`;
+                }
+            };
+
+            ws.onerror = function (e) {
+                console.error('WebSocket error:', e);
+            };
+
+            window.onbeforeunload = function () {
+                ws.close();
+            };
+
+            document.getElementById('comment-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')  // Ensure CSRF token is sent
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const commentSection = document.getElementById('comments-section');
+
+                            const commentHTML = `
+                        <p class="comment">
+                            <img src="${data.profile_picture}" alt="Profile Picture"
+                              style="width: 30px;height: 30px;object-fit: cover;border-radius: 50%;margin: 5px 0">
+
+                            <a href="/person/follow_unfollow_user/${data.username}/">${data.username}</a>
+                            ${data.comment}
+                        </p>
+                    `;
+
+                            commentSection.innerHTML += commentHTML;
+
+                            // Update the comment count
+                            const commentCountElem = document.querySelector('h6');
+                            let commentCount = parseInt(commentCountElem.textContent);
+                            commentCount += 1;
+                            commentCountElem.textContent = commentCount === 1 ? `${commentCount} Comment` : `${commentCount} Comments`;
+
+                            // Clear the form
+                            this.reset();
+                        } else {
+                            console.error('Error submitting comment:', data.error);
+                        }
+                    });
+            });
+        });
+    </script>
+
+
+    {#    {% endif %}#}
+
+
+    {#<script>#}
+    {#document.addEventListener('DOMContentLoaded', function() {#}
+    {#    const ws = new WebSocket(`ws://${window.location.host}/ws/comments/${post_id}/`);#}
+    {##}
+    {#    ws.onmessage = function(e) {#}
+    {#        const data = JSON.parse(e.data);#}
+    {##}
+    {#        if (data.comment) {#}
+    {#            const commentSection = document.getElementById('comments-section');#}
+    {##}
+    {#            const commentHTML = `#}
+    {#                <p class="comment">#}
+    {#                    <img src="${data.profile_picture}"#}
+    {#                         style="width: 30px;height: 30px;object-fit: cover;border-radius: 50%;margin: 5px 0">#}
+    {#                    <a href="/person/follow_unfollow_user/${data.username}/">${data.username}</a>#}
+    {#                    ${data.comment}#}
+    {#                </p>#}
+    {#            `;#}
+    {##}
+    {#            commentSection.append(commentHTML);#}
+    {##}
+    {#            const commentCountElem = document.querySelector('h6');#}
+    {#            let commentCount = parseInt(commentCountElem.textContent);#}
+    {#            commentCount += 1;#}
+    {#            commentCountElem.textContent = commentCount === 1 ? `${commentCount} Comment` : `${commentCount} Comments`;#}
+    {#        }#}
+    {#    };#}
+    {##}
+    {#    ws.onerror = function(e) {#}
+    {#        console.error('WebSocket error:', e);#}
+    {#    };#}
+    {##}
+    {#    window.onbeforeunload = function() {#}
+    {#        ws.close();#}
+    {#    };#}
+
+    {##}
+    {#</script>#}
+
+
+
+{% endblock %}

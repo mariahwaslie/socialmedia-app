@@ -1,10 +1,279 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% block basic_block %}
+{#    <style>#}
+{#        .form-control {#}
+{#            margin: 3%;#}
+{#            width: 700px;#}
+        {#padding: 50px;#}
+{#        }#}
+{##}
+        {#form label {#}
+        {#    display: block;#}
+        {##}
+{##}
+{#        form input, form textarea, form select {#}
+{#            border-radius: 20px;#}
+{#            border-width: thin;#}
+{#        height: 30px;#}
+{##}
+{##}
+        {#form input[name ="video_file"] {#}
+        {#    background-color: #efefef;#}
+        {#    padding: 200px 100px;#}
+        {#    border-style: dashed;#}
+        {#    border-width: 2px;#}
+        {#    border-color: gray;#}
+        {#    display: inline-block;#}
+        {##}
+        {##}
+{##}
+{#        form p, form button {#}
+{#            padding: 20px;#}
+{#        }#}
+{##}
+        {#form textarea {#}
+        {#    height: 50px;#}
+        {##}
+{#          .notification {#}
+{#            padding: 10px;#}
+{#            background-color: #4CAF50;#}
+{#            color: white;#}
+{#            margin-top: 5px;#}
+{#            border-radius: 5px;#}
+{#        }#}
+{#        #notification-container {#}
+{#            position: fixed;#}
+{#            top: 10px;#}
+{#            right: 10px;#}
+{#            z-index: 1000;#}
+{#        }#}
+{#        #video-preview {#}
+{#            display: none;#}
+{#            margin-top: 10px;#}
+{#        }#}
+{##}
+{#    </style>#}
+{#    {% load static %}#}
+    {#    <link rel="stylesheet" href="{% static 'person/upload.css' %}">#}
+{#       <form id="video-upload-form" method="post"  action="{% url 'person:uploadvideo' %}"enctype="multipart/form-data">#}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }}#}
+{#            <input type="file" id="video-file" name="video_file" accept="video/*" />#}
+{#        <video id="video-preview" controls width="600">#}
+{#            <source id="video-source" src="" type="video/mp4">#}
+{#            Your browser does not support the video tag.#}
+{#        </video>#}
+{##}
+{#        <button type="submit class=btn btn-light">Upload</button>#}
+{#    </form>#}
+{##}
+{#    <title>Upload Video</title>#}
+{#    <style>#}
+{#        .notification {#}
+{#            padding: 10px;#}
+{#            background-color: #4CAF50;#}
+{#            color: white;#}
+{#            margin-top: 5px;#}
+{#            border-radius: 5px;#}
+{#        }#}
+{#        #notification-container {#}
+{#            position: fixed;#}
+{#            top: 10px;#}
+{#            right: 10px;#}
+{#            z-index: 1000;#}
+{#        }#}
+{#        #video-preview {#}
+{#            display: none;#}
+{#            margin-top: 10px;#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{#    <div id="notification-container"></div>#}
+{##}
+{#    <h2>Upload Video</h2>#}
+{#    <form id="video-upload-form" action="{% url 'person:uploadvideo' %}" method="post" enctype="multipart/form-data">#}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }}#}
+{#        <input type="file" id="video-file" name="video_file" accept="video/*" />#}
+{#        <video id="video-preview" controls width="600">#}
+{#            <source id="video-source" src="" type="video/mp4">#}
+{#            Your browser does not support the video tag.#}
+{#        </video>#}
+{#        <button type="submit">Upload</button>#}
+{#    </form>#}
+{##}
+{##}
+{#    <script<script>#}
+{#    const ws = new WebSocket('ws://' + window.location.host + '/ws/notifications/');#}
+{##}
+{#    ws.onmessage = function(e) {#}
+{#        const data = JSON.parse(e.data);#}
+{#        alert('Notification: ' + data.message);#}
+{#    };#}
+{##}
+{#    ws.onclose = function(e) {#}
+{#        console.error('WebSocket closed unexpectedly');#}
+{#    };#}
+{#</script>#}
+{#    <script>#}
+{#        document.addEventListener("DOMContentLoaded", function() {#}
+{#    const userId = {{ request.user.id }}; // Assuming you're passing the user ID via Django context#}
+{#    const ws = new WebSocket(`ws://${window.location.host}/ws/notifications/`);#}
+{##}
+{#    ws.onmessage = function(event) {#}
+{#        const data = JSON.parse(event.data);#}
+{#        displayNotification(data.message);#}
+{#    };#}
+{##}
+{#    ws.onclose = function(event) {#}
+{#        console.error('WebSocket closed unexpectedly');#}
+{#    };#}
+{##}
+{#    function displayNotification(message) {#}
+{#        const notificationContainer = document.getElementById('notification-container');#}
+{#        const notificationElement = document.createElement('div');#}
+{#        notificationElement.classList.add('notification');#}
+{#        notificationElement.innerText = message;#}
+{#        notificationContainer.appendChild(notificationElement);#}
+{##}
+{#        setTimeout(() => {#}
+{#            notificationElement.remove();#}
+{#        }, 5000); // Remove notification after 5 seconds#}
+{#    }#}
+{##}
+{##}
+{#    </script>#}
+{#    <script>#}
+{#    document.addEventListener("DOMContentLoaded", function() {#}
+{#    const videoFileInput = document.getElementById('video-file');#}
+{#    const videoPreview = document.getElementById('video-preview');#}
+{#    const videoSource = document.getElementById('video-source');#}
+{##}
+{#    videoFileInput.addEventListener('change', function(event) {#}
+{#        const file = event.target.files[0];#}
+{#        if (file) {#}
+{#            const objectURL = URL.createObjectURL(file);#}
+{#            videoSource.src = objectURL;#}
+{#            videoPreview.style.display = 'block';#}
+{#            videoPreview.load();#}
+{#        } else {#}
+{#            videoPreview.style.display = 'none';#}
+{#        }#}
+{#    });#}
+{##}
+{#    // Clean up object URLs to avoid memory leaks#}
+{#    videoFileInput.addEventListener('change', function() {#}
+{#        if (videoPreview.src) {#}
+{#            URL.revokeObjectURL(videoPreview.src);#}
+{#        }#}
+{#    });#}
+{##}
+{##}
+{#    </script>#}
+{##}
+    <!DOCTYPE html>
+
+    <style>
+        /* Basic styling for the form and notifications */
+         body div {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .notification {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            max-width: 600px;
+        }
+        #video-preview {
+            margin-top: 10px;
+            display: none;
+        }
+        video {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+<div>
+    <h1>Upload a New Video</h1>
+    <form id="upload-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="room_name" value="example_room">
+        <button type="submit">Upload</button>
+    </form>
+
+    <div id="video-preview">
+        <h2>Video Preview:</h2>
+        <video id="video-player" controls></video>
+    </div>
+
+    <div id="notifications"></div>
+    </div>
+<script>
+        // Handle video preview
+        document.getElementById('id_video_file').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const videoPlayer = document.getElementById('video-player');
+                const videoPreview = document.getElementById('video-preview');
+                videoPlayer.src = URL.createObjectURL(file);
+                videoPreview.style.display = 'block';
+            }
+        });
+</script>
+{#        // Establish WebSocket connection#}
+        {#const ws = new WebSocket('ws://' + window.location.host + '/ws/notifications/');#}
+        {##}
+        {#ws.onmessage = function(e) {#}
+        {#    const data = JSON.parse(e.data);#}
+        {#    const notificationDiv = document.getElementById('notifications');#}
+        {#    const notification = document.createElement('div');#}
+        {#    notification.className = 'notification';#}
+        {#    notification.textContent = 'Notification: ' + data.message;#}
+        {#    notificationDiv.appendChild(notification);#}
+        {##}
+        {##}
+        {#ws.onclose = function(e) {#}
+        {#    console.error('WebSocket closed unexpectedly');#}
+        {##}
+
+{#     <script>#}
+{#        const roomName = document.querySelector('input[name="room_name"]').value;#}
+{#        const uploadForm = document.getElementById('upload-form');#}
+{#        const statusDiv = document.getElementById('status');#}
+{##}
+{#        const socket = new WebSocket(#}
+{#            'ws://' + window.location.host + '/ws/upload/' + roomName + '/'#}
+{#        );#}
+{##}
+{#        socket.onmessage = function(e) {#}
+{#            const data = JSON.parse(e.data);#}
+{#            statusDiv.innerText = data.message;#}
+{#        };#}
+{##}
+{#        uploadForm.onsubmit = function(e) {#}
+{#            e.preventDefault();#}
+{#            const formData = new FormData(uploadForm);#}
+{##}
+{#            fetch("{% url 'person:uploadvideo' %}", {#}
+{#                method: 'POST',#}
+{#                body: formData#}
+{#            }).then(response => {#}
+{#                return response.json();#}
+{#            }).then(data => {#}
+{#                if (data.status === 'success') {#}
+{#                    console.log('Upload started');#}
+{#                } else {#}
+{#                    console.error('Upload failed');#}
+{#                }#}
+{#            });#}
+{#        };#}
+{#    </script>#}
+
+
+
+{% endblock %}
