@@ -9,7 +9,7 @@ settings.py
 *.webp
 *.bmp
 *.tiff
-
+*.jfif
 # Video
 *.mp4
 *.mov
