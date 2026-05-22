@@ -29,3 +29,33 @@ settings.py
 staticfiles/
 static/
 venv/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+db.sqlite3
+*.sqlite3
+mydatabase
+
+__pycache__/
+*.py[cod]
+.venv/
+
+# Django
+staticfiles/
+
+# Jupyter
+**/.ipynb_checkpoints/
+
+# SQLite
+db.sqlite3
+*.sqlite3
+mydatabase
+
+# Uploads/media
+media/
+uploads/
+
+# Editor/system
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
