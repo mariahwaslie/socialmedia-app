@@ -60,4 +60,8 @@ Thumbs.db
 .vscode/
 .idea/
 
-static/*
+# Jupyter Notebook checkpoints
+**/.ipynb_checkpoints/
+
+# Optional: actual notebook files
+*.ipynb
