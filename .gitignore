@@ -28,3 +28,4 @@ settings.py
 **/__pycache__/
 staticfiles/
 static/
+venv/
