@@ -59,3 +59,5 @@ uploads/
 Thumbs.db
 .vscode/
 .idea/
+
+static/*
