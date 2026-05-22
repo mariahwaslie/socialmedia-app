@@ -26,3 +26,5 @@ settings.py
 *.aac
 *.ogg
 **/__pycache__/
+staticfiles/
+static/
