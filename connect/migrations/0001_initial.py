@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
-                ('chapter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='bibleconnect.chapter')),
+                ('chapter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='connect.chapter')),
             ],
         ),
         migrations.CreateModel(
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
-                ('books', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='bibleconnect.book')),
+                ('books', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='connect.book')),
             ],
         ),
     ]

@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('joined_at', models.DateTimeField(auto_now_add=True)),
                 ('role', models.CharField(choices=[('member', 'Member'), ('admin', 'Admin')], default='member', max_length=10)),
-                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='faithgroups.group')),
+                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='groups.group')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -41,14 +41,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='group',
             name='members',
-            field=models.ManyToManyField(related_name='group', through='faithgroups.GroupMembership', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(related_name='group', through='groups.GroupMembership', to=settings.AUTH_USER_MODEL),
         ),
         migrations.CreateModel(
             name='GroupRequest',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='requests', to='faithgroups.group')),
+                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='requests', to='groups.group')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={

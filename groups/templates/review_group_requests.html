@@ -11,8 +11,8 @@
         {% for request in pending_requests %}
             <li>
                 {{ request.group_name }} by {{ request.user.username }} on {{ request.created_at }}
-                <a href="{% url 'faith:approve_group_request' request.id %}">Approve</a>
-                <a href="{% url 'faith:deny_group_request' request.id %}">Deny</a>
+                <a href="{% url 'groups:approve_group_request' request.id %}">Approve</a>
+                <a href="{% url 'groups:deny_group_request' request.id %}">Deny</a>
             </li>
         {% endfor %}
     </ul>

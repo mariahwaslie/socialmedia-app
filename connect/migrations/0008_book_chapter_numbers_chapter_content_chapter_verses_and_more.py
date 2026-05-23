@@ -8,7 +8,7 @@ import tinymce.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bibleconnect', '0007_alter_bibleversion_versionid'),
+        ('connect', '0007_alter_bibleversion_versionid'),
     ]
 
     operations = [
@@ -25,12 +25,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='chapter',
             name='verses',
-            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chapter_verses', to='bibleconnect.verse'),
+            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chapter_verses', to='connect.verse'),
         ),
         migrations.AlterField(
             model_name='book',
             name='chapter',
-            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books', to='bibleconnect.chapter'),
+            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books', to='connect.chapter'),
         ),
         migrations.AlterField(
             model_name='verse',

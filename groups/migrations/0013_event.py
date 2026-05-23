@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('faithgroups', '0012_group_who_can_post_groupcreationrequest_who_can_post_and_more'),
+        ('groups', '0012_group_who_can_post_groupcreationrequest_who_can_post_and_more'),
     ]
 
     operations = [
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('recurrence_pattern', models.CharField(blank=True, max_length=20, null=True)),
                 ('accessibility_options', models.TextField(blank=True)),
                 ('attendees', models.ManyToManyField(blank=True, related_name='event_attendees', to=settings.AUTH_USER_MODEL)),
-                ('group', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='events', to='faithgroups.group')),
+                ('group', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='events', to='groups.group')),
                 ('organizer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

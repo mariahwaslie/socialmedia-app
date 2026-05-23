@@ -90,7 +90,7 @@ def approve_group_request(request, request_id):
             groupchat.participants.add(group_request.user)
             groupchat.save()
 
-            return redirect('faith:review_group_requests')
+            return redirect('groups:review_group_requests')
     else:
         form = ApproveGroupCreation()
     context={
@@ -109,7 +109,7 @@ def deny_group_request(request, request_id):
         group_request.approved = False
         group_request.save()
         messages.info(request, f"The request for group '{group_request.group_name}' has been denied.")
-        return redirect('faith:review_group_requests')
+        return redirect('groups:review_group_requests')
 
     return render(request, 'deny.html', {'group_request': group_request})
 
@@ -161,7 +161,7 @@ def join_group(request, group_id, user_id):
     else:
         messages.info(request, "You are already a member of this group.")
 
-    return redirect('faith:group_details', group_id=group_id)
+    return redirect('groups:group_details', group_id=group_id)
 
 # this creates a request for the user to join the group
 @login_required
@@ -176,7 +176,7 @@ def request_to_join(request, group_id ):
                 request_to_join.group = group
                 request_to_join.save()
 
-                return redirect('faith:group_details', group_id=group_id)
+                return redirect('groups:group_details', group_id=group_id)
 
 @login_required
 def deny_group_join(request, group_id ):
@@ -192,7 +192,7 @@ def create_post(request, group_id =None):
         group = Group.objects.get(id=group_id)
         if not group.is_member(request.user):
             messages.error(request, "You are not a member of this group.")
-            return redirect('faith:group_details', group_id=group_id)
+            return redirect('groups:group_details', group_id=group_id)
 
         if request.method == 'POST':
             form = GroupPostForm(request.POST, group=group)
@@ -201,7 +201,7 @@ def create_post(request, group_id =None):
                 post.created_by = request.user
                 post.group = group
                 post.save()
-                return redirect("faith:group_details", group_id=group_id)
+                return redirect("groups:group_details", group_id=group_id)
         else:
             form= GroupPostForm(group=group)
         return render(request, 'createblogpost.html', {'form':form, 'group':group})
@@ -211,7 +211,7 @@ def create_prayer(request, group_id=None):
         group = Group.objects.get(id=group_id)
         if not group.is_member(request.user):
             messages.error(request, "You are not a member of this group.")
-            return redirect('faith:group_details', group_id=group_id)
+            return redirect('groups:group_details', group_id=group_id)
         if request.method == 'POST':
             form = GroupPrayerForm(request.POST, group=group)
             if form.is_valid():
@@ -219,7 +219,7 @@ def create_prayer(request, group_id=None):
                 prayer.user = request.user
                 prayer.group = group
                 prayer.save()
-                return redirect('faith:group_details', group_id=group_id)
+                return redirect('groups:group_details', group_id=group_id)
         else:
             form= GroupPrayerForm(group=group)
         return render(request,'createprayer.html',{'form':form, 'group':group})
@@ -229,7 +229,7 @@ def create_video(request, group_id=None):
         group = Group.objects.get(id=group_id)
         if not group.is_member(request.user):
             messages.error(request, "You are not a member of this group.")
-            return redirect('faith:group_details', group_id=group_id)
+            return redirect('groups:group_details', group_id=group_id)
         if request.method == 'POST':
             form = GroupVideoForm(request.POST,request.FILES, group=group)
             if form.is_valid():
@@ -237,7 +237,7 @@ def create_video(request, group_id=None):
                 vid.user = request.user
                 vid.group = group
                 vid.save()
-                return redirect('faith:group_details',group_id=group_id)
+                return redirect('groups:group_details',group_id=group_id)
         else:
             form= GroupVideoForm(group=group)
         return render(request, 'createvideo.html',{'form':form, 'group':group})
@@ -248,7 +248,7 @@ def create_image(request, group_id=None):
         group = Group.objects.get(id=group_id)
         if not group.is_member(request.user):
             messages.error(request, "You are not a member of this group.")
-            return redirect('faith:group_details', group_id=group_id)
+            return redirect('groups:group_details', group_id=group_id)
         if request.method == 'POST':
             form = GroupImageForm(request.POST,request.FILES, group=group)
             if form.is_valid():
@@ -256,7 +256,7 @@ def create_image(request, group_id=None):
                 image.user = request.user
                 image.group = group
                 image.save()
-                return redirect('faith:group_details',group_id=group_id)
+                return redirect('groups:group_details',group_id=group_id)
         else:
             form= GroupImageForm(group=group)
         return render(request, 'createimage.html',{'form':form, 'group':group})
@@ -268,7 +268,7 @@ def create_event(request, group_id):
         if form.is_valid():
             form.instance.group = group
             form.save()
-            return redirect('faith:group_details', group_id=group_id)
+            return redirect('groups:group_details', group_id=group_id)
     else:
         form = EventForm()
 
@@ -289,7 +289,7 @@ def update_event(request, pk):
 #
 # #function to geocode the address
 # def geocode_address(address):
-#     geolocator = Nominatim(user_agent='faithgroups')
+#     geolocator = Nominatim(user_agent='groups')
 #     location = geolocator.geocode(address)
 #     if location:
 #         return Point(location.longituide, location.latituide)

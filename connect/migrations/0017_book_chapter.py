@@ -8,7 +8,7 @@ import tinymce.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bibleconnect', '0016_delete_book'),
+        ('connect', '0016_delete_book'),
     ]
 
     operations = [
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
-                ('bibleversion', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books', to='bibleconnect.bibleversion')),
+                ('bibleversion', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='books', to='connect.bibleversion')),
             ],
         ),
         migrations.CreateModel(
@@ -27,8 +27,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('number', models.CharField(max_length=100)),
                 ('content', tinymce.models.HTMLField(default='')),
-                ('bibleversion', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chapter_version', to='bibleconnect.bibleversion')),
-                ('book', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chapter_book', to='bibleconnect.book')),
+                ('bibleversion', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chapter_version', to='connect.bibleversion')),
+                ('book', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chapter_book', to='connect.book')),
             ],
         ),
     ]

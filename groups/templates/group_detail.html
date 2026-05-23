@@ -17,19 +17,19 @@
         {% endfor %}
 
 
-            <a href="{% url 'faith:create_group_post' group.id %}">Create Post</a>
+            <a href="{% url 'groups:create_group_post' group.id %}">Create Post</a>
         {#{% else %}#}
         {#    <a href="{% url 'groups:join_group' group.id %}">Join Group</a>#}
     {% endif %}
 
     {% if not request.user in group.members.all %}
         {% if group.join_privacy == 'anyone' %}
-            <form action="{% url 'faith:join_group' group.id request.user.id %}" method="post">
+            <form action="{% url 'groups:join_group' group.id request.user.id %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-dark" id="join-button">Join Group</button>
             </form>
         {% else %}
-            <form method="post" enctype="multipart/form-data" action="{% url 'faith:request_to_join' group.id %}">
+            <form method="post" enctype="multipart/form-data" action="{% url 'groups:request_to_join' group.id %}">
                 {% csrf_token %}
                 <textarea name="text" placeholder="enter reason"></textarea>
                 <button type="submit" name="request_to_join" class="btn btn-dark" id="join-res">request Group</button>
@@ -47,7 +47,7 @@
         </div>
 
         {% if admins %}
-        	<a href="{% url 'faith:create_event' group.id %}">create an event</a>
+            <a href="{% url 'groups:create_event' group.id %}">create an event</a>
         {% endif %}
     {% endif %}
     {% if admins %}
@@ -57,13 +57,13 @@
                 join
                 reason {{ r.text }}</p>
 
-            <form method="post" action="{% url 'faith:join_group' group.id  r.user.id %}">
+            <form method="post" action="{% url 'groups:join_group' group.id  r.user.id %}">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit">approve</button>
 
             </form>
-            <form method="post" action="{% url 'faith:deny_group_join' group.id %}" enctype="multipart/form-data">
+            <form method="post" action="{% url 'groups:deny_group_join' group.id %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button name="request_denied" type="submit">deny</button>
@@ -105,7 +105,7 @@
 
     <script>
         document.getElementById('join-button').addEventListener('click', function () {
-            fetch("{% url 'faith:join_group' group.id request.user.id %}", {
+            fetch("{% url 'groups:join_group' group.id request.user.id %}", {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': '{{ csrf_token }}',
@@ -122,7 +122,7 @@
         });
         document.getElementById('join-res').addEventListener('click', function(){
 
-           fetch("{% url 'faith:request_to_join' group.id %}", {
+           fetch("{% url 'groups:request_to_join' group.id %}", {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': '{{ csrf_token }}',

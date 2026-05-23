@@ -298,7 +298,7 @@
 
 
                     {#                <li class="nav-item">#}
-                    {#                        <a class="nav-link hp" href="{% url 'bibleconnect:list_bibles' %}" role="button"#}
+                    {#                        <a class="nav-link hp" href="{% url 'connect:list_bibles' %}" role="button"#}
                     {#                           aria-expanded="false">Bible</a>#}
                     {#                    </li>#}
 
@@ -308,7 +308,7 @@
                             <a class="hp nav-link" href="{% url 'person:following' %}">Following</a>
                         </li>
                          <li class="nav-item">
-                            <a class="hp nav-link" href="{% url 'faith:group_list' %}">Groups</a>
+                            <a class="hp nav-link" href="{% url 'groups:group_list' %}">Groups</a>
                         </li>
                         {% else %}
                          <li class="nav-item">
@@ -331,7 +331,7 @@
                                 <li><a class="hp dropdown-item" href="{% url 'person:createimage' %}">New Image</a></li>
                                 <li><a class="hp dropdown-item" href="{% url 'person:post' %}">New Prayer</a></li>
                                 <li><a class="hp dropdown-item" href="{% url 'person:createblog' %}">New Blog</a></li>
-                                <li><a class="hp dropdown-item" href="{% url 'faith:create_group_request' %}">Create A Group</a></li>
+                                <li><a class="hp dropdown-item" href="{% url 'groups:create_group_request' %}">Create A Group</a></li>
 
                                 {% if request.user.is_authenticated %}
                                     <li>
@@ -368,7 +368,7 @@
                 <div style="display: flex;align-items: center">
 
 
-                    <a class="imgs navbar-brand" href="{% url 'bibleconnect:list_bibles' %}"><img
+                    <a class="imgs navbar-brand" href="{% url 'connect:list_bibles' %}"><img
                             src="/media/base/icons8-bible-48.png"
                             class="chat"></a>
 

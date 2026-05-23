@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('faithgroups', '0001_initial'),
+        ('groups', '0001_initial'),
     ]
 
     operations = [
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('approved', models.BooleanField(default=False)),
                 ('reviewed', models.BooleanField(default=False)),
-                ('group_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='request', to='faithgroups.group')),
+                ('group_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='request', to='groups.group')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bibleconnect', '0010_remove_bibleversion_books_book_bibleversion'),
+        ('connect', '0010_remove_bibleversion_books_book_bibleversion'),
     ]
 
     operations = [
@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='chapter',
             name='book',
-            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chapter_book', to='bibleconnect.book'),
+            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='chapter_book', to='connect.book'),
         ),
     ]

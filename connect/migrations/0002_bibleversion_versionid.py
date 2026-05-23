@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bibleconnect', '0001_initial'),
+        ('connect', '0001_initial'),
     ]
 
     operations = [

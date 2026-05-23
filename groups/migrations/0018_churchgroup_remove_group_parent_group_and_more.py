@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('faithgroups', '0017_group_parent_group'),
+        ('groups', '0017_group_parent_group'),
     ]
 
     operations = [
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('joined_at', models.DateTimeField(auto_now_add=True)),
                 ('role', models.CharField(choices=[('member', 'Member'), ('admin', 'Admin')], default='member', max_length=10)),
-                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='faithgroups.churchgroup')),
+                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='groups.churchgroup')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -47,12 +47,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='churchgroup',
             name='members',
-            field=models.ManyToManyField(related_name='church_group', through='faithgroups.ChurchMembership', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(related_name='church_group', through='groups.ChurchMembership', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='churchgroup',
             name='parent_group',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='smallgroups', to='faithgroups.churchgroup'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='smallgroups', to='groups.churchgroup'),
         ),
         migrations.CreateModel(
             name='ChurchCreationRequest',
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('reviewed', models.BooleanField(default=False)),
                 ('text', models.CharField(max_length=200)),
-                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='requests_church', to='faithgroups.churchgroup')),
+                ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='requests_church', to='groups.churchgroup')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={

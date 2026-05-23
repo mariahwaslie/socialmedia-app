@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class BibleconnectConfig(AppConfig):
+class ConnectConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'bibleconnect'
+    name = 'connect'

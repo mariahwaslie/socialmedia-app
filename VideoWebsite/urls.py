@@ -34,7 +34,7 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     # path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('blog/', include('blog.urls')),
-    path('bible/',include('bibleconnect.urls')),
+    path('bible/',include('connect.urls')),
     path('notifications/mark-as-read/<int:notification_id>/', mark_notification_as_read,
          name='mark_notification_as_read'),
     path('submit_comment/<int:id>/', submit_comment, name='submit_comment'),
@@ -45,7 +45,7 @@ urlpatterns = [
     path('', include('user.urls')),
     path('board/<int:board_id>/reorder/', person_views.reorder_items, name='reorder_items'),
     path('playlist/',include('playlistapp.urls')),
-    path('faith/',include('faithgroups.urls'))
+    path('groups/',include('groups.urls'))
 
     # path('accounts/', include('allauth.urls')),
 

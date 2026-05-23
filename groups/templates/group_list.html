@@ -2,7 +2,7 @@
 {% block basic_block %}
     <div>
 	{% for group in groups  %}
-        <a href="{% url 'faith:group_details' group.id  %}">
+        <a href="{% url 'groups:group_details' group.id  %}">
         {{ group.name }}
         <p>{{ group.description }}</p>
         </a>

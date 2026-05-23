@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bibleconnect', '0015_remove_verse_chapter_delete_chapter'),
+        ('connect', '0015_remove_verse_chapter_delete_chapter'),
     ]
 
     operations = [

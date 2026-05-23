@@ -1,7 +1,7 @@
 # bible/urls.py
 from django.urls import path
 from . import views
-app_name = 'bibleconnect'
+app_name = 'connect'
 urlpatterns = [
     path('verse/', views.get_bible_verse, name='get_bible_verse'),
     path('bibles/', views.list_bibles, name='list_bibles'),

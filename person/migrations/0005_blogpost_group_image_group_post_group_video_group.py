@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('faithgroups', '0001_initial'),
+        ('groups', '0001_initial'),
         ('person', '0004_alter_podcast_user'),
     ]
 
@@ -15,21 +15,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='blogpost',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group_blogpost', to='faithgroups.group'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group_blogpost', to='groups.group'),
         ),
         migrations.AddField(
             model_name='image',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group_image', to='faithgroups.group'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group_image', to='groups.group'),
         ),
         migrations.AddField(
             model_name='post',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group_posts', to='faithgroups.group'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group_posts', to='groups.group'),
         ),
         migrations.AddField(
             model_name='video',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group_videos', to='faithgroups.group'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='group_videos', to='groups.group'),
         ),
     ]

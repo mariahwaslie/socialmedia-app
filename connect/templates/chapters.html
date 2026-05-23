@@ -100,34 +100,34 @@
 
         {% if chapter.number != 'intro' and chapter.number != '1' %}
             <a class="a"
-               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.name chapter.previous_chapter %}">
+               href="{% url 'connect:read_chapter' chapter.bibleversion.versionid  chapter.book.name chapter.previous_chapter %}">
                 << prev chapter
             </a>
         {% elif chapter.book.name != fbook.name %}
             <a class="a"
-               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.get_previous_book chapter.book.get_previous_book.get_chapter_num %}">
+               href="{% url 'connect:read_chapter' chapter.bibleversion.versionid  chapter.book.get_previous_book chapter.book.get_previous_book.get_chapter_num %}">
                 << prev chapter
 
             </a>
         {% endif %}
 
-        <a class="a" href="{% url 'bibleconnect:list_books'  chapter.bibleversion.versionid %}">
+        <a class="a" href="{% url 'connect:list_books'  chapter.bibleversion.versionid %}">
             back to books
 
         </a>
 
         {% if chapter.get_number < chapter.count_chapters %}
             <a class="a"
-               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.name chapter.next_chapter %}">
+               href="{% url 'connect:read_chapter' chapter.bibleversion.versionid  chapter.book.name chapter.next_chapter %}">
                 next chapter >>
             </a>
         {% elif chapter.number == 'intro' %}
             <a class="a"
-               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.name '1' %}">
+               href="{% url 'connect:read_chapter' chapter.bibleversion.versionid  chapter.book.name '1' %}">
                 next chapter >></a>
         {% elif chapter.book.get_next_book %}
             <a class="a"
-               href="{% url 'bibleconnect:read_chapter' chapter.bibleversion.versionid  chapter.book.get_next_book '1' %}">
+               href="{% url 'connect:read_chapter' chapter.bibleversion.versionid  chapter.book.get_next_book '1' %}">
                 next chapter >></a>
 
         {% endif %}

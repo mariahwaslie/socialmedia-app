@@ -7,7 +7,7 @@
 # from person.models import BlogPost, Post, video, Image, Podcast, Catagory,Boards
 # from user.models import Profile
 # import blog.models
-# import bibleconnect.models
+# import connect.models
 # # from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 # from bs4 import BeautifulSoup
 # from django.http import HttpResponse
@@ -40,12 +40,12 @@
 #     blog_posts = [post for post in BlogPost.objects.all() if search_in_html(post.content, query)]
 #     posts = [post for post in Post.objects.all() if search_in_html(post.content, query)]
 #     blogs = [post for post in blog.models.Post.objects.all() if search_in_html(post.content, query)]
-#     bible_chapter_content= [chapter for chapter in bibleconnect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04')
+#     bible_chapter_content= [chapter for chapter in connect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04')
 #                                 if search_in_html(chapter.content, query)]
-#     bible_chapter_name = [chapter for chapter in bibleconnect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04')
+#     bible_chapter_name = [chapter for chapter in connect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04')
 #                                 if search_in_html(chapter.name, query)]
 #     bible_book_name = [chapter for chapter in
-#                            bibleconnect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04')
+#                            connect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04')
 #                            if search_in_html(chapter.book.name, query)]
 #
 #
@@ -161,11 +161,11 @@ def search(request, search=" "):
             blogs.append(post)
 
     # bible_chapter_content=[]
-    # for chapter in bibleconnect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04'):
+    # for chapter in connect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04'):
     #      if search_in_html(chapter.content, query) or search_in_html(chapter.content, query):
     #          bible_chapter_content.append(chapter)
 
-    # bible_chapter_name = [chapter for chapter in bibleconnect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04')
+    # bible_chapter_name = [chapter for chapter in connect.models.Chapter.objects.filter(bibleversion__versionid='f72b840c855f362c-04')
     #                             if search_in_html(chapter.name, query)]
 
     # Search other models

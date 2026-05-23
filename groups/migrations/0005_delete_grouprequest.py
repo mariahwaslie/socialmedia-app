@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('faithgroups', '0004_rename_is_denied_groupcreationrequest_reviewed'),
+        ('groups', '0004_rename_is_denied_groupcreationrequest_reviewed'),
     ]
 
     operations = [

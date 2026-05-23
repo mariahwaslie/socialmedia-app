@@ -7,13 +7,13 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('faithgroups', '0016_remove_event_accessibility_options_and_more'),
+        ('groups', '0016_remove_event_accessibility_options_and_more'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='group',
             name='parent_group',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='subgroups', to='faithgroups.group'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='subgroups', to='groups.group'),
         ),
     ]

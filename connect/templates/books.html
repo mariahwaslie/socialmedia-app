@@ -5,7 +5,7 @@
     {#    <h1 style="margin: 10px;"> books</h1>#}
 
     {#{{ book_chapters }}#}
-    <a href="{% url 'bibleconnect:list_bibles' %}" style="
+    <a href="{% url 'connect:list_bibles' %}" style="
             color: #5c5c5c;
             text-decoration: none;
             font-family: fangsong;
@@ -27,7 +27,7 @@
                 <div id="{{ book.name }}" class="accordion-collapse collapse " data-bs-parent="#{{ book.name }}">
                     <div class="accordion-body">
                         {% for chapter in book.chapter_book.all %}
-                            <a href="{% url 'bibleconnect:read_chapter' book.bibleversion.versionid  chapter.book.name chapter.number %}"
+                            <a href="{% url 'connect:read_chapter' book.bibleversion.versionid  chapter.book.name chapter.number %}"
                                class="btn btn-light" style="margin: 5px;padding:15px">
                                 {{ chapter.number }}</a>
                               {% endfor %}

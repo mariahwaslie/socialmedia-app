@@ -1,67 +1,60 @@
+# Environment and local secrets
 .env
-settings.py
-# Images
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.svg
-*.webp
-*.bmp
-*.tiff
-*.jfif
-# Video
-*.mp4
-*.mov
-*.avi
-*.mkv
-*.wmv
-*.flv
+.env.*
+!.env.example
+VideoWebsite/settings.py
+local_settings.py
+*.local.py
 
-# Audio
-*.mp3
-*.wav
-*.flac
-*.m4a
-*.aac
-*.ogg
-**/__pycache__/
-staticfiles/
-static/
-venv/
-.ipynb_checkpoints/
-**/.ipynb_checkpoints/
-db.sqlite3
-*.sqlite3
-mydatabase
-
+# Python
 __pycache__/
+**/__pycache__/
 *.py[cod]
+*$py.class
+.python-version
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
 .venv/
+venv/
+env/
+ENV/
 
-# Django
-staticfiles/
-
-# Jupyter
-**/.ipynb_checkpoints/
-
-# SQLite
+# Django runtime output
 db.sqlite3
 *.sqlite3
 mydatabase
-
-# Uploads/media
+staticfiles/
 media/
 uploads/
 
-# Editor/system
+# Common Django upload_to folders when MEDIA_ROOT points at the repo root
+videos/
+postimages/
+audio_files/
+podcast_picture/
+profile_pictures/
+
+# Logs and process files
+*.log
+*.pid
+
+# Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+*.ipynb
+
+# Editor and OS files
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 
-# Jupyter Notebook checkpoints
-**/.ipynb_checkpoints/
-
-# Optional: actual notebook files
-*.ipynb
+# Build/package output
+build/
+dist/
+*.egg-info/

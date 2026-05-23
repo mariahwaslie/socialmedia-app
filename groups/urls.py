@@ -1,7 +1,7 @@
 from .views import *
 from django.urls import path
 
-app_name = 'faith'
+app_name = 'groups'
 urlpatterns = [
 
     path('request/group/', create_group_request, name='create_group_request'),

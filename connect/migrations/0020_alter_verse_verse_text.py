@@ -7,7 +7,7 @@ import tinymce.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bibleconnect', '0019_verse_bibleversion'),
+        ('connect', '0019_verse_bibleversion'),
     ]
 
     operations = [

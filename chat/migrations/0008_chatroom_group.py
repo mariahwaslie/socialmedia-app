@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('faithgroups', '0012_group_who_can_post_groupcreationrequest_who_can_post_and_more'),
+        ('groups', '0012_group_who_can_post_groupcreationrequest_who_can_post_and_more'),
         ('chat', '0007_alter_message_body'),
     ]
 
@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='chatroom',
             name='group',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='chatrooms', to='faithgroups.group'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='chatrooms', to='groups.group'),
         ),
     ]
