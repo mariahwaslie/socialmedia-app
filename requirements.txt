@@ -186,3 +186,5 @@ wheel==0.44.0
 wrapt==1.16.0
 wsproto==1.2.0
 zope.interface==7.0.1
+django-location-field
+Faker

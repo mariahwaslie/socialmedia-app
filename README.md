@@ -1,41 +1,60 @@
 # Social Media App
 
-A Django social media project centered on faith-based sharing, community groups, Bible reading, and real-time messaging. The app lets users create profiles, follow or block other users, publish prayers, images, videos, blogs, podcasts, organize content into boards and playlists, join groups/church groups, search across content, and chat through Django Channels WebSockets.
+A Django social media project for faith-centered community, media sharing, Bible reading, groups, and real-time messaging. The application is built as a traditional server-rendered Django site with multiple domain apps: user profiles, posts and media, direct/group chat, group and church communities, Bible content, search, playlists, and blogs.
 
-## Project Status
+The project is organized around the actual app package names `connect` and `groups`. The `connect` app owns Bible API integration and Bible data models; the `groups` app owns groups, church groups, memberships, group requests, and events.
 
-This repository contains the Django project package, app code, templates, migrations, and a sample fixture (`data.json`). One required runtime file is not currently committed:
+## Current Status
+
+This repository contains the Django project package, app code, templates, migrations, a sample fixture (`data.json`), and dependency pins. One required runtime file is intentionally not committed:
 
 - `VideoWebsite/settings.py`
 
-`manage.py`, `VideoWebsite/asgi.py`, and `VideoWebsite/wsgi.py` all expect `DJANGO_SETTINGS_MODULE=VideoWebsite.settings`, so the project cannot run until that settings module is restored or recreated locally.
+`manage.py`, `VideoWebsite/asgi.py`, and `VideoWebsite/wsgi.py` all expect `DJANGO_SETTINGS_MODULE=VideoWebsite.settings`, so a local settings module must be restored or recreated before running the app.
 
-The package names and Django app labels have been normalized around the repository folders: `connect` for Bible-related data/views and `groups` for group/church-group features.
+The Bible API key has been moved out of source code. `connect/services.py` now reads the key from environment-backed configuration through `SCRIPTURE_API_KEY`, with `bible_api_key` still supported as a legacy/local alias.
 
-## Main Features
+## Feature Overview
 
-- User accounts with signup, login, profile editing, profile pictures, follows, blocking, and profile history.
-- Social content for prayers, rich text posts, images, videos, blog posts, and podcasts.
-- Likes, views, saves, comments, threaded comments for videos/blogs, and notification events through `django-notifications-hq`.
-- Boards that collect images, videos, prayers, and blog posts with ordered through models and drag/reorder support.
-- Video playlists with ordered playlist items.
-- Public/followers-only/private content privacy choices across core content types.
-- Search across users, prayers, blog posts, images, videos, and categories/tags.
-- Groups and church groups with membership roles, join requests, group creation requests, posting controls, and events.
-- Real-time single and group chat using Django Channels consumers.
-- Bible version/book/chapter models, API-backed Bible lookup services, and management commands for seeding Bible data.
-- Text-similarity recommendations using scikit-learn TF-IDF/cosine similarity for posts, videos, images, and blog posts.
+### Accounts and Profiles
+
+Users can sign up, log in, update profile details, upload profile pictures, follow other users, block users, and view their own activity history. Profile pages aggregate a user's prayers, videos, images, blogs, saved content, boards, followers, and following relationships.
+
+### Social Content
+
+The `person` app contains the main social publishing system. Users can create rich-text prayers/posts, upload videos and images, create podcasts, publish blog-style posts, comment, like, view, save, and control visibility with privacy options such as public, followers-only, and private.
+
+### Boards and Playlists
+
+Boards let users collect and order mixed content, including images, videos, prayers, and blog posts. Playlists provide ordered collections of videos through `PlaylistItem`, supporting user-owned video curation.
+
+### Groups and Church Groups
+
+The `groups` app supports public/private groups, church groups, memberships, admin/member roles, join privacy, group creation requests, church creation requests, and group events. Group members can create group posts, prayers, images, and videos when allowed by the group's posting rules.
+
+### Chat and Notifications
+
+The `chat` app supports direct messages, chat rooms, group chat participants, unread message tracking, notification views, and WebSocket consumers through Django Channels. Notifications are created through `django-notifications-hq` for social actions such as follows, comments, new content, saves, and messages.
+
+### Bible Connection
+
+The `connect` app models Bible versions, books, chapters, and verses. It can fetch Bible data from an external Scripture API, render Bible lists/books/chapters, and seed local Bible content through management commands. API credentials are expected to come from local environment variables, not committed source code.
+
+### Search and Recommendations
+
+The `search` app searches across users, prayers, blog posts, videos, images, categories, and tags. Recommendation helpers use TF-IDF and cosine similarity from scikit-learn to find similar videos, images, posts, and blog posts based on titles, descriptions, tags, and rich text content.
 
 ## Tech Stack
 
 - Python and Django 4.2
 - Django Channels and Daphne for ASGI/WebSockets
 - Redis support through `channels-redis`
-- SQLite by default in local Django projects, with `psycopg2-binary` available for PostgreSQL
+- SQLite for simple local development, with `psycopg2-binary` available for PostgreSQL
 - TinyMCE/CKEditor packages for rich text editing
 - `django-notifications-hq` for in-app notifications
-- scikit-learn, TensorFlow/Keras, BeautifulSoup, NumPy, and related libraries for similarity/search helpers
-- Bootstrap packages and template-based server-rendered UI
+- `requests` and `python-dotenv` for external API access and local environment loading
+- scikit-learn, TensorFlow/Keras, BeautifulSoup, NumPy, and related packages for similarity/search helpers
+- Bootstrap packages and Django templates for the server-rendered UI
 
 ## Repository Layout
 
@@ -43,7 +62,7 @@ The package names and Django app labels have been normalized around the reposito
 VideoWebsite/     Project URL routing plus ASGI/WSGI entry points
 user/             Authentication, profiles, follows, blocking, and profile dashboards
 person/           Core social content: prayers, posts, images, videos, podcasts, boards, comments, recommendations
-chat/             Direct messages, chat rooms, notifications view, and WebSocket consumers
+chat/             Direct messages, chat rooms, notification views, and WebSocket consumers
 groups/           Groups, church groups, memberships, join requests, group content, and events
 connect/          Bible versions, books, chapters, verses, API services, and seed commands
 blog/             Separate simple blog app with CRUD views
@@ -51,7 +70,7 @@ playlistapp/      Video playlists and ordered playlist items
 search/           Cross-content search view and template
 templates/        Shared site templates such as base, index, login, signup, logout
 data.json         Sample/development fixture data
-requirements.txt  Python dependency pins
+requirements.txt  Python dependency list
 ```
 
 ## Important Routes
@@ -66,7 +85,27 @@ requirements.txt  Python dependency pins
 - `/playlist/create/`, `/playlist/<id>/`, `/playlist/<id>/add/` - playlists
 - `/search/search/?search=<query>` - search
 
-The groups URLs are mounted at `/groups/`, and their Django URL namespace is `groups`.
+## Configuration
+
+Create a local `.env` file for secrets and local-only values. At minimum, Bible API usage expects:
+
+```env
+SCRIPTURE_API_KEY=replace-me
+SCRIPTURE_API_URL=https://api.scripture.api.bible/v1/
+```
+
+`connect/services.py` also supports `bible_api_key` as a legacy alias for the API key. Prefer `SCRIPTURE_API_KEY` for new local setups.
+
+Your uncommitted `VideoWebsite/settings.py` should provide at least:
+
+- `SECRET_KEY`, `DEBUG`, and `ALLOWED_HOSTS`
+- `INSTALLED_APPS` entries for this repo's Django apps and the third-party apps used in `requirements.txt`
+- database configuration
+- `STATIC_URL`, `STATIC_ROOT`, `MEDIA_URL`, and `MEDIA_ROOT`
+- template directories that include the root `templates/` folder
+- Channels settings such as `ASGI_APPLICATION = "VideoWebsite.asgi.application"` and `CHANNEL_LAYERS`
+- `SCRIPTURE_API_URL` for the Bible API base URL
+- TinyMCE/CKEditor configuration if rich text editors are enabled
 
 ## Local Setup
 
@@ -83,18 +122,7 @@ The groups URLs are mounted at `/groups/`, and their Django URL namespace is `gr
    pip install -r requirements.txt
    ```
 
-3. Restore or create `VideoWebsite/settings.py`.
-
-   At minimum, the settings module needs:
-
-   - `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`
-   - `INSTALLED_APPS` entries for the Django apps in this repo and third-party apps in `requirements.txt`
-   - database configuration
-   - `STATIC_URL`, `STATIC_ROOT`, `MEDIA_URL`, `MEDIA_ROOT`
-   - template directories that include the root `templates/` folder
-   - Channels settings such as `ASGI_APPLICATION = "VideoWebsite.asgi.application"` and `CHANNEL_LAYERS`
-   - `SCRIPTURE_API_URL` for the Bible API service
-   - TinyMCE/CKEditor configuration if rich text editors are enabled
+3. Restore or create `VideoWebsite/settings.py`, then add your local `.env` values.
 
 4. Apply migrations.
 
@@ -120,16 +148,22 @@ For WebSockets in development, run the ASGI app with Daphne if needed:
 daphne VideoWebsite.asgi:application
 ```
 
-## Data and External Services
+## Management Commands
 
-The `connect` app talks to an external Scripture/Bible API through `connect/services.py`. The service currently contains a hard-coded API key; that should be moved into environment-backed settings before sharing or deploying the app.
+- `python manage.py seed_data` fetches Bible books and chapters for configured Bible versions.
+- `python manage.py verses` fetches verse-level data.
+- `python manage.py create_fake_users` creates fake user accounts for local testing and requires the `Faker` package.
 
-The included `data.json` fixture contains development data, including a user record and sample social content. Treat it as local/demo data, not production seed data.
+## Data Notes
+
+The included `data.json` fixture contains development/demo data, including users, content, categories, notifications, and sample social activity. Treat it as local seed data only. It should not be treated as production data.
+
+Uploaded media should stay out of git. Runtime upload folders such as `media/`, `uploads/`, `videos/`, `postimages/`, `audio_files/`, `podcast_picture/`, and `profile_pictures/` are ignored.
 
 ## Development Notes
 
-- Tests exist as app-level `tests.py` files, but they are currently placeholders.
+- Tests exist as app-level `tests.py` files, but most are placeholders.
 - Migrations are committed and should be preserved unless intentionally resetting app history.
-- Uploaded media should stay out of git. Runtime upload folders such as `media/`, `uploads/`, `videos/`, `postimages/`, `audio_files/`, `podcast_picture/`, and `profile_pictures/` are ignored.
-- `VideoWebsite/settings.py` is intentionally ignored for local secrets. Keep a documented example settings file if you recreate it for team use.
 - The app packages and URL namespaces use `connect` and `groups`.
+- `VideoWebsite/settings.py` is intentionally ignored for local secrets. Keep a documented example settings file if you recreate it for team use.
+- Keep API keys and service credentials in `.env` or local settings, not in committed source code.
