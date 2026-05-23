@@ -11,7 +11,7 @@ from tinymce.models import HTMLField
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from faithgroups.models import Group,Event
+from groups.models import Group,Event
 
 
 

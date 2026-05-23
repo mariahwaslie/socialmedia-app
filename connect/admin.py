@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from bibleconnect.models import *
+from connect.models import *
 
 admin.site.register(Book)
 admin.site.register(Chapter)

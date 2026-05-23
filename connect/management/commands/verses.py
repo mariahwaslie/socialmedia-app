@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from bibleconnect.models import BibleVersion, Book, Chapter, Verse
-from bibleconnect.services import BibleService  # Assuming you have a service to fetch API data
+from connect.models import BibleVersion, Book, Chapter, Verse
+from connect.services import BibleService  # Assuming you have a service to fetch API data
 from django.db.models import Q
 
 

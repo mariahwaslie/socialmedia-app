@@ -112,7 +112,7 @@ import user.models
 from person.models import BlogPost, Post, video, Image, Podcast, Category, Board
 from user.models import Profile
 import blog.models
-import bibleconnect.models
+import connect.models
 # from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from bs4 import BeautifulSoup
 from django.http import HttpResponse

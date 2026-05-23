@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.flatpages.models import FlatPage
 from tinymce.models import HTMLField
 from django.urls import reverse
-from faithgroups.models import Group
+from groups.models import Group
 
 PRIVACY_CHOICES = (
     ('followers', 'Followers'),
