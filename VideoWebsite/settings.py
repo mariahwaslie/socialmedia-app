@@ -136,7 +136,7 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.postgresql',  # Use 'django.db.backends.mysql' for MySQL
 #         'NAME': 'postgres',                       # The name of your database
 #         'USER': 'mariah',                           # The database user you created
-#         'PASSWORD': 'Char92513@',                   # The password for the database user
+#         'PASSWORD': os.getenv('DB_Password'),                   # The password for the database user
 #         'HOST': '/cloudsql/still-totality-433611-n6:us-central1:disiplesapp',  # Cloud SQL instance connection name
 #         'PORT': '5432',                             # PostgreSQL default port
 #     }
