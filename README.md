@@ -1,169 +1,417 @@
-# Social Media App
+# social media platform
 
-A Django social media project for faith-centered community, media sharing, Bible reading, groups, and real-time messaging. The application is built as a traditional server-rendered Django site with multiple domain apps: user profiles, posts and media, direct/group chat, group and church communities, Bible content, search, playlists, and blogs.
+A full-stack Django social media application for community publishing, real-time messaging, reading, media sharing, groups, communities, events, playlists, boards, search, and content recommendations.
 
-The project is organized around the actual app package names `connect` and `groups`. The `connect` app owns Bible API integration and Bible data models; the `groups` app owns groups, church groups, memberships, group requests, and events.
+I built this project mainly on my own as a long-form software engineering project. The core application design, Django models, views, URL structure, feature work, data relationships, and integration decisions were built through my own implementation work.
 
-## Current Status
+This project started as a social media application, but it grew into a larger platform with multiple connected product areas. Users can create posts, upload videos and images, write blog-style content, follow or block people, join groups, request church communities, message other users, organize saved content, browse Bible content, and discover related posts through search and recommendation helpers.
 
-This repository contains the Django project package, app code, templates, migrations, a sample fixture (`data.json`), and dependency pins. One required runtime file is intentionally not committed:
+## Project overview
 
-- `VideoWebsite/settings.py`
+The application is a traditional server-rendered Django project organized into several domain apps. Each app owns a different part of the product:
 
-`manage.py`, `VideoWebsite/asgi.py`, and `VideoWebsite/wsgi.py` all expect `DJANGO_SETTINGS_MODULE=VideoWebsite.settings`, so a local settings module must be restored or recreated before running the app.
+- `user` handles authentication, profile pages, profile editing, follows, blocking, and user dashboards.
+- `person` is the main social content app. It handles prayer posts, videos, images, podcasts, blog-style posts, comments, likes, saves, boards, explore pages, and recommendation helpers.
+- `chat` handles direct messages, chat rooms, group messages, unread state, notification views, and WebSocket consumers.
+- `groups` handles public/private groups, church groups, memberships, join requests, creation requests, group content, posting permissions, and events.
+- `connect` handles Bible versions, books, chapters, verses, Scripture API calls, and local Bible data seeding.
+- `playlistapp` handles user-created video playlists with ordered playlist items.
+- `blog` contains a standalone blog CRUD flow.
+- `search` aggregates search across users, rich-text posts, blog posts, videos, images, tags, and categories.
 
-The Bible API key has been moved out of source code. `connect/services.py` now reads the key from environment-backed configuration through `SCRIPTURE_API_KEY`, with `bible_api_key` still supported as a legacy/local alias.
+The result is closer to a small social platform than a single-purpose Django app. A lot of the work went into making separate features talk to each other: group posts are still social posts, chat rooms can belong to groups, videos can belong to playlists and boards, users can save and organize content, and recommendation utilities compare content across multiple media types.
 
-## Feature Overview
+## Why I built it
 
-### Accounts and Profiles
+I wanted to build something large enough to force real backend decisions. A basic tutorial app usually has one or two models and a small set of views. This project gave me practice with the kinds of problems that come up when an application grows:
 
-Users can sign up, log in, update profile details, upload profile pictures, follow other users, block users, and view their own activity history. Profile pages aggregate a user's prayers, videos, images, blogs, saved content, boards, followers, and following relationships.
+- How to divide a Django project into apps without losing track of relationships between them
+- How to model many-to-many relationships with extra data, such as ordered board and playlist items
+- How to connect user actions to notifications
+- How to support private, public, followers-only, member-only, and admin-only behavior
+- How to add WebSocket communication to a mostly server-rendered Django app
+- How to store local data fetched from an external API
+- How to search and recommend content across different models
+- How to keep media uploads, fixtures, static files, migrations, and environment variables organized
 
-### Social Content
+Each new feature introduced new relationships with the rest of the system, so the project became a practical exercise in maintaining a growing codebase.
 
-The `person` app contains the main social publishing system. Users can create rich-text prayers/posts, upload videos and images, create podcasts, publish blog-style posts, comment, like, view, save, and control visibility with privacy options such as public, followers-only, and private.
+## Development context
 
-### Boards and Playlists
+This was primarily a solo engineering project. I used AI tools in a limited way, mainly for debugging errors and helping with front-end layout or styling. The main backend implementation, model design, feature planning, Django routing, data relationships, and product flows were built by me.
 
-Boards let users collect and order mixed content, including images, videos, prayers, and blog posts. Playlists provide ordered collections of videos through `PlaylistItem`, supporting user-owned video curation.
+That matters because this project reflects more than the final code. It reflects the process of learning how to build a multi-app Django project, diagnose framework issues, connect separate features, and keep going when the application became larger than the original idea.
 
-### Groups and Church Groups
+## Engineering scope
 
-The `groups` app supports public/private groups, church groups, memberships, admin/member roles, join privacy, group creation requests, church creation requests, and group events. Group members can create group posts, prayers, images, and videos when allowed by the group's posting rules.
+This project includes:
 
-### Chat and Notifications
+- Custom Django models across eight application areas
+- Authentication and profile management
+- User follows, blocking, and profile dashboards
+- Rich-text social posts
+- Image, video, and audio upload workflows
+- Blog-style publishing
+- Likes, views, comments, saves, and activity history
+- Ordered boards that can contain mixed content types
+- Ordered video playlists
+- Public/private group workflows
+- Church group request and membership workflows
+- Group-level permissions for posting
+- Event creation and editing for groups
+- Direct messaging and chat rooms
+- WebSocket consumers for chat, notifications, comments, and upload status
+- Notification creation through `django-notifications-hq`
+- Bible API service methods
+- Bible data models and seed commands
+- Search across multiple content models
+- Recommendation helpers using TF-IDF and cosine similarity
+- Local fixture data for development
+- Environment variable support through `.env.example`
 
-The `chat` app supports direct messages, chat rooms, group chat participants, unread message tracking, notification views, and WebSocket consumers through Django Channels. Notifications are created through `django-notifications-hq` for social actions such as follows, comments, new content, saves, and messages.
+## Main product areas
 
-### Bible Connection
+### Accounts and profiles
 
-The `connect` app models Bible versions, books, chapters, and verses. It can fetch Bible data from an external Scripture API, render Bible lists/books/chapters, and seed local Bible content through management commands. API credentials are expected to come from local environment variables, not committed source code.
+Users can sign up, log in, log out, and manage profile information. Profile data includes a bio, profile picture, followers, following relationships, and blocked users. The app also creates profile-related records automatically when a new Django `User` is created.
 
-### Search and Recommendations
+Profile pages are not just account pages. They act as dashboards where users can view their own posts, prayers, images, videos, blogs, history, followers, following lists, and saved or created content.
 
-The `search` app searches across users, prayers, blog posts, videos, images, categories, and tags. Recommendation helpers use TF-IDF and cosine similarity from scikit-learn to find similar videos, images, posts, and blog posts based on titles, descriptions, tags, and rich text content.
+### Social publishing
 
-## Tech Stack
+The `person` app is the center of the social experience. Users can create several types of content:
 
-- Python and Django 4.2
-- Django Channels and Daphne for ASGI/WebSockets
-- Redis support through `channels-redis`
-- SQLite for simple local development, with `psycopg2-binary` available for PostgreSQL
-- TinyMCE/CKEditor packages for rich text editing
-- `django-notifications-hq` for in-app notifications
-- `requests` and `python-dotenv` for external API access and local environment loading
-- scikit-learn, TensorFlow/Keras, BeautifulSoup, NumPy, and related packages for similarity/search helpers
-- Bootstrap packages and Django templates for the server-rendered UI
+- Prayer posts with rich text
+- Uploaded videos
+- Uploaded images
+- Blog-style posts
+- Podcasts with audio files and cover images
 
-## Repository Layout
+Content supports privacy controls, user ownership, timestamps, tags or categories, likes, views, saves, and comments. Many content types can also be connected to groups, which lets the same publishing system support both personal profiles and group communities.
+
+### Comments, likes, saves, and views
+
+The app tracks social engagement across several content types. Posts, images, videos, and blog posts have their own comment flows. Videos support threaded replies through parent comments. Likes, saves, and views are modeled with Django many-to-many relationships so each user action can be attached to the content item.
+
+The project also includes notification behavior for social activity, so user actions can trigger in-app notifications.
+
+### Boards
+
+Boards let users organize mixed content in one place. A board can contain:
+
+- Images
+- Videos
+- Prayer posts
+- Blog posts
+
+Each board relationship uses a through model with an `order` field. That made the feature more involved than a simple many-to-many relationship because the app needs to preserve the user's chosen order across different content types. There is also a dedicated route for reordering board items.
+
+### Playlists
+
+Playlists let users create ordered collections of videos. The playlist system uses a `PlaylistItem` through model so each video can have a position inside the playlist. Playlists also support privacy settings and tags.
+
+### Groups
+
+The `groups` app supports a community system with public and private groups. Users can browse groups, join groups, or request access when a group requires approval. Groups include membership roles, including member and admin, and the app stores join requests separately so they can be reviewed.
+
+Groups also have posting rules. A group can allow all members to post, or restrict posting to admins. Group content can include posts, prayers, images, videos, and events.
+
+### Church groups
+
+The project includes a separate church group model in addition to the regular group model. Church groups support their own creation requests, membership records, member requests, admin/member roles, join privacy, posting rules, and parent/child relationships for small groups.
+
+This made the group system larger than a simple "create group and join group" feature. It includes approval workflows, role-based behavior, and different community types.
+
+### Events
+
+Groups can create events with titles, rich-text descriptions, event dates, location type, organizer, and event type. Supported event types include conferences, webinars, workshops, seminars, meetups, and Bible studies.
+
+Events are connected to groups, which gives the community features a calendar-like extension instead of limiting groups to static discussion pages.
+
+### Chat and real-time messaging
+
+The chat system supports both direct messages and chat rooms. The models separate individual messages, single chats, and chat rooms. Messages track sender, recipient, message body, date, and read state.
+
+The real-time layer uses:
+
+- Django Channels
+- Daphne
+- ASGI routing
+- Redis channel layers
+- WebSocket consumers
+- Auth middleware for WebSocket connections
+
+The app includes WebSocket consumers for direct chat and group chat. When a user sends a chat message, the app saves the message, sends it through the channel layer, and creates notifications for recipients.
+
+### Notifications
+
+Notifications are handled through `django-notifications-hq`. The app uses notifications for messaging and social actions such as follows, comments, new content, saves, and related user activity.
+
+Users can view notifications and mark individual notifications as read.
+
+### Bible reading and Scripture API integration
+
+The `connect` app integrates Bible content into the social platform. It models:
+
+- Bible versions
+- Books
+- Chapters
+- Verses
+
+The `BibleService` class handles Scripture API calls for Bible versions, books, chapters, chapter content, and verses. The project also includes custom Django management commands to seed Bible data into the local database.
+
+This part of the app required thinking about external API access, local caching/storage, management commands, and how Bible content should fit into the rest of the platform.
+
+### Search
+
+The search app searches across multiple model types instead of just one table. It can search:
+
+- Users
+- Prayer posts
+- Blog-style posts
+- Standalone blog posts
+- Videos
+- Images
+- Tags
+- Categories
+
+Because some content is stored as rich-text HTML, the search code uses BeautifulSoup to extract readable text before matching search terms.
+
+### Recommendations
+
+The project includes recommendation helpers for related content. The utilities use scikit-learn tools such as `TfidfVectorizer` and cosine similarity to compare text from titles, descriptions, tags, categories, and rich-text content.
+
+Recommendation helpers compare across several content relationships:
+
+- Similar videos to a video
+- Similar images to an image
+- Similar posts to a post
+- Similar blog posts to a post
+- Similar images or videos related to a post
+- Similar posts related to an image or video
+
+This was one of the more challenging parts of the project because the app has several content models, and each one stores searchable information differently.
+
+## Architecture notes
+
+### Server-rendered Django structure
+
+The application uses Django templates rather than a separate JavaScript front end. Shared templates live in the root `templates/` directory, while app-specific templates live inside each app. Static CSS lives under `static/`, and collected/admin static files are present under `staticfiles/`.
+
+### ASGI and WebSockets
+
+The project uses `VideoWebsite/asgi.py` to combine regular HTTP handling with WebSocket routing. The ASGI application combines WebSocket URL patterns from both the `person` and `chat` apps.
+
+Redis is configured as the Channels backend at `127.0.0.1:6379`, which allows WebSocket consumers to publish events to channel groups.
+
+### Data modeling
+
+The app uses Django's built-in `User` model and extends user behavior with profile, follow, and blocking models. Content models are split by type instead of forcing every post into one generic table. That made the project easier to reason about while building, because videos, images, blog posts, prayer posts, podcasts, boards, playlists, groups, and Bible content each have their own fields and relationships.
+
+For ordered collections, the project uses through models:
+
+- `BoardImage`
+- `BoardVideo`
+- `BoardPost`
+- `BoardBlogPost`
+- `PlaylistItem`
+
+Those models preserve item order while still using Django many-to-many relationships.
+
+### Privacy and permissions
+
+The application includes several privacy and permission layers:
+
+- Public content
+- Followers-only content
+- Only-me/private content
+- Public and private groups
+- Automatic or approval-based group joining
+- Member or admin-only group posting
+- User blocking
+- Membership roles for groups and church groups
+
+These choices affect what users can create, join, view, or interact with.
+
+## Tech stack
+
+- Python
+- Django 4.2.15
+- Django templates
+- Bootstrap 5
+- Custom CSS
+- Django Channels
+- Daphne
+- Redis
+- `channels-redis`
+- SQLite for local development
+- PostgreSQL support through `psycopg2-binary`
+- TinyMCE
+- CKEditor-related dependencies
+- Django auth
+- django-allauth dependencies/configuration
+- `django-notifications-hq`
+- scikit-learn
+- NumPy
+- BeautifulSoup
+- TensorFlow/Keras dependencies
+- Requests
+- `python-dotenv`
+- Faker
+
+## Repository structure
 
 ```text
-VideoWebsite/     Project URL routing plus ASGI/WSGI entry points
-user/             Authentication, profiles, follows, blocking, and profile dashboards
-person/           Core social content: prayers, posts, images, videos, podcasts, boards, comments, recommendations
-chat/             Direct messages, chat rooms, notification views, and WebSocket consumers
-groups/           Groups, church groups, memberships, join requests, group content, and events
-connect/          Bible versions, books, chapters, verses, API services, and seed commands
-blog/             Separate simple blog app with CRUD views
-playlistapp/      Video playlists and ordered playlist items
-search/           Cross-content search view and template
-templates/        Shared site templates such as base, index, login, signup, logout
-data.json         Sample/development fixture data
-requirements.txt  Python dependency list
+VideoWebsite/      Django project settings, URL routing, ASGI, and WSGI entry points
+user/              Authentication views, profiles, follows, blocking, and profile dashboards
+person/            Core social features: posts, media, blogs, boards, comments, recommendations
+chat/              Direct messages, chat rooms, notifications, and WebSocket consumers
+groups/            Groups, church groups, memberships, requests, permissions, and events
+connect/           Bible API service layer, Bible data models, and seed commands
+playlistapp/       Video playlists and ordered playlist items
+blog/              Standalone blog CRUD flow
+search/            Cross-content search view and search template
+templates/         Shared templates such as base, index, login, signup, and logout
+static/            Project CSS and static assets
+staticfiles/       Collected/admin static assets
+data.json          Local development fixture data
+requirements.txt   Python dependency pins
 ```
 
-## Important Routes
+## Important routes
 
-- `/` - home/profile entry points from `person` and `user`
-- `/login/`, `/logout/`, `/signup/` - authentication
-- `/profile/` - current user profile dashboard
-- `/create/prayer/`, `/uploadvideo/`, `/profile/createimage/`, `/post/blogview/` - content creation
-- `/chat/inbox/`, `/chat/messages/<username>`, `/chat/chatroom/<id>` - messaging
-- `/groups/groups/`, `/groups/request/group/`, `/groups/request/church/` - groups and church group flows
-- `/bible/bibles/`, `/bible/books/<bible_id>`, `/bible/<bible_id>/<book>/chapter/<chapter_id>` - Bible views
-- `/playlist/create/`, `/playlist/<id>/`, `/playlist/<id>/add/` - playlists
-- `/search/search/?search=<query>` - search
+| Area | Example routes |
+| --- | --- |
+| Auth and profile | `/signup/`, `/login/`, `/logout/`, `/profile/`, `/profile/update/` |
+| Prayer posts | `/create/prayer/`, `/post/<user_id>/<post_id>/<action>/`, `/edit/prayer/<id>` |
+| Media | `/uploadvideo/`, `/profile/createimage/`, `/video/<user_id>/<video_id>/<action>/`, `/image/<user_id>/<image_id>/<action>/` |
+| Boards | `/createboard/`, `/viewboard/<username>/<board_id>`, `/board/<board_id>/reorder/` |
+| Blogs | `/post/blogview/`, `/blogpost/<id>/<action>`, `/blog/post/new/` |
+| Chat | `/chat/inbox/`, `/chat/messages/<username>`, `/chat/chatroom/<id>` |
+| Groups | `/groups/groups/`, `/groups/request/group/`, `/groups/group/<id>`, `/groups/event/create/<group_id>` |
+| Bible | `/bible/bibles/`, `/bible/books/<bible_id>`, `/bible/<bible_id>/<book>/chapter/<chapter_id>` |
+| Playlists | `/playlist/create/`, `/playlist/<id>/`, `/playlist/<id>/add/` |
+| Search | `/search/search/?search=<query>` |
 
-## Configuration
+## Local setup
 
-Create a local `.env` file for secrets and local-only values. At minimum, Bible API usage expects:
+### Prerequisites
 
-```env
-SCRIPTURE_API_KEY=replace-me
-SCRIPTURE_API_URL=https://api.scripture.api.bible/v1/
-```
+- Python 3.10+
+- Redis for WebSocket/channel-layer behavior
+- A Scripture API key for Bible content features
 
-`connect/services.py` also supports `bible_api_key` as a legacy alias for the API key. Prefer `SCRIPTURE_API_KEY` for new local setups.
+### Installation
 
-Your uncommitted `VideoWebsite/settings.py` should provide at least:
+1. Clone the repository.
 
-- `SECRET_KEY`, `DEBUG`, and `ALLOWED_HOSTS`
-- `INSTALLED_APPS` entries for this repo's Django apps and the third-party apps used in `requirements.txt`
-- database configuration
-- `STATIC_URL`, `STATIC_ROOT`, `MEDIA_URL`, and `MEDIA_ROOT`
-- template directories that include the root `templates/` folder
-- Channels settings such as `ASGI_APPLICATION = "VideoWebsite.asgi.application"` and `CHANNEL_LAYERS`
-- `SCRIPTURE_API_URL` for the Bible API base URL
-- TinyMCE/CKEditor configuration if rich text editors are enabled
+   ```bash
+   git clone <your-repo-url>
+   cd socialmedia-app
+   ```
 
-## Local Setup
-
-1. Create and activate a virtual environment.
+2. Create and activate a virtual environment.
 
    ```bash
    python -m venv .venv
    source .venv/bin/activate
    ```
 
-2. Install dependencies.
+3. Install dependencies.
 
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Restore or create `VideoWebsite/settings.py`, then add your local `.env` values.
+4. Create a local `.env` file.
 
-4. Apply migrations.
+   ```bash
+   cp .env.example .env
+   ```
+
+5. Add local configuration values.
+
+   ```env
+   SECRET_KEY=replace-me
+   DEBUG=True
+   ALLOWED_HOSTS=localhost,127.0.0.1
+   SCRIPTURE_API_URL=https://api.scripture.api.bible/v1/
+   SCRIPTURE_API_KEY=replace-me
+   TINYMCE_API_KEY=replace-me
+   ```
+
+6. Apply migrations.
 
    ```bash
    python manage.py migrate
    ```
 
-5. Optionally load the sample fixture.
+7. Optionally load sample development data.
 
    ```bash
    python manage.py loaddata data.json
    ```
 
-6. Run the development server.
+8. Run the development server.
 
    ```bash
    python manage.py runserver
    ```
 
-For WebSockets in development, run the ASGI app with Daphne if needed:
+For WebSocket behavior, make sure Redis is running locally and start the ASGI app with Daphne when needed:
 
 ```bash
-daphne VideoWebsite.asgi:application
+daphne -b 127.0.0.1 -p 8000 VideoWebsite.asgi:application
 ```
 
-## Management Commands
+## Management commands
 
-- `python manage.py seed_data` fetches Bible books and chapters for configured Bible versions.
-- `python manage.py verses` fetches verse-level data.
-- `python manage.py create_fake_users` creates fake user accounts for local testing and requires the `Faker` package.
+```bash
+python manage.py seed_data
+python manage.py verses
+python manage.py create_fake_users
+```
 
-## Data Notes
+- `seed_data` fetches Bible book and chapter data for configured Bible versions.
+- `verses` fetches verse-level Bible data.
+- `create_fake_users` creates local test users using Faker.
 
-The included `data.json` fixture contains development/demo data, including users, content, categories, notifications, and sample social activity. Treat it as local seed data only. It should not be treated as production data.
+## Configuration and security notes
 
-Uploaded media should stay out of git. Runtime upload folders such as `media/`, `uploads/`, `videos/`, `postimages/`, `audio_files/`, `podcast_picture/`, and `profile_pictures/` are ignored.
+- Local development uses SQLite through the configured `mydatabase` database file.
+- Redis is configured as the default Channels backend at `127.0.0.1:6379`.
+- Runtime uploads are stored under the configured media directory and should not be committed.
+- `.env.example` documents the expected local environment variables.
+- Secrets and API keys should live in environment variables or hosting-provider secret management before deployment.
+- Any API key that was ever committed should be rotated before the repository is made public.
 
-## Development Notes
+## Data and media notes
 
-- Tests exist as app-level `tests.py` files, but most are placeholders.
-- Migrations are committed and should be preserved unless intentionally resetting app history.
-- The app packages and URL namespaces use `connect` and `groups`.
-- `VideoWebsite/settings.py` is intentionally ignored for local secrets. Keep a documented example settings file if you recreate it for team use.
-- Keep API keys and service credentials in `.env` or local settings, not in committed source code.
+The included `data.json` fixture is intended for local development and demos. It may include sample users, content, categories, notifications, and social activity.
+
+Uploaded media directories such as `media/`, `uploads/`, `videos/`, `postimages/`, `audio_files/`, `podcast_picture/`, and `profile_pictures/` should stay out of version control.
+
+## What this project shows
+
+This project shows my ability to build beyond a small tutorial-style application. It includes a real set of connected product features, and it required me to work across backend architecture, user flows, data modeling, templates, WebSockets, external APIs, search, recommendation logic, and local development setup.
+
+The strongest engineering parts of the project are:
+
+- Designing a multi-app Django codebase
+- Modeling complex relationships between users, content, communities, messages, and saved collections
+- Building authenticated create/read/update/delete flows across many content types
+- Adding real-time communication to a server-rendered app
+- Connecting external API data to local Django models
+- Implementing search across HTML-rich content and multiple model types
+- Building recommendation utilities with Python machine learning libraries
+- Managing migrations, fixtures, static assets, media uploads, and environment variables
+
+## Planned improvements
+
+- Expand automated test coverage beyond placeholder app test files
+- Centralize duplicated recommendation utilities into a shared service module
+- Move all deployable secrets and API keys fully into environment-backed settings
+- Add CI checks for formatting, migrations, and Django system checks
+- Add production deployment settings for PostgreSQL, static assets, allowed hosts, and secure cookies
+- Improve search ranking and indexing for larger datasets
+- Continue refining the front end for consistency across profile, group, search, and media pages
